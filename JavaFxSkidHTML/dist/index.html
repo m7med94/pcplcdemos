@@ -1,0 +1,639 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="keywords" content="JavaFX, SAIA PLC">
+<meta name="description" content="WEB SAIA PLC">
+<meta name="Author" content="Alex Sentcha">
+<META NAME="robots" CONTENT="index, follow"> <!-- (Robot commands: All, None, Index, No Index, Follow, No Follow) -->
+<META NAME="revisit-after" CONTENT="30 days">
+<META NAME="distribution" CONTENT="global"> 
+<META NAME="rating" CONTENT="general">
+<META NAME="Content-Language" CONTENT="en, dutch">
+<script language="JavaScript"><!--
+var SOE = 0
+var Sim = true;
+var SimRun = 1;
+
+var	H1 =  0; //Heater
+var	P1 =  0; //Water pomp
+var	P2 =  0; //Transfer HD pomp
+var	P3 =  0; //Transfer FA pomp
+var	P4 =  1; //Dosing pompen
+var	M1 =  1; //MainPower
+var	R1 =  1; //Roerwerk
+var	KL1 = 1; //Koeler
+var	K1 =  1; //Rinse klep
+var	K2 =  0; //Water ReactionTank
+var	K3 =  0; //Water supply
+var	L1 =  0; //Lamp run proces
+
+var AL1 = 0;
+var AL2 = 0;
+var AL3 = 0; //LL water tank
+var AL4 = 0;
+var AL5 = 0;
+var AL6 = 0;
+var AL7 = 0;
+var AL8 = 0;
+var AL9 = 0;
+var AL10 = 0;
+var AL11 = 0;
+var AL12 = 0;
+var AL13 = 0;
+var AL14 = 0;
+var AL15 = 0;
+var AL16 = 0;
+
+//Variales zonder PLC ondersteuning
+var NivoWater = 11; //Niveau water tank sim only
+var WatTankHL = 0; //WaterTankNiveau Hoog geen PLC sim only.
+var WatTankLL = 0; //WaterTankNiveau Laag geen PLC sim only.
+var NivoHP   = 15; //Niveau HP tank sim only
+var HPTankHL = 0; //HPTankNiveau Hoog geen PLC sim only.
+var HPTankLL = 0; //HPTankNiveau Laag geen PLC sim only.
+var NivoFA   = 31; //Niveau FA tank sim only
+var FATankHL = 0; //FATankNiveau Hoog geen PLC sim only.
+var FATankLL = 0; //FATankNiveau Laag geen PLC sim only.
+var TempOmhoog = true; //geen PLC sim only.
+var NivoRe   = 601; //Niveau Re tank sim only
+var ReTankHHL = 0; //Reactor Niveau Hoog geen PLC sim only.
+var ReTankHL = 0; //Reactor Niveau Hoog geen PLC sim only.
+var ReTankLL = 0; //Reactor Niveau Hoog geen PLC sim only.
+var DosingHP   = 500; //Dosing pomp HP sim only
+var DosingFA   = 500; //Dosing pomp FA sim only
+var TRpompenAan = true; //sim only
+
+var	wPresW = 23;  //Presssure water supply
+var wWt    = 194;	//Water temperature in reaction tank
+
+var wTempHP = 234;	//Temperature in storage tank HP
+var wLevHP  = 800;	//Level in storage tank	0.1%
+var wPresHP = 0;	//Pressure in storage tank HP
+var wTranHP = 551;	//- 10.0 Set point Transfer pomp HP 	0.1%
+var wFlowHP = 125;	//- 10.0 Flow HP  ml
+var wDosHP  = 352;	//- 10.0 Set point Dosing pomp HP 	0.1%
+
+var wTempFA = 235;	//Temperature in storage tank FA
+var wLevFA  = 510;	//Level in storage tank	0.1%
+var wPresFA = 0;	//Pressure in storage tank FA
+var wTranFA = 478;	//- 10.0 Set point Transfer pomp FA 	0.1%
+var wFlowFA = 114;	//- 10.0 Flow FA  ml
+var wDosFA  = 396;	//- 10.0 Set point Dosing pomp FA 	0.1%
+
+var wRedU   = 12674;	//- 10.0 Redox untread
+var wRedT   = -5678;	//- 10.0 Redox Tread
+var	wSewM   = 235;	//- 10.0 Sewage Flow m3/h
+var	wSewP   = 314;	//- 10.0 Sewage Flow %
+
+function change(t,i,k)
+{	i = Number(t.value) * k + i;
+	parent.force.send(i, t.id);
+}
+function change2(naam1,naam2,i,k)
+{	var m,n;
+	
+	m = Number(naam1.value) * k + i;
+	n = Number(naam2.value) * k + i;
+	alert(m+" "+n);
+	m=34;
+	n=45;
+	parent.force.send2(m, n, naam1.id, naam2.id);
+}
+function updated()
+{	
+	if (SOE==0) {	
+		Online();
+		Alarmen();
+		KlepPompRoer();
+		Sim = false;
+	}
+}
+function updatedSim()
+{	
+	if (Sim == true) {	
+		Online();
+		Alarmen();
+		KlepPompRoer();
+		t=setTimeout("updatedSim()",1500); //1000-1sec
+		Sim = true;
+
+	}	
+
+}
+function KlepPompRoer() 
+{		
+
+	if(Sim == true){
+		if(SimRun == 1){
+			P4 = 1; //Dosing pompen
+			//Water TANK regeling
+			if(wPresW < 20){
+				P1 = 1;
+			}
+			if(wPresW > 40){
+				P1 = 0;
+			}
+			if(P1 == 1){
+				wPresW = wPresW + 5;
+			}
+			if(K1 == 1){
+				wPresW = wPresW - 2;
+			}
+			if(P4 == 1){
+				K1 = 1;
+			}
+			if(P1 == 1){
+				NivoWater = NivoWater - 3;
+			}
+			if(K3 == 1){
+				NivoWater = NivoWater + 5;
+			}
+			if(NivoWater > 95){
+				K3 = 0;
+			}
+			if(NivoWater < 10){
+				K3 = 1;
+			}
+			if(NivoWater > 90){
+				WatTankHL = 1;
+			}else{
+				WatTankHL = 0;
+			}
+			if(NivoWater < 12){
+				WatTankLL = 1;
+			}else{
+				WatTankLL = 0;
+			}
+			
+			//HP nivo regeling
+			if((NivoHP < 10) && (TRpompenAan==true)){
+				HPTankLL = 1;
+				P2 = 1; 
+			}else{
+				HPTankLL = 0;
+			}
+			if(NivoHP > 90){
+				HPTankHL = 1;
+				P2 = 0; 
+			}else{
+				HPTankHL = 0;
+			}
+			
+			//FA nivo regeling
+			if((NivoFA < 10) && (TRpompenAan==true)){
+				FATankLL = 1;
+				P3 = 1; 
+			}else{
+				FATankLL = 0;
+			}
+			if(NivoFA > 90){
+				FATankHL = 1;
+				P3 = 0; 
+			}else{
+				FATankHL = 0;
+			}
+			
+			//Temp. reac.Tank
+			if(wWt < 250){
+				H1 = 1;
+			}
+			if(wWt > 450){
+				H1 = 0;
+			}
+			if(H1 == 1){
+				KL1 = 0;
+			}
+			if(wWt > 550){
+				KL1 = 1;
+			}
+			if(H1 == 1){
+				wWt = wWt +5;
+			}
+			if(KL1 == 1){
+				wWt = wWt -5;
+			}
+			if(H1 == 0 && KL1 == 0){
+				wWt = wWt +1;
+			}	
+
+			//Nivo reactiontank SIMULATIE
+			if(NivoRe < 600  ){	//nivo LL
+				K2 = 1;
+			}
+			if(NivoRe > 900  ){	//nivo HL
+				ReTankHL = 1;
+			}else{
+				ReTankHL = 0;
+			}
+			if(NivoRe > 955  ){	//nivo HHL
+				K2=0;
+			}
+			if(K2 == 1){
+				NivoRe = NivoRe +1;	//Nivo in reactor
+			}else{
+				NivoRe = NivoRe -1;
+			}
+			if(NivoRe < 620  ){ // Nivo reactor
+				AL2 = 1;
+				ReTankLL = 1;
+			}else{
+				AL2 = 0; 
+				ReTankLL = 0;
+			}
+			if(NivoRe > 950  ){ // Nivo reactor
+				AL16 = 1;
+				ReTankHHL = 1;
+			}else{
+				AL16 = 0; 
+				ReTankHHL = 0;
+			}
+		}else{
+			H1 = 0; //Heater
+			P1 = 0; //Water pomp
+			P2 = 0; //Transfer HD pomp
+			P3 = 0; //Transfer FA pomp
+			P4 = 0; //Dosing pompen
+			M1 = 0; //MainPower
+			R1 = 0; //Roerwerk
+			KL1 = 0; //Koeler
+			K1 = 0; //Rinse klep
+			K2 = 0;//Water ReactionTank
+			K3 = 0; //Water supply
+			L1 = 0; //Lamp run proces
+			//WatTankHL = 0;	//geen visualisatie
+			//WatTankLL = 0;	//geen visualisatie
+		}
+
+	}else{
+		//Lezen  uit PLC
+		H1 = parent.update.F670; //Heater
+		P1 = parent.update.F671; //Water pomp
+		P2 = parent.update.F672; //Transfer HD pomp
+		P3 = parent.update.F673; //Transfer FA pomp
+		P4 = parent.update.F674; //Dosing pompen
+		M1 = parent.update.F675; //MainPower
+		R1 = parent.update.F684; //Roerwerk
+		KL1 = parent.update.F685; //Koeler
+		K1 = parent.update.F687; //Rinse klep
+		K2 = parent.update.F688;//Water ReactionTank
+		K3 = parent.update.F689; //Water supply
+		L1 = parent.update.F668; //Lamp run proces
+		WatTankHL = 0;	//geen visualisatie
+		WatTankLL = 0;	//geen visualisatie
+	}	
+	
+	//Schrijven naar javaFX SkidNB
+    try {  app.script.SetPompen(P2,P3,P4,P4,P1);
+    } catch (e) {
+        reportException(e);
+    }
+    try {  app.script.SetNivoTr(FATankHL,FATankLL,HPTankHL,HPTankLL);
+    } catch (e) {
+        reportException(e);
+    }
+    try {  app.script.SetKleurVerw(H1,KL1);
+    } catch (e) {
+        reportException(e);
+    }
+    try {  app.script.SetWatKleps(K3,K1,K2);
+    } catch (e) {
+        reportException(e);
+    }
+   try {  app.script.SetWatNivo(WatTankHL,WatTankLL,ReTankHHL,ReTankHL,ReTankLL);
+    } catch (e) {
+        reportException(e);
+    }
+    try {  app.script.SetRoerWerk(R1);
+    } catch (e) {
+        reportException(e);
+    }
+}
+function Online() 
+{
+ 	if(Sim == true){
+		
+		wDosHP = DosingHP;
+		wFlowHP = DosingHP * 1.3;
+		wDosFA = DosingFA;
+		wFlowFA = DosingFA * 1.3;
+		// Niveau's regeling
+		if(P4 == 1){
+			if(NivoFA > 0){
+				NivoFA = NivoFA -1;
+			}
+			if(NivoHP > 0){
+				NivoHP = NivoHP -1;
+			}
+		}else{
+			wFlowFA = 0;	//pomp gestopt - geen flow
+			wFlowHP = 0;
+		}
+		if(P2 == 1){
+			NivoHP = NivoHP +5;
+			wLevHP = wLevHP -1;
+		}
+		if(P3 == 1){
+			NivoFA = NivoFA +5;
+			wLevFA = wLevFA -1;
+		}
+		wPresHP = wLevHP / 1.2;		//Pressure in storage tank HP
+		wPresFA = wLevFA / 1.2;		//Pressure in storage tank FA
+		if(wLevHP < 50){
+			wLevHP = 950;
+		}
+		if(wLevFA < 50){
+			wLevFA = 930;
+		}
+		
+		//TEMPERATUUR STORAGE TANKS SIMULATIE
+		if(TempOmhoog == true){
+			wTempHP = wTempHP +1;	//Temperature in storage tank HP
+			wTempFA = wTempFA +1;	//Temperature in storage tank FA
+		}else{
+			wTempHP = wTempHP -1;
+			wTempFA = wTempFA -1;
+		}
+		if(wTempHP < 220 || wTempFA < 220 ){
+			TempOmhoog = true;
+		}
+		if(wTempHP > 320 || wTempFA > 320 ){
+			TempOmhoog = false;
+		}
+		var rand_no = Math.random();
+		wRedU = 10000 + rand_no*505 ;
+		if(SimRun == 1){
+			wRedT = wRedU - (wFlowHP + wFlowFA)*8.3;
+		}else{
+			wRedT = wRedU;
+		}
+	
+		wSewM = 175 +  5.7 * rand_no; 
+		wSewP = 245 +  5.1 * rand_no; 
+
+		}else{	//Lezen  uit PLC
+		wPresW  = parent.update.R103;	//Presssure water supply
+
+		wTempHP = parent.update.R101;	//Temperature in storage tank HP
+		wLevHP  = parent.update.R110;	//Level in storage tank	0.1%
+		wPresHP = parent.update.R104;	//Pressure in storage tank HP
+		wTranHP = parent.update.R116;	//10.0 Set point Transfer pomp HP 	0.1%
+		wFlowHP = parent.update.R113;	//10.0 Flow HP  ml
+		wDosHP  = parent.update.R114;	//10.0 Set point Dosing pomp HP 	0.1%
+
+		wTempFA = parent.update.R102;	//Temperature in storage tank FA
+		wLevFA  = parent.update.R111;	//Level in storage tank	0.1%
+		wPresFA = parent.update.R105;	//Pressure in storage tank FA
+		wTranFA = parent.update.R117;	//10.0 Set point Transfer pomp FA 	0.1%
+		wFlowFA = parent.update.R112;	//10.0 Flow FA  ml
+		wDosFA  = parent.update.R115;	//10.0 Set point Dosing pomp FA 	0.1%
+
+		wWt     = parent.update.R100;	//Water temperature in reaction tank
+		wRedU   = parent.update.R106;	//10.0 Redox untread
+		wRedT   = parent.update.R107;	//10.0 Redox Tread
+		wSewM   = parent.update.R108;	//10.0 Sewage Flow m3/h
+		wSewP   = parent.update.R109;	//10.0 Sewage Flow %
+	}	
+
+	//Schrijven naar javaFX SkidNB
+	OnlineWNB(wPresW, NivoHP, NivoFA, NivoRe, wWt, NivoWater);
+	OnlinePHNB(wTempHP,wLevHP,wPresHP,wTranHP,wFlowHP,wDosHP);
+	OnlineFANB(wTempFA,wLevFA,wPresFA,wTranFA,wFlowFA,wDosFA);
+	OnlineRENB(wRedU,wRedT,wSewM,wSewP);
+    
+	//naar grafieken
+	try {  mon.script.MonitorNivo(wLevHP,wLevFA,NivoHP,NivoFA,NivoWater,NivoRe);
+    } catch (e) {
+        reportException(e);
+    }
+    try {  mon.script.MonitorRedox(wRedU,wRedT);
+    } catch (e) {
+        reportException(e);
+    }
+	
+}
+function OnlineWNB(a1, a2, a3, a4, a5, a6) {
+	var P1, N1, N2, N3;
+	P1 = parseInt(a1);
+ 	N1 = parseInt(a2);
+	N2 = parseInt(a3);
+	N3 = parseInt(a4);
+ 	T1 = parseInt(a5);
+	N4 = parseInt(a6);
+   try {  app.script.OnlineW(P1, N1, N2, N3, T1, N4);
+    } catch (e) {
+        reportException(e);
+    }
+}
+function OnlinePHNB(a1,a2,a3,a4,a5,a6) {
+  	var P1,P2,P3,P4,P5,P6;
+	P1 = parseInt(a1);
+	P2 = parseInt(a2);
+	P3 = parseInt(a3);
+	P4 = parseInt(a4);
+	P5 = parseInt(a5);
+	P6 = parseInt(a6);
+   try {  app.script.OnlinePH(P1,P2,P3,P4,P5,P6);
+    } catch (e) {
+        reportException(e);
+    }
+}
+function OnlineFANB(a1,a2,a3,a4,a5,a6) {
+  	var P1,P2,P3,P4,P5,P6;
+	P1 = parseInt(a1);
+	P2 = parseInt(a2);
+	P3 = parseInt(a3);
+	P4 = parseInt(a4);
+	P5 = parseInt(a5);
+	P6 = parseInt(a6);
+   try {  app.script.OnlineFA(P1,P2,P3,P4,P5,P6);
+    } catch (e) {
+        reportException(e);
+    }
+}
+function OnlineRENB(a1,a2,a3,a4) {
+  	var P1,P2,P3,P4;
+	P1 = parseInt(a1);
+	P2 = parseInt(a2);
+	P3 = parseInt(a3);
+	P4 = parseInt(a4);
+   try {  app.script.OnlineRE(P1,P2,P3,P4);
+    } catch (e) {
+        reportException(e);
+    }
+}
+function Alarmen(){
+
+ 	if(Sim == true){
+ 		if(NivoWater < 12){	//LL water tank
+			AL3 = 1; 
+		}else{
+			AL3 = 0;
+		}			
+		if(NivoFA < 10){	//FA nivo regeling
+			AL4 = 1; 
+		}else{
+			AL4 = 0; 
+		}
+		if(NivoHP < 10){	//HP nivo regeling
+			AL5 = 1; 
+		}else{
+			AL5 = 0; 
+		}
+		if(wPresW < 21){	//LP water supply
+			AL6 = 1;
+		}else{
+			AL6 = 0; 
+		}
+		if(wWt > 520){	//Temperature RT too high
+			AL9 = 1;
+		}else{
+			AL9 = 0; 
+		}
+		if(wWt < 210){	//Temperature RT too high
+			AL10 = 1;
+		}else{
+			AL10 = 0; 
+		}
+	
+	} else {
+		//Lezen  alarmen  uit PLC	
+		AL1 = parent.update.F106;	//Liqid lek
+		AL2 = parent.update.F107;	//LL reaction tank
+		AL3 = parent.update.F108;	//LL water tank
+		AL4 = parent.update.F109;	//LL buffer FA tank
+		AL5 = parent.update.F110;	//LL buffer HP tank
+		AL6 = parent.update.F111;	//LP water supply
+		AL7 = parent.update.F112;	//Emergensy stop
+		AL8 = parent.update.F113;	//Circut breakers
+		AL9 = parent.update.F114;	//Temperature RT too high
+		AL10 = parent.update.F115;	//Temperature RT too low
+		AL11 = parent.update.F116;	//H2O2 temp. rise too fast
+		AL12 = parent.update.F117;	//FA temp. rise too fast
+		AL13 = parent.update.F118;	//Power fail, UPS active
+		AL14 = parent.update.F119;	//Low battery PCD
+		AL15 = parent.update.F120;	//No sewage flow
+		AL16 = parent.update.F121;	//HHL reaction tank
+	}
+	
+	//Schrijven alarmen naar javaFX SkidNB
+	AlarmenNB(AL1,AL2,AL3,AL4,AL5,AL6,AL7,AL8,AL9,AL10,AL11,AL12,AL13,AL14,AL15,AL16);
+}
+function AlarmenNB(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16) {
+    try {  app.script.SetAlarmen(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16);
+    } catch (e) {
+        reportException(e);
+    }
+}
+function PanelSim(a1,a2,a3) {
+    try {  app.script.SetPanel(a1,a2,a3);
+    } catch (e) {
+        reportException(e);
+    }
+}
+
+function reportException(e) {
+    //alert("exception occurred");
+    var str = getExceptionString(e);
+    document.getElementById("exceptionDiv").innerHTML = "";
+}
+function getExceptionString(e) {
+    if (typeof e == "string") {
+        return e;
+    } else {
+        var s = "";
+        for (var i in e) {
+            s += "" + i + " = " + e[i] + "\n";
+        }
+        return s;
+    }
+}
+// Communicatie uit simulatie applet naar JS simulatie 
+function StartSim(par) {
+		SimRun = par;
+		if(par==1){
+			PanelSim(1,2,2);
+		}else{
+			PanelSim(0,2,2);
+		}
+}
+function StartTP(par) {
+		if(par==1){
+			PanelSim(2,1,2);
+			TRpompenAan = true;
+		}else{
+			PanelSim(2,0,2);
+			TRpompenAan = false;
+		}
+}
+function StartDP(par) {
+		if(par==1){
+			PanelSim(2,2,1);
+		}else{
+			PanelSim(2,2,0);
+		}
+}
+function ChangeWatNivo(par) {
+	NivoWater = parseInt(par);
+}
+function ChangeHPNivo(par) {
+	wLevHP = parseInt(par);
+}
+function ChangeFANivo(par) {
+	wLevFA = parseInt(par);
+}
+function ChangeReacNivo(par) {
+	NivoRe = parseInt(par);
+}
+function ChangeDosHP(par) {
+	DosingHP = parseInt(par);
+}
+function ChangeDosFA(par) {
+	DosingFA = parseInt(par);
+}
+
+
+//--></script>
+</head> 
+<body BGCOLOR="#FFFFFF" style="margin:0;" onLoad= "updatedSim()">
+<h3>JavaFX, WEB Request, SAIA PLC, SkidNB, </h3>
+<script src="http://dl.javafx.com/1.3/dtfx.js"></script>
+<script>
+    javafx(
+        {
+              archive: "SkidNB.jar",
+              draggable: true,
+              width: 625,
+              height: 625,
+              code: "skidnb.Main",
+              name: "SkidNB"
+        }
+    );
+</script>
+<script>
+    javafx(
+        {
+              archive: "SkidPanelDr.jar",
+              draggable: true,
+              width: 625,
+              height: 110,
+              code: "skidpaneldr.Main",
+              name: "SkidPanelDr"
+        }
+    );
+</script>
+<script>
+    javafx(
+        {
+              archive: "SkidChart.jar",
+              draggable: true,
+              width: 625,
+              height: 600,
+              code: "skidchart.Main",
+              name: "SkidChart"
+        }
+    );
+</script>
+<div id="exceptionDiv"></div>
+
+</body>
+</html>

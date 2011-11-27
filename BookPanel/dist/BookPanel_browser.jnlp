@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="http://pcplcdemos.googlecode.com/hg/BookPanel/dist/" href="BookPanel_browser.jnlp">
+    <information>
+        <title>BookPanel</title>
+        <vendor>JavaFX Samples Team</vendor>
+        <homepage href="http://pcplcdemos.googlecode.com/hg/BookPanel/dist/"/>
+        <description>BookPanel</description>
+        <icon kind="splash" href="http://dl.javafx.com/1.3/splash.png"/>
+        <offline-allowed/>
+    </information>
+    <resources>
+        <j2se version="1.5+"/>
+        <extension name="JavaFX Runtime" href="http://dl.javafx.com/1.3/javafx-rt.jnlp"/>
+        <jar href="BookPanel.jar" main="true" size="577116"/>
+    </resources>
+    <applet-desc name="BookPanel" main-class="com.sun.javafx.runtime.adapter.Applet" progress-class="com.javafx.progressbar.ProgressManager" width="625" height="500">
+        <param name="MainJavaFXScript" value="bookpanel.Main"/>
+    </applet-desc>
+    <update check="always"/>
+</jnlp>

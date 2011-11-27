@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/Main.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/Panel.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/PathAnimation.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/PathAnimation2.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/Pipes.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/Simulation.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/WaterAnimation.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/control/ButtonGroup.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/control/Slider.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/control/RadioButton.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/control/LabeledSlider.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/control/Label.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/elements/Agitator.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/elements/ControlValve.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/elements/Conveyor.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/elements/ElectricValve.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/elements/Flowmeter.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/elements/Gutter.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/elements/Pressuremeter.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/elements/Pump.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/elements/Reactor.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/elements/RippleAlarmArc.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/elements/RotationMenu.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/elements/TankC.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/elements/TankD.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/elements/TankF.fx</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/elements/flow.png</file>
+        <file>file:/C:/Users/Alex/Documents/NetBeans_1_3_Projects/Plant/src/plant/elements/pressure.png</file>
+    </open-files>
+</project-private>

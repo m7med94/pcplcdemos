@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="http://pcplcdemos.googlecode.com/hg/JavaFxSkidHTML/dist/" href="SkidChart_browser.jnlp">
+    <information>
+        <title>SkidChart</title>
+        <vendor>Alex</vendor>
+        <homepage href="http://pcplcdemos.googlecode.com/hg/JavaFxSkidHTML/dist/"/>
+        <description>SkidChart</description>
+        <icon kind="splash" href="http://dl.javafx.com/1.3/splash.png"/>
+        <offline-allowed/>
+    </information>
+    <resources>
+        <j2se version="1.5+"/>
+        <extension name="JavaFX Runtime" href="http://dl.javafx.com/1.3/javafx-rt.jnlp"/>
+        <jar href="SkidChart.jar" main="true" size="15390"/>
+    </resources>
+    <applet-desc name="SkidChart" main-class="com.sun.javafx.runtime.adapter.Applet" progress-class="com.javafx.progressbar.ProgressManager" width="625" height="600">
+        <param name="MainJavaFXScript" value="skidchart.Main"/>
+    </applet-desc>
+    <update check="always"/>
+</jnlp>

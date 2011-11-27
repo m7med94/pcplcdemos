@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="http://pcplcdemos.googlecode.com/hg/SaiaJavaFxSkid/dist/" href="SkidPanelSim.jnlp">
+    <information>
+        <title>SkidPanelSim</title>
+        <vendor>Katja</vendor>
+        <homepage href="http://pcplcdemos.googlecode.com/hg/SaiaJavaFxSkid/dist/"/>
+        <description>SkidPanelSim</description>
+        <icon kind="splash" href="http://dl.javafx.com/1.3/splash.png"/>
+        <offline-allowed/>
+    </information>
+    <security>
+        <all-permissions/>
+    </security>
+    <resources>
+        <j2se version="1.5+"/>
+        <extension name="JavaFX Runtime" href="http://dl.javafx.com/1.3/javafx-rt.jnlp"/>
+        <jar href="SkidPanelSim.jar" main="true" size="65713"/>
+    </resources>
+    <application-desc main-class="com.sun.javafx.runtime.main.Main" progress-class="com.javafx.progressbar.ProgressManager">
+        <argument>MainJavaFXScript=skidcontrolpanel.Main</argument>
+    </application-desc>
+    <update check="always"/>
+</jnlp>

@@ -1,0 +1,26 @@
+﻿<navigation:Page 
+    x:Class="SaiaMonitor.Home" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+    mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
+    Title="Web server Saia PLC"
+    Style="{StaticResource PageStyle}">
+        <Grid x:Name="LayoutRoot">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>  
+            <StackPanel HorizontalAlignment="Left" Margin="0,-32,0,0" VerticalAlignment="Top" Grid.Row="1" Orientation="Horizontal">
+                <TextBox x:Name="MerkAddress" FontSize="14.667" Margin="0,0,10,0" Width="75" TextWrapping="Wrap"/>
+                <TextBox x:Name="MerkValue" FontSize="14.667" Margin="0,0,10,0" Width="75" TextWrapping="Wrap"/>
+                <Button x:Name="ReadButton" Width="75" Content="Read" Click="ReadButton_Click" />
+                <Button x:Name="WriteButton" Width="75" Content="Write" Click="WriteButton_Click" />
+                <Button x:Name="FileButton" Width="75" Content="File" Click="FileButton_Click" />
+                <Button x:Name="OrderButton" Width="75" Content="Order"  Click="OrderButton_Click"/>
+            </StackPanel>
+                <TextBlock x:Name="ReadResult" Style="{StaticResource HeaderTextStyle}"  Text="--" Margin="0,8,0,0" Grid.Row="1"/>
+         </Grid>
+
+</navigation:Page>

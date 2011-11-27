@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="http://pcplcdemos.googlecode.com/hg/SaiaJavaFxTanks/dist/" href="TankControlPanel_browser.jnlp">
+    <information>
+        <title>TankControlPanel</title>
+        <vendor>AlexSentcha</vendor>
+        <homepage href="http://pcplcdemos.googlecode.com/hg/SaiaJavaFxTanks/dist/"/>
+        <description>TankControlPanel</description>
+        <icon kind="splash" href="http://dl.javafx.com/1.3/splash.png"/>
+        <offline-allowed/>
+    </information>
+    <security>
+        <all-permissions/>
+    </security>
+    <resources>
+        <j2se version="1.5+"/>
+        <extension name="JavaFX Runtime" href="http://dl.javafx.com/1.3/javafx-rt.jnlp"/>
+        <jar href="TankControlPanel.jar" main="true" size="69089"/>
+    </resources>
+    <applet-desc name="TankControlPanel" main-class="com.sun.javafx.runtime.adapter.Applet" progress-class="com.javafx.progressbar.ProgressManager" width="625" height="130">
+        <param name="MainJavaFXScript" value="tankscontrolpanel.Main"/>
+    </applet-desc>
+    <update check="always"/>
+</jnlp>

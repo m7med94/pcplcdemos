@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaiaMonitor", "SaiaMonitor\SaiaMonitor.csproj", "{463364F9-BB80-48C1-BAE4-9EFF5DD494BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaiaMonitor.Web", "SaiaMonitor.Web\SaiaMonitor.Web.csproj", "{2F088AD3-4EFE-43A5-B90F-24A0394F7BB8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{463364F9-BB80-48C1-BAE4-9EFF5DD494BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{463364F9-BB80-48C1-BAE4-9EFF5DD494BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{463364F9-BB80-48C1-BAE4-9EFF5DD494BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{463364F9-BB80-48C1-BAE4-9EFF5DD494BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F088AD3-4EFE-43A5-B90F-24A0394F7BB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F088AD3-4EFE-43A5-B90F-24A0394F7BB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F088AD3-4EFE-43A5-B90F-24A0394F7BB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F088AD3-4EFE-43A5-B90F-24A0394F7BB8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
