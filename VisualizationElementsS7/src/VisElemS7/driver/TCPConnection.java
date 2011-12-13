@@ -1,8 +1,5 @@
 /*
  Part of Libnodave, a free communication library for Siemens S7 300/400 via
- the MPI adapter 6ES7 972-0CA22-0XAC
- or  MPI adapter 6ES7 972-0CA33-0XAC
- or  MPI adapter 6ES7 972-0CA11-0XAC.
 */
 package VisElemS7.driver;
 public class TCPConnection extends S7Connection {

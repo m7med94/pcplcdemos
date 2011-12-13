@@ -47,8 +47,7 @@ import VisElemS7.element.Alarm;
 import VisElemS7.element.Conveyor;
 import VisElemS7.element.Panel;
 import VisElemS7.element.BucketElevator;
-import VisElemS7.DataIsoTCP243;
-
+import VisElemS7.DataIsoTCP;
 
 // Data type to be used in trasaction
 var stageDragInitialX: Number;
@@ -65,12 +64,12 @@ var tankC: TankC;
 var tankZ: TankZ;
 var controlvalve: ControlValve;
 var flowmeter: Flowmeter;
-var agitator: Agitator;
-var electricvalve: ElectricValve;
-var pump: Pump;
+public var agitator: Agitator;
+public var electricvalve: ElectricValve;
+public var pump: Pump;
+public var conveyor: Conveyor;
+public var panel: Panel;
 var alarm: Alarm;
-var conveyor: Conveyor;
-var panel: Panel;
 var bucketelevator: BucketElevator;
 
 var element;
@@ -103,7 +102,7 @@ function addTankA() {
         translateX: bind (sceneWidth - 70) / 2.0
         translateY: bind sceneHeight  / 2.0 - 120
         name: bind "";
-        value: bind if (simulation.Sim == true) then simulation.Level else slidervalue.value
+        value: bind simulation.slidervalue
         color: bind Color.TOMATO;
         scaleX : bind sliderscaleX.value;
         scaleY : bind sliderscaleY.value;
@@ -114,7 +113,7 @@ function addTankC() {
         translateX: bind (sceneWidth - 40) / 2.0
         translateY: bind sceneHeight  / 2.0 - 80
         name: bind "";
-        value: bind if (simulation.Sim == true) then simulation.Level else slidervalue.value
+        value: bind simulation.slidervalue
         color: bind Color.TOMATO;
 //        scaleX : bind sliderscaleX.value;
 //        scaleY : bind sliderscaleY.value;
@@ -125,7 +124,7 @@ function addTankZ() {
         translateX: bind (sceneWidth - 60) / 2.0
         translateY: bind sceneHeight  / 2.0 - 90
         name: bind "";
-        value: bind if (simulation.Sim == true) then (100-simulation.Level) else (100-slidervalue.value)
+        value: bind (100-simulation.slidervalue)
         color: bind Color.LIGHTSKYBLUE;
         scaleX : bind sliderscaleX.value;
         scaleY : bind sliderscaleY.value;
@@ -146,7 +145,7 @@ function addFlowmeter() {
         translateX: bind (sceneWidth ) / 2.0
         translateY: bind sceneHeight  / 2.0 - 50
         name: bind "Flowmeter";
-        value: bind if (simulation.Sim == true) then simulation.Level else slidervalue.value
+        value: bind simulation.slidervalue
         colorf: bind Color.BLACK;
     }
 };
@@ -502,16 +501,24 @@ def slidervalue: Slider =  Slider {
             blockIncrement: 1
          };
 def dummy1: Number = bind slidervalue.value on replace {
-                simulation.slidervalue = slidervalue.value;
-                simulation.Level = slidervalue.value;
+                if (DataIsoTCP.Connection == true) {
+                    DataIsoTCP.WriteData(slidervalue.value);
+                }else{
+                    simulation.slidervalue = slidervalue.value;
+                }
             };
 def dummy2: Number = bind sliderrotation.value on replace {
-                agitator.move = sliderrotation.value -40;
-                pump.move = sliderrotation.value-40;
-                conveyor.move = sliderrotation.value-40;
+                if (DataIsoTCP.Connection == true) {
+                    DataIsoTCP.WriteData1(slidervalue.value);
+                }else{
+                    simulation.sliderrotation = sliderrotation.value -40;
+                }
             };
 def startButtonP = Button {
                 text: " ON " action: function () {
+                if (DataIsoTCP.Connection == true) {
+                    DataIsoTCP.WriteData2(1);
+                }else{
                     agitator.startAgitator();
                     pump.start();
                     conveyor.start();
@@ -520,34 +527,38 @@ def startButtonP = Button {
                     panel.OnOff = 30;
                     //alarm.colorHL = Color.RED;
                 }
+               }
+
             };
 def stopButtonP = Button {
                 text: " OFF" action: function () {
+                if (DataIsoTCP.Connection == true) {
+                    DataIsoTCP.WriteData2(0);
+                }else{
                     agitator.stopAgitator();
                     pump.stop();
                     conveyor.stop();
                     simulation.Sim = false;
                     electricvalve.openclose = false;
                     panel.OnOff = 330;
-                    //alarm.colorHL = Color.DARKRED;
+                    //alarm.colorHL = Color.DARK RED;
+                  }
                 }
             };
 def connButtonP = Button {
                 text: "  Connect " action: function () {
-                // DataIsoTCP243.Start('130.143.1.24'); //getest
-                // DataIsoTCP243.Start('130.143.128.162');//BGB
-                DataIsoTCP243.Start('130.143.128.161');//FFU
+                DataIsoTCP.Start('192.168.1.100');
                 }
             };
 def disconnButtonP = Button {
                 text: "Disconect" action: function () {
-                DataIsoTCP243.StopConnection();
+                DataIsoTCP.StopConnection();
                 }
             };
 def Col0 = VBox {
                 spacing: 5
                 content: bind [
-                    Label {text: "SIEMENS S7:"  },
+                    Label {text: "SIEMENS S7"  },
                     connButtonP, disconnButtonP
                 ]
             };

@@ -16,13 +16,14 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import VisElemS7.DataIsoTCP243;
+import VisElemS7.DataIsoTCP;
+
 
 public class Simulation extends CustomNode {
-    public var Level: Number = 88;   //Level Tank
     public var setpoint: Number = 88;   //set point control valve
     public var Sim: Boolean = true;
     public var slidervalue: Integer = 50;
+    public var sliderrotation: Integer = 50;
     public var move: Number = 0;
 
     var t1: Timeline = Timeline {
@@ -44,21 +45,38 @@ public class Simulation extends CustomNode {
         t1.stop();
     }
     function tick() {
-        if (Sim == true){
-            Simul();
-        }else{
+        if (Sim == false){
             move = 0;
         }
-        Main.setAlarm(Sim)
+        Main.setAlarm(Sim);
+        Simul();
     }
 
     function Simul() {
-        if (DataIsoTCP243.Connection == false) {
-            if (Level >= 99){Level =0;}
-            Level += 1;
-            Main.connection = "Siemens IsoTCP243 disconnected";
-            Level = DataIsoTCP243.ReadData();
-            Main.connection = "Siemens IsoTCP243 connected at 130.143.128.161";
+        if (DataIsoTCP.Connection == true) {
+            Main.connection = "Siemens IsoTCP connected IP={DataIsoTCP.IP}";
+            slidervalue = DataIsoTCP.ReadData();
+            sliderrotation = DataIsoTCP.ReadData1()-40;
+            if (DataIsoTCP.ReadData2() == 0){
+                    Main.agitator.startAgitator();
+                    Main.pump.start();
+                    Main.conveyor.start();
+                    Sim = true;
+                    Main.electricvalve.openclose = true;
+                    Main.panel.OnOff = 30;
+            }else{
+                    Main.agitator.stopAgitator();
+                    Main.pump.stop();
+                    Main.conveyor.stop();
+                    Sim = false;
+                    Main.electricvalve.openclose = false;
+                    Main.panel.OnOff = 330;
+            }
+        }else{
+            Main.connection = "Siemens IsoTCP disconnected";
+            Main.agitator.move = sliderrotation -40;
+            Main.pump.move = sliderrotation-40;
+            Main.conveyor.move = sliderrotation-40;
         }
 
         // Control valve
@@ -74,7 +92,6 @@ public class Simulation extends CustomNode {
             }
         }    
     }
-
 
     public override function create(): Node {
         return Group {
