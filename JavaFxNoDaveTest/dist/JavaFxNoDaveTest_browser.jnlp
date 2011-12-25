@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="http://localhost:8082/servlet/org.netbeans.modules.javafx.project.JnlpDownloadServlet/C%3A/Users/Public/Documents/NetBeans_1_3_Projects/JavaFxNoDaveTest/dist/" href="JavaFxNoDaveTest_browser.jnlp">
+    <information>
+        <title>JavaFxNoDaveTest</title>
+        <vendor>${application.vendor}</vendor>
+        <homepage href="http://localhost:8082/servlet/org.netbeans.modules.javafx.project.JnlpDownloadServlet/C%3A/Users/Public/Documents/NetBeans_1_3_Projects/JavaFxNoDaveTest/dist/"/>
+        <description>JavaFxNoDaveTest</description>
+        <icon kind="splash" href="http://dl.javafx.com/1.3/splash.png"/>
+        <offline-allowed/>
+    </information>
+    <resources>
+        <j2se version="1.5+"/>
+        <extension name="JavaFX Runtime" href="http://dl.javafx.com/1.3/javafx-rt.jnlp"/>
+        <jar href="JavaFxNoDaveTest.jar" main="true" size="524140"/>
+    </resources>
+    <applet-desc name="JavaFxNoDaveTest" main-class="com.sun.javafx.runtime.adapter.Applet" progress-class="com.javafx.progressbar.ProgressManager" width="200" height="200">
+        <param name="MainJavaFXScript" value="javafxnodavetest.Main"/>
+    </applet-desc>
+    <update check="always"/>
+</jnlp>
