@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "RSPUniwaxPlcSim", "RSPUniwaxPlcSim\RSPUniwaxPlcSim.vbproj", "{D3B42A90-6628-4C03-904E-C14B71D77047}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupRSPUniwaxSim", "SetupRSPUniwaxSim\SetupRSPUniwaxSim.vdproj", "{07A662A6-0EAC-412A-8EF3-363149088563}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D3B42A90-6628-4C03-904E-C14B71D77047}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3B42A90-6628-4C03-904E-C14B71D77047}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3B42A90-6628-4C03-904E-C14B71D77047}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3B42A90-6628-4C03-904E-C14B71D77047}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07A662A6-0EAC-412A-8EF3-363149088563}.Debug|Any CPU.ActiveCfg = Debug
+		{07A662A6-0EAC-412A-8EF3-363149088563}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
