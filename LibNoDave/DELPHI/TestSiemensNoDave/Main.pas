@@ -66,16 +66,16 @@ TMainForm = class(TForm)
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     function  TimeToReal(Time:TDateTime):real;
-    procedure MaakVerbinding;
-    procedure VerbrVerbinding;
+    procedure DoConnection;
+    procedure DoDisconnection;
     procedure MenuAct;
     procedure SetToolBar;
-    procedure aria3600;
+    procedure Pomp;
     procedure testDB;
 
   private
     { Private declarations }
-    verbinding : boolean;
+    connected : boolean;
     oBit8  : TBit8;
     dc   : pdaveConnection;
     dcIn : pdaveInterface;
@@ -118,7 +118,7 @@ procedure TMainForm.FormCreate(Sender: TObject);
 var
   PrBufReg:TRegIniFile;
   begin
-  verbinding := false;
+  connected := false;
   SimActief  := false;
   PrBufReg  := TRegIniFile.Create('Software\TestSiemensNoDave');
 
@@ -164,17 +164,17 @@ end;
 
 procedure TMainForm.MenuAct;
 begin
-    SBcon.Visible    :=  not verbinding;
-    SBdiscon.Visible := verbinding;
-    SBVerbOpties.Enabled := not verbinding;
-    MainMenu1.Items[1].Items[0].Checked := verbinding;
-    MainMenu1.Items[1].Items[0].Enabled := not verbinding;
-    MainMenu1.Items[1].Items[1].Checked := not verbinding;
-    MainMenu1.Items[1].Items[1].Enabled := verbinding;
-    MainMenu1.Items[1].Items[3].Enabled := not verbinding;
+    SBcon.Visible    :=  not connected;
+    SBdiscon.Visible := connected;
+    SBVerbOpties.Enabled := not connected;
+    MainMenu1.Items[1].Items[0].Checked := connected;
+    MainMenu1.Items[1].Items[0].Enabled := not connected;
+    MainMenu1.Items[1].Items[1].Checked := not connected;
+    MainMenu1.Items[1].Items[1].Enabled := connected;
+    MainMenu1.Items[1].Items[3].Enabled := not connected;
     SimulatieAan.Visible := not SimActief;
     SimulatieUit.Visible := SimActief;
-    SBSim.Enabled := verbinding;
+    SBSim.Enabled := connected;
 end;
 
 procedure TMainForm.SetToolBar;
@@ -191,12 +191,12 @@ end;
 
 procedure TMainForm.Online1Click(Sender: TObject);
 begin
-  MaakVerbinding;
+  DoConnection;
 end;
 
 procedure TMainForm.Offline1Click(Sender: TObject);
 begin
-  VerbrVerbinding;
+  DoDisconnection;
 end;
 
 procedure TMainForm.ConnectionSettingsClick(Sender: TObject);
@@ -205,7 +205,7 @@ begin
   StatusBar1.Panels[0].Text:=RetMessage;
 end;
 
-procedure TMainForm.MaakVerbinding;
+procedure TMainForm.DoConnection;
 Var
  ComName:Array[0..20] of Char;
  Fds:_daveOSserialType;
@@ -221,7 +221,7 @@ begin
     fds.rfd:=openSocket(102,COMname);
     fds.wfd:=fds.rfd;
 
-    verbinding := false;
+    connected := false;
     StatusBar1.Panels[1].Text :='Attempt of creation of the connection';
     //creation of the interface
     if (fds.rfd>0) then
@@ -239,7 +239,7 @@ begin
         if (daveConnectPLC(dc)=0) then
         begin
           StatusBar1.Panels[0].Text := 'Connected Siemens '+ComName+ ', port=102';
-          verbinding := true;
+          connected := true;
         end else StatusBar1.Panels[0].Text :='Not successful attempt of connection!';
       end else StatusBar1.Panels[0].Text :='Not successful attempt to initialize  the adapter!';
     end else StatusBar1.Panels[0].Text :='Not successful attempt of creation of the interface!';
@@ -248,13 +248,13 @@ begin
 
 end;
 
-procedure TMainForm.VerbrVerbinding;
+procedure TMainForm.DoDisconnection;
 begin
-  if verbinding then
+  if connected then
   begin
     daveDisconnectPLC(dc);
     daveDisconnectAdapter(dcIn);
-    verbinding := false;
+    connected := false;
     MenuAct;
     StatusBar1.Panels[0].Text:='Disconnected';
   end;
@@ -277,7 +277,7 @@ var
  Res:LongInt;
  i : integer;
 begin
-  if verbinding then
+  if connected then
   begin
     res := daveReadBytes(dc, daveOutputs, 0, 0, 16, NIL);
     if (res = 0) then
@@ -288,17 +288,17 @@ begin
     end else
       readOK := false;
   end;
-  aria3600;
-  if verbinding then
+  Pomp;
+  if connected then
   begin
     res := daveWriteBytes(dc, daveInputs, 0, 0, 44, @ingangen);
     testDB;
   end;
 end;
 
-procedure TMainForm.aria3600;
+procedure TMainForm.Pomp;
 begin
-  if ((verbinding) and (readOK)) then
+  if ((connected) and (readOK)) then
   begin
     oBit8 := TBit8.Create;
     aUit :=8; aIn:=16;
@@ -333,7 +333,7 @@ var
  BeginByte:Word;
 
 begin
-   if verbinding then
+   if connected then
     begin
             NrDB     := StrToInt(SpinEdit1.text);
             CountByte:= StrToInt(SpinEdit2.text);
