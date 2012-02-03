@@ -1,0 +1,28 @@
+program SiemensTest;
+
+uses
+  Forms,
+  Hoofd in 'Hoofd.pas' {HoofdForm},
+  Instellingen in 'Instellingen.pas' {InstelForm},
+  Password in 'Password.pas' {PasswordDlg},
+  Info in 'Info.pas' {InfoForm},
+  InfoRes in 'InfoRes.pas' {InfoResForm},
+  Sim in 'Sim.pas' {SimForm},
+  nodave in 'nodave.pas',
+  ConnInstel in 'ConnInstel.pas' {ConnForm};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.Title := 'FFU simulatie';
+  Application.CreateForm(THoofdForm, HoofdForm);
+  Application.CreateForm(TInstelForm, InstelForm);
+  Application.CreateForm(TInstelForm, InstelForm);
+  Application.CreateForm(TPasswordDlg, PasswordDlg);
+  Application.CreateForm(TInfoForm, InfoForm);
+  Application.CreateForm(TInfoResForm, InfoResForm);
+  Application.CreateForm(TSimForm, SimForm);
+  Application.CreateForm(TConnForm, ConnForm);
+  Application.Run;
+end.

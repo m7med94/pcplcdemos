@@ -1,0 +1,44 @@
+unit Instellingen;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls, ComCtrls, Mask, DB, ADODB, DBCtrls, Grids,
+  DBGrids, Spin, TeeProcs, TeEngine, Chart, Menus, ToolWin, jpeg, Series,
+  Registry;
+
+type
+   TInstelForm = class(TForm)
+    Panel1: TPanel;
+    SpinEdit1: TSpinEdit;
+    SpinEdit2: TSpinEdit;
+    SpinEdit3: TSpinEdit;
+    SpinEdit4: TSpinEdit;
+    SpinEdit5: TSpinEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    Status  : integer;
+  end;
+
+var
+  InstelForm: TInstelForm;
+
+implementation
+
+
+{$R *.dfm}
+
+
+end.
+
+

@@ -1,0 +1,40 @@
+unit InfoRes;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls;
+
+type
+  TInfoResForm = class(TForm)
+    ListBoxInfo: TListBox;
+    Label1: TLabel;
+    procedure FormActivate(Sender: TObject);
+    procedure SetInfo;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  InfoResForm: TInfoResForm;
+
+implementation
+
+{$R *.dfm}
+
+
+procedure TInfoResForm.FormActivate(Sender: TObject);
+begin
+  SetInfo;
+end;
+
+procedure TInfoResForm.SetInfo;
+begin
+  ListBoxInfo.Items.Add('---------------------------------------------------');
+  ListBoxInfo.Items.Add('FFU statussen');
+end;
+
+end.

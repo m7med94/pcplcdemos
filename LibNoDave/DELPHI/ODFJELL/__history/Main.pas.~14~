@@ -1,0 +1,168 @@
+unit MAIN;
+
+interface
+
+uses Windows, SysUtils, Classes, Graphics, Forms, Controls, Menus,
+  StdCtrls, Dialogs, Buttons, Messages, ExtCtrls, ComCtrls, StdActns,
+  ActnList, ToolWin, ImgList, Registry;
+
+type
+  TMainForm = class(TForm)
+    MainMenu1: TMainMenu;
+    File1: TMenuItem;
+    Window1: TMenuItem;
+    Help1: TMenuItem;
+    FileExitItem: TMenuItem;
+    WindowCascadeItem: TMenuItem;
+    WindowTileItem: TMenuItem;
+    WindowArrangeItem: TMenuItem;
+    HelpAboutItem: TMenuItem;
+    OpenDialog: TOpenDialog;
+    WindowMinimizeItem: TMenuItem;
+    StatusBar: TStatusBar;
+    ActionList1: TActionList;
+    EditCut1: TEditCut;
+    EditCopy1: TEditCopy;
+    EditPaste1: TEditPaste;
+    FileNew1: TAction;
+    FileSave1: TAction;
+    FileExit1: TAction;
+    FileOpen1: TAction;
+    FileSaveAs1: TAction;
+    WindowCascade1: TWindowCascade;
+    WindowTileHorizontal1: TWindowTileHorizontal;
+    WindowArrangeAll1: TWindowArrange;
+    WindowMinimizeAll1: TWindowMinimizeAll;
+    HelpAbout1: TAction;
+    FileClose1: TWindowClose;
+    WindowTileVertical1: TWindowTileVertical;
+    WindowTileItem2: TMenuItem;
+    ToolBar2: TToolBar;
+    ToolButton7: TToolButton;
+    ToolButton8: TToolButton;
+    ToolButton10: TToolButton;
+    ToolButton11: TToolButton;
+    ImageList1: TImageList;
+    CreateTimer: TTimer;
+    ToolButton1: TToolButton;
+    SpeedButton1: TSpeedButton;
+    FlowHelpItem: TMenuItem;
+    procedure FlowHelpItemClick(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure CreateTimerTimer(Sender: TObject);
+    procedure FileOpen1Execute(Sender: TObject);
+    procedure HelpAbout1Execute(Sender: TObject);
+    procedure FileExit1Execute(Sender: TObject);
+  private
+    { Private declarations }
+    procedure CreateMDIChild(const Name: string);
+  public
+    { Public declarations }
+    IP_Siemens_BGB  : string;
+    rack_BGB        : string;
+    slot_BGB        : string;
+    IP_Siemens_FFU  : string;
+    rack_FFU        : string;
+    slot_FFU        : string;
+    ProjectDir  : string;
+    CommonDir   : string;
+    DataDir     : string;
+
+  end;
+
+var
+  MainForm: TMainForm;
+
+implementation
+
+{$R *.dfm}
+
+uses FFU, BGB, about, ConnInstel, helpflow;
+
+procedure TMainForm.FormCreate(Sender: TObject);
+var
+  PrBufReg:TRegIniFile;
+begin
+
+  PrBufReg  := TRegIniFile.Create('Software\OdfjellSim');
+  CommonDir := PrBufReg.ReadString('Dir','CommonDir','C:\Program Files\Common Files\Odfjell\');
+  DataDir   := PrBufReg.ReadString('Dir','DataDir','C:\Odfjellsim\');
+
+  //InitVar[0] := PrBufReg.ReadBool('Instellingen','ChBox0',false);
+  IP_Siemens_FFU := PrBufReg.ReadString('PLC_FFU','IP_Siemens','130.143.128.161');
+  rack_FFU := PrBufReg.ReadString('PLC_FFU','rack','0');
+  slot_FFU := PrBufReg.ReadString('PLC_FFU','slot','2');
+  IP_Siemens_BGB := PrBufReg.ReadString('PLC_BGB','IP_Siemens','130.143.128.162');
+  rack_BGB := PrBufReg.ReadString('PLC_BGB','rack','0');
+  slot_BGB := PrBufReg.ReadString('PLC_BGB','slot','2');
+
+  ProjectDir:=ExtractFilePath(application.ExeName);
+  PrBufReg.Free;
+
+end;
+
+procedure TMainForm.CreateMDIChild(const Name: string);
+var
+  Child: TMDI_FFU;
+  Child1: TMDI_BGB;
+begin
+  { create a BGB child window }
+  Child1 := TMDI_BGB.Create(Application);
+  Child1.Caption := 'BGB simulatie';
+ // if FileExists(Name) then Child1.Memo1.Lines.LoadFromFile(Name);
+  { create a FFU child window }
+  Child := TMDI_FFU.Create(Application);
+  Child.Caption := 'FFU simulatie';
+ // if FileExists(Name) then Child.Memo1.Lines.LoadFromFile(Name);
+end;
+procedure TMainForm.CreateTimerTimer(Sender: TObject);
+begin
+  CreateMDIChild('NONAME' + IntToStr(MDIChildCount + 1));
+  CreateTimer.Destroy;
+end;
+
+procedure TMainForm.FileOpen1Execute(Sender: TObject);
+begin
+  if OpenDialog.Execute then
+    CreateMDIChild(OpenDialog.FileName);
+end;
+
+procedure TMainForm.HelpAbout1Execute(Sender: TObject);
+begin
+  AboutBox.ShowModal;
+end;
+
+procedure TMainForm.FileExit1Execute(Sender: TObject);
+var
+  PrBufReg:TRegIniFile;
+begin
+  //Schrijf instellingen in registry
+  PrBufReg := TRegIniFile.Create('Software\OdfjellSim');
+  PrBufReg.WriteString('Dir','CommonDir',CommonDir);
+  PrBufReg.WriteString('Dir','DataDir',DataDir);
+
+//  PrBufReg.WriteBool('Instellingen','ChBox0',InitVar[0]);
+  PrBufReg.WriteString('PLC_FFU','IP_Siemens',IP_Siemens_FFU);
+  PrBufReg.WriteString('PLC_FFU','rack',rack_FFU);
+  PrBufReg.WriteString('PLC_FFU','slot',slot_FFU);
+  PrBufReg.WriteString('PLC_BGB','IP_Siemens',IP_Siemens_BGB);
+  PrBufReg.WriteString('PLC_BGB','rack',rack_BGB);
+  PrBufReg.WriteString('PLC_BGB','slot',slot_BGB);
+
+  PrBufReg.Free;
+  Close;
+end;
+
+procedure TMainForm.SpeedButton1Click(Sender: TObject);
+begin
+ ConnForm.Show;
+
+end;
+
+procedure TMainForm.FlowHelpItemClick(Sender: TObject);
+begin  //
+    helpflowForm.show
+end;
+
+end.

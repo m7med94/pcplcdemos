@@ -1,0 +1,371 @@
+unit Instellingen;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls, ComCtrls, Mask, DB, ADODB, DBCtrls, Grids,
+  DBGrids, Spin, TeeProcs, TeEngine, Chart, Menus, ToolWin, jpeg, Series,
+  Registry;
+
+type
+  TMetRec = Record
+    Tijd      : real;
+    StartTijd : real;
+    Sewage    : real;
+    RedoxU    : real;
+    RedoxT    : real;
+    NivoH     : real;
+    DosH      : real;
+    NivoF     : real;
+    DosF      : real;
+  end;
+  TInstelForm = class(TForm)
+    Panel1: TPanel;
+    PageControl1: TPageControl;
+    TabSheet2: TTabSheet;
+    Label126: TLabel;
+    RadioGroup2: TRadioGroup;
+    RadioGroup1: TRadioGroup;
+    BtnClear: TButton;
+    BtnRestart: TButton;
+    BtnStop: TButton;
+    BtnRun: TButton;
+    BTNKlockPLC: TButton;
+    StatusBarInst: TStatusBar;
+    TabSheet1: TTabSheet;
+    CheckBox0: TCheckBox;
+    Label12: TLabel;
+    CheckBox1: TCheckBox;
+    CheckBox2: TCheckBox;
+    CheckBox3: TCheckBox;
+    CheckBox4: TCheckBox;
+    CheckBox5: TCheckBox;
+    CheckBox6: TCheckBox;
+    CheckBox7: TCheckBox;
+    CheckBox8: TCheckBox;
+    CheckBox9: TCheckBox;
+    CheckBox11: TCheckBox;
+    CheckBox10: TCheckBox;
+    CheckBox13: TCheckBox;
+    CheckBox12: TCheckBox;
+    CheckBox14: TCheckBox;
+    CheckBox15: TCheckBox;
+    CheckBox16: TCheckBox;
+    CheckBox17: TCheckBox;
+    CheckBox18: TCheckBox;
+    CheckBox19: TCheckBox;
+    CheckBox20: TCheckBox;
+    CheckBox24: TCheckBox;
+    CheckBox25: TCheckBox;
+    CheckBox26: TCheckBox;
+    CheckBox27: TCheckBox;
+    CheckBox28: TCheckBox;
+    CheckBox32: TCheckBox;
+    CheckBox33: TCheckBox;
+    CheckBox34: TCheckBox;
+    CheckBox35: TCheckBox;
+    CheckBox36: TCheckBox;
+    CheckBox37: TCheckBox;
+    CheckBox40: TCheckBox;
+    CheckBox41: TCheckBox;
+    CheckBox42: TCheckBox;
+    CheckBox43: TCheckBox;
+    CheckBox44: TCheckBox;
+    CheckBox45: TCheckBox;
+    CheckBox46: TCheckBox;
+    CheckBox48: TCheckBox;
+    CheckBox49: TCheckBox;
+    CheckBox50: TCheckBox;
+    CheckBox51: TCheckBox;
+    CheckBox52: TCheckBox;
+    CheckBox53: TCheckBox;
+    CheckBox54: TCheckBox;
+    CheckBox55: TCheckBox;
+    CheckBox56: TCheckBox;
+    CheckBox38: TCheckBox;
+    procedure CheckBox33Click(Sender: TObject);
+    procedure CheckBox32Click(Sender: TObject);
+    procedure CheckBox14Click(Sender: TObject);
+    procedure CheckBox15Click(Sender: TObject);
+    procedure CheckBox13Click(Sender: TObject);
+    procedure CheckBox12Click(Sender: TObject);
+    procedure CheckBox11Click(Sender: TObject);
+    procedure CheckBox10Click(Sender: TObject);
+    procedure CheckBox9Click(Sender: TObject);
+    procedure CheckBox8Click(Sender: TObject);
+    procedure CheckBox7Click(Sender: TObject);
+    procedure CheckBox6Click(Sender: TObject);
+    procedure CheckBox5Click(Sender: TObject);
+    procedure CheckBox4Click(Sender: TObject);
+    procedure CheckBox3Click(Sender: TObject);
+    procedure CheckBox2Click(Sender: TObject);
+    procedure CheckBox1Click(Sender: TObject);
+    procedure CheckBox0Click(Sender: TObject);
+    procedure FormDeactivate(Sender: TObject);
+    procedure BtnSchrijvenClick(Sender: TObject);
+    procedure Label126Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure BtnRunClick(Sender: TObject);
+    procedure BtnStopClick(Sender: TObject);
+    procedure BTNKlockPLCClick(Sender: TObject);
+    procedure BtnClearClick(Sender: TObject);
+    procedure BtnRestartClick(Sender: TObject);
+    procedure DoeActief;
+    procedure Initialisatie;
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    Status  : integer;
+  end;
+
+var
+  InstelForm: TInstelForm;
+
+implementation
+
+uses Connect, Hoofd, Password;
+
+{$R *.dfm}
+procedure TInstelForm.FormCreate(Sender: TObject);
+var
+  PrBufReg:TRegIniFile;
+begin
+  PrBufReg:= TRegIniFile.Create('Software\ET-sim');
+
+
+  PrBufReg.Free;
+
+end;
+
+procedure TInstelForm.FormActivate(Sender: TObject);
+begin
+  DoeActief;
+end;
+
+procedure TInstelForm.DoeActief;
+var
+  antwoord : boolean;
+begin
+  if HoofdForm.InitVar[0] = '1' then CheckBox0.Checked := true else  CheckBox0.Checked := false;
+  if HoofdForm.InitVar[1] = '1' then CheckBox1.Checked := true else  CheckBox1.Checked := false;
+  if HoofdForm.InitVar[2] = '1' then CheckBox2.Checked := true else  CheckBox2.Checked := false;
+  if HoofdForm.InitVar[3] = '1' then CheckBox3.Checked := true else  CheckBox3.Checked := false;
+  if HoofdForm.InitVar[4] = '1' then CheckBox4.Checked := true else  CheckBox4.Checked := false;
+  if HoofdForm.InitVar[5] = '1' then CheckBox5.Checked := true else  CheckBox5.Checked := false;
+  if HoofdForm.InitVar[6] = '1' then CheckBox6.Checked := true else  CheckBox6.Checked := false;
+  if HoofdForm.InitVar[7] = '1' then CheckBox7.Checked := true else  CheckBox7.Checked := false;
+  if HoofdForm.InitVar[8] = '1' then CheckBox8.Checked := true else  CheckBox8.Checked := false;
+  if HoofdForm.InitVar[9] = '1' then CheckBox9.Checked := true else  CheckBox9.Checked := false;
+
+  if HoofdForm.InitVar[10] = '1' then CheckBox10.Checked := true else  CheckBox10.Checked := false;
+  if HoofdForm.InitVar[11] = '1' then CheckBox11.Checked := true else  CheckBox11.Checked := false;
+  if HoofdForm.InitVar[12] = '1' then CheckBox12.Checked := true else  CheckBox12.Checked := false;
+  if HoofdForm.InitVar[13] = '1' then CheckBox13.Checked := true else  CheckBox13.Checked := false;
+  if HoofdForm.InitVar[14] = '1' then CheckBox14.Checked := true else  CheckBox14.Checked := false;
+  if HoofdForm.InitVar[15] = '1' then CheckBox15.Checked := true else  CheckBox15.Checked := false;
+  if HoofdForm.InitVar[16] = '1' then CheckBox16.Checked := true else  CheckBox16.Checked := false;
+  if HoofdForm.InitVar[17] = '1' then CheckBox17.Checked := true else  CheckBox17.Checked := false;
+  if HoofdForm.InitVar[18] = '1' then CheckBox18.Checked := true else  CheckBox18.Checked := false;
+  if HoofdForm.InitVar[19] = '1' then CheckBox19.Checked := true else  CheckBox19.Checked := false;
+
+  if HoofdForm.InitVar[20] = '1' then CheckBox20.Checked := true else  CheckBox20.Checked := false;
+  //if HoofdForm.InitVar[21] = '1' then CheckBox21.Checked := true else  CheckBox21.Checked := false;
+  //if HoofdForm.InitVar[22] = '1' then CheckBox22.Checked := true else  CheckBox22.Checked := false;
+  //if HoofdForm.InitVar[23] = '1' then CheckBox23.Checked := true else  CheckBox23.Checked := false;
+  if HoofdForm.InitVar[24] = '1' then CheckBox24.Checked := true else  CheckBox24.Checked := false;
+  if HoofdForm.InitVar[25] = '1' then CheckBox25.Checked := true else  CheckBox25.Checked := false;
+  if HoofdForm.InitVar[26] = '1' then CheckBox26.Checked := true else  CheckBox26.Checked := false;
+  if HoofdForm.InitVar[27] = '1' then CheckBox27.Checked := true else  CheckBox27.Checked := false;
+  if HoofdForm.InitVar[28] = '1' then CheckBox28.Checked := true else  CheckBox28.Checked := false;
+  //if HoofdForm.InitVar[29] = '1' then CheckBox29.Checked := true else  CheckBox29.Checked := false;
+
+  //if HoofdForm.InitVar[30] = '1' then CheckBox30.Checked := true else  CheckBox30.Checked := false;
+  //if HoofdForm.InitVar[31] = '1' then CheckBox31.Checked := true else  CheckBox31.Checked := false;
+  if HoofdForm.InitVar[32] = '1' then CheckBox32.Checked := true else  CheckBox32.Checked := false;
+  if HoofdForm.InitVar[33] = '1' then CheckBox33.Checked := true else  CheckBox33.Checked := false;
+  if HoofdForm.InitVar[34] = '1' then CheckBox34.Checked := true else  CheckBox34.Checked := false;
+  if HoofdForm.InitVar[35] = '1' then CheckBox35.Checked := true else  CheckBox35.Checked := false;
+  if HoofdForm.InitVar[36] = '1' then CheckBox36.Checked := true else  CheckBox36.Checked := false;
+  if HoofdForm.InitVar[37] = '1' then CheckBox37.Checked := true else  CheckBox37.Checked := false;
+  if HoofdForm.InitVar[38] = '1' then CheckBox38.Checked := true else  CheckBox38.Checked := false;
+  //if HoofdForm.InitVar[39] = '1' then CheckBox39.Checked := true else  CheckBox39.Checked := false;
+
+  if HoofdForm.InitVar[40] = '1' then CheckBox40.Checked := true else  CheckBox40.Checked := false;
+  if HoofdForm.InitVar[41] = '1' then CheckBox41.Checked := true else  CheckBox41.Checked := false;
+  if HoofdForm.InitVar[42] = '1' then CheckBox42.Checked := true else  CheckBox42.Checked := false;
+  if HoofdForm.InitVar[43] = '1' then CheckBox43.Checked := true else  CheckBox43.Checked := false;
+  if HoofdForm.InitVar[44] = '1' then CheckBox44.Checked := true else  CheckBox44.Checked := false;
+  if HoofdForm.InitVar[45] = '1' then CheckBox45.Checked := true else  CheckBox45.Checked := false;
+  if HoofdForm.InitVar[46] = '1' then CheckBox46.Checked := true else  CheckBox46.Checked := false;
+  //if HoofdForm.InitVar[47] = '1' then CheckBox47.Checked := true else  CheckBox47.Checked := false;
+  if HoofdForm.InitVar[48] = '1' then CheckBox48.Checked := true else  CheckBox48.Checked := false;
+  if HoofdForm.InitVar[49] = '1' then CheckBox49.Checked := true else  CheckBox49.Checked := false;
+
+  if HoofdForm.InitVar[50] = '1' then CheckBox50.Checked := true else  CheckBox50.Checked := false;
+  if HoofdForm.InitVar[51] = '1' then CheckBox51.Checked := true else  CheckBox51.Checked := false;
+  if HoofdForm.InitVar[52] = '1' then CheckBox52.Checked := true else  CheckBox52.Checked := false;
+  if HoofdForm.InitVar[53] = '1' then CheckBox53.Checked := true else  CheckBox53.Checked := false;
+  if HoofdForm.InitVar[54] = '1' then CheckBox54.Checked := true else  CheckBox54.Checked := false;
+  if HoofdForm.InitVar[55] = '1' then CheckBox55.Checked := true else  CheckBox55.Checked := false;
+  if HoofdForm.InitVar[56] = '1' then CheckBox56.Checked := true else  CheckBox56.Checked := false;
+
+
+  {PLC}
+  antwoord := ConnectForm.GetChannelConnected;
+  BtnRun.Enabled      := antwoord;
+  Btnstop.Enabled     := antwoord;
+  BtnRestart.Enabled  := antwoord;
+  BtnRun.Enabled      := antwoord;
+  BtnClear.Enabled    := antwoord;
+  BTNKlockPLC.Enabled := antwoord;
+  RadioGroup1.Enabled := antwoord;
+  RadioGroup2.Enabled := antwoord;
+
+
+  StatusBarInst.Panels[0].Text:= 'Verbonden met PLC';
+  if(antwoord = false) then
+      StatusBarInst.Panels[0].Text:= 'Te doen: Maak verbinding met PLC eerst';
+
+end;
+
+//*************************************************
+//         PLC page
+//*************************************************
+procedure TInstelForm.BTNKlockPLCClick(Sender: TObject);
+begin
+  Status := PcdSetClockDialog(PcdConn,self.Handle);
+//  LabelAntwoord.Caption := PcdMessage(Status);
+end;
+procedure TInstelForm.BtnRestartClick(Sender: TObject);
+begin
+  case RadioGroup2.ItemIndex of
+    0: Status := PcdRestart(PcdConn, 0, 0);
+    1: Status := PcdRestart(PcdConn, 0, 1);
+  else Status := PcdRestart(PcdConn, 0, 0);
+  end;
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+procedure TInstelForm.BtnStopClick(Sender: TObject);
+begin
+  Status := PcdStop(PcdConn,0);
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+procedure TInstelForm.BtnClearClick(Sender: TObject);
+begin
+  case RadioGroup1.ItemIndex of
+    0: Status := PcdClear(PcdConn,'O');
+    1: Status := PcdClear(PcdConn,'R');
+    2: Status := PcdClear(PcdConn,'F');
+    3: Status := PcdClear(PcdConn,'T');
+    4: Status := PcdClear(PcdConn,'H');
+    5: Status := PcdClear(PcdConn,'A');
+  else Status := PcdClear(PcdConn,'F');
+  end;
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+
+procedure TInstelForm.BtnRunClick(Sender: TObject);
+begin
+  Status := PcdRun(PcdConn,0);
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+
+
+procedure TInstelForm.Label126Click(Sender: TObject);
+var
+  PrBufReg:TRegIniFile;
+begin
+  PrBufReg  := TRegIniFile.Create('Software\Microsoft\SAM');
+  PrBufReg.WriteBool('ET-sim','Sim',true);
+  PrBufReg.Free;
+
+end;
+
+//*************************************************
+//         PLC instellingen
+//*************************************************
+
+
+
+procedure TInstelForm.FormDeactivate(Sender: TObject);
+begin
+
+  if CheckBox0.Checked then HoofdForm.InitVar[0] := '1' else HoofdForm.InitVar[0] := '0';
+  if CheckBox1.Checked then HoofdForm.InitVar[1] := '1' else HoofdForm.InitVar[1] := '0';
+  if CheckBox2.Checked then HoofdForm.InitVar[2] := '1' else HoofdForm.InitVar[2] := '0';
+  if CheckBox3.Checked then HoofdForm.InitVar[3] := '1' else HoofdForm.InitVar[3] := '0';
+  if CheckBox4.Checked then HoofdForm.InitVar[4] := '1' else HoofdForm.InitVar[4] := '0';
+  if CheckBox5.Checked then HoofdForm.InitVar[5] := '1' else HoofdForm.InitVar[5] := '0';
+  if CheckBox6.Checked then HoofdForm.InitVar[6] := '1' else HoofdForm.InitVar[6] := '0';
+  if CheckBox7.Checked then HoofdForm.InitVar[7] := '1' else HoofdForm.InitVar[7] := '0';
+  if CheckBox8.Checked then HoofdForm.InitVar[8] := '1' else HoofdForm.InitVar[8] := '0';
+  if CheckBox9.Checked then HoofdForm.InitVar[9] := '1' else HoofdForm.InitVar[9] := '0';
+
+  if CheckBox10.Checked then HoofdForm.InitVar[10] := '1' else HoofdForm.InitVar[10] := '0';
+  if CheckBox11.Checked then HoofdForm.InitVar[11] := '1' else HoofdForm.InitVar[11] := '0';
+  if CheckBox12.Checked then HoofdForm.InitVar[12] := '1' else HoofdForm.InitVar[12] := '0';
+  if CheckBox13.Checked then HoofdForm.InitVar[13] := '1' else HoofdForm.InitVar[13] := '0';
+  if CheckBox14.Checked then HoofdForm.InitVar[14] := '1' else HoofdForm.InitVar[14] := '0';
+  if CheckBox15.Checked then HoofdForm.InitVar[15] := '1' else HoofdForm.InitVar[15] := '0';
+  if CheckBox16.Checked then HoofdForm.InitVar[16] := '1' else HoofdForm.InitVar[16] := '0';
+  if CheckBox17.Checked then HoofdForm.InitVar[17] := '1' else HoofdForm.InitVar[17] := '0';
+  if CheckBox18.Checked then HoofdForm.InitVar[18] := '1' else HoofdForm.InitVar[18] := '0';
+  if CheckBox19.Checked then HoofdForm.InitVar[19] := '1' else HoofdForm.InitVar[19] := '0';
+
+  if CheckBox20.Checked then HoofdForm.InitVar[20] := '1' else HoofdForm.InitVar[20] := '0';
+  //if CheckBox21.Checked then HoofdForm.InitVar[21] := '1' else HoofdForm.InitVar[21] := '0';
+  //if CheckBox22.Checked then HoofdForm.InitVar[22] := '1' else HoofdForm.InitVar[22] := '0';
+  //if CheckBox23.Checked then HoofdForm.InitVar[23] := '1' else HoofdForm.InitVar[23] := '0';
+  if CheckBox24.Checked then HoofdForm.InitVar[24] := '1' else HoofdForm.InitVar[24] := '0';
+  if CheckBox25.Checked then HoofdForm.InitVar[25] := '1' else HoofdForm.InitVar[25] := '0';
+  if CheckBox26.Checked then HoofdForm.InitVar[26] := '1' else HoofdForm.InitVar[26] := '0';
+  if CheckBox27.Checked then HoofdForm.InitVar[27] := '1' else HoofdForm.InitVar[27] := '0';
+  if CheckBox28.Checked then HoofdForm.InitVar[28] := '1' else HoofdForm.InitVar[28] := '0';
+  //if CheckBox29.Checked then HoofdForm.InitVar[29] := '1' else HoofdForm.InitVar[29] := '0';
+
+  //if CheckBox30.Checked then HoofdForm.InitVar[30] := '1' else HoofdForm.InitVar[30] := '0';
+  //if CheckBox31.Checked then HoofdForm.InitVar[31] := '1' else HoofdForm.InitVar[31] := '0';
+  if CheckBox32.Checked then HoofdForm.InitVar[32] := '1' else HoofdForm.InitVar[32] := '0';
+  if CheckBox33.Checked then HoofdForm.InitVar[33] := '1' else HoofdForm.InitVar[33] := '0';
+  if CheckBox34.Checked then HoofdForm.InitVar[34] := '1' else HoofdForm.InitVar[34] := '0';
+  if CheckBox35.Checked then HoofdForm.InitVar[35] := '1' else HoofdForm.InitVar[35] := '0';
+  if CheckBox36.Checked then HoofdForm.InitVar[36] := '1' else HoofdForm.InitVar[36] := '0';
+  if CheckBox37.Checked then HoofdForm.InitVar[37] := '1' else HoofdForm.InitVar[37] := '0';
+  if CheckBox38.Checked then HoofdForm.InitVar[38] := '1' else HoofdForm.InitVar[38] := '0';
+  //if CheckBox39.Checked then HoofdForm.InitVar[39] := '1' else HoofdForm.InitVar[39] := '0';
+
+  if CheckBox40.Checked then HoofdForm.InitVar[40] := '1' else HoofdForm.InitVar[40] := '0';
+  if CheckBox41.Checked then HoofdForm.InitVar[41] := '1' else HoofdForm.InitVar[41] := '0';
+  if CheckBox42.Checked then HoofdForm.InitVar[42] := '1' else HoofdForm.InitVar[42] := '0';
+  if CheckBox43.Checked then HoofdForm.InitVar[43] := '1' else HoofdForm.InitVar[43] := '0';
+  if CheckBox44.Checked then HoofdForm.InitVar[44] := '1' else HoofdForm.InitVar[44] := '0';
+  if CheckBox45.Checked then HoofdForm.InitVar[45] := '1' else HoofdForm.InitVar[45] := '0';
+  if CheckBox46.Checked then HoofdForm.InitVar[46] := '1' else HoofdForm.InitVar[46] := '0';
+  //if CheckBox47.Checked then HoofdForm.InitVar[47] := '1' else HoofdForm.InitVar[47] := '0';
+  if CheckBox48.Checked then HoofdForm.InitVar[48] := '1' else HoofdForm.InitVar[48] := '0';
+  if CheckBox49.Checked then HoofdForm.InitVar[49] := '1' else HoofdForm.InitVar[49] := '0';
+
+  if CheckBox50.Checked then HoofdForm.InitVar[50] := '1' else HoofdForm.InitVar[50] := '0';
+  if CheckBox51.Checked then HoofdForm.InitVar[51] := '1' else HoofdForm.InitVar[51] := '0';
+  if CheckBox52.Checked then HoofdForm.InitVar[52] := '1' else HoofdForm.InitVar[52] := '0';
+  if CheckBox53.Checked then HoofdForm.InitVar[53] := '1' else HoofdForm.InitVar[53] := '0';
+  if CheckBox54.Checked then HoofdForm.InitVar[54] := '1' else HoofdForm.InitVar[54] := '0';
+  if CheckBox55.Checked then HoofdForm.InitVar[55] := '1' else HoofdForm.InitVar[55] := '0';
+  if CheckBox56.Checked then HoofdForm.InitVar[56] := '1' else HoofdForm.InitVar[56] := '0';
+
+
+
+end;
+
+
+end.
+
+

@@ -1,0 +1,62 @@
+unit MahBit16;
+
+interface
+
+
+uses SysUtils;
+
+type
+     {TBIT32 CLASS}
+     TBit16 = class(TObject)
+     private
+       FValue1 : integer;
+       FValue2 : integer;
+     protected
+       // Internal Methods
+       procedure _CheckBitNumber(ABitNumber : byte);
+     public
+       function BitSet(ABitNumber : byte) : boolean;
+       procedure SetBit(ABitNumber : byte);
+       procedure ClrBit(ABitNumber : byte);
+
+       // Properties
+       property AsIntegerO : integer read FValue1 write FValue;
+       property AsIntegerI : integer read FValue2 write FValue2;
+     end;
+
+// ------------------------------------------------------------------------
+implementation
+
+const C_BITVALARR : array [0..15] of longword =
+                    ($00000001,$00000002,$00000004,$00000008,$00000010,
+                     $00000020,$00000040,$00000080,$00000100,$00000200,
+                     $00000400,$00000800,$00001000,$00002000,$00004000,
+                     $00008000);
+
+procedure TBit16._CheckBitNumber(ABitNumber : byte);
+begin
+  if not (ABitNumber in [0..15]) then
+      raise EConvertError.Create(IntToStr(ABitNumber) +
+                                 ' is not a valid bit number (0..15)');
+end;
+
+function TBit16.BitSet(ABitNumber : byte) : boolean;
+begin
+  _CheckBitNumber(ABitNumber);
+  Result := FValue1 and C_BITVALARR[ABitNumber] = C_BITVALARR[ABitNumber];
+end;
+
+procedure TBit16.SetBit(ABitNumber : byte);
+begin
+  _CheckBitNumber(ABitNumber);
+   FValue2 := longword(FValue2) or C_BITVALARR[ABitNumber];
+end;
+
+procedure TBit16.ClrBit(ABitNumber : byte);
+begin
+  _CheckBitNumber(ABitNumber);
+   FValue2 := (longword(FValue2) or C_BITVALARR[ABitNumber]) xor
+             C_BITVALARR[ABitNumber];
+end;
+
+end.

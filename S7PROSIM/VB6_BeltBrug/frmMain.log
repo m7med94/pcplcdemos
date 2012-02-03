@@ -1,0 +1,17 @@
+Line 1005: Class S7WSPSPXLib.S7ProSimPanel of control S7ProSimPanel was not a loaded control class.
+Line 1796: Class S7PROSIMLib.S7ProSim of control S7ProSim1 was not a loaded control class.
+Line 1807: Class S7PROSIMLib.S7ProSim of control S7ProSimX was not a loaded control class.
+Line 1011: The property name _Version in S7ProSimPanel is invalid.
+Line 1012: The property name _ExtentX in S7ProSimPanel is invalid.
+Line 1013: The property name _ExtentY in S7ProSimPanel is invalid.
+Line 1014: The property name _StockProps in S7ProSimPanel is invalid.
+Line 1799: The property name _Version in S7ProSim1 is invalid.
+Line 1800: The property name _ExtentX in S7ProSim1 is invalid.
+Line 1801: The property name _ExtentY in S7ProSim1 is invalid.
+Line 1802: The property name _StockProps in S7ProSim1 is invalid.
+Line 1805: The property name ScanMode in S7ProSim1 is invalid.
+Line 1810: The property name _Version in S7ProSimX is invalid.
+Line 1811: The property name _ExtentX in S7ProSimX is invalid.
+Line 1812: The property name _ExtentY in S7ProSimX is invalid.
+Line 1813: The property name _StockProps in S7ProSimX is invalid.
+Line 1816: The property name ScanMode in S7ProSimX is invalid.

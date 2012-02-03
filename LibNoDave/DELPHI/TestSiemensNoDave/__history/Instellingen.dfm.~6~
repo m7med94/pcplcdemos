@@ -1,0 +1,339 @@
+object InstelForm: TInstelForm
+  Left = 554
+  Top = 133
+  Width = 657
+  Height = 492
+  Caption = 'Settings '
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  OnActivate = FormActivate
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 649
+    Height = 465
+    Align = alClient
+    Color = 16774636
+    TabOrder = 0
+    object PageControl1: TPageControl
+      Left = 1
+      Top = 1
+      Width = 647
+      Height = 444
+      ActivePage = TabSheet1
+      Align = alClient
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      MultiLine = True
+      ParentFont = False
+      TabOrder = 0
+      object TabSheet1: TTabSheet
+        Caption = 'Process'
+        ImageIndex = 6
+        object Antwoord3: TLabel
+          Left = 394
+          Top = 320
+          Width = 5
+          Height = 13
+          Caption = '-'
+        end
+        object Label123: TLabel
+          Left = 216
+          Top = 4
+          Width = 155
+          Height = 25
+          Caption = 'Programma'#39's'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlue
+          Font.Height = -21
+          Font.Name = 'Verdana'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object ListView1: TListView
+          Left = 224
+          Top = 352
+          Width = 1
+          Height = 9
+          Columns = <>
+          TabOrder = 0
+        end
+        object BtnPr1: TButton
+          Left = 24
+          Top = 72
+          Width = 129
+          Height = 25
+          Caption = 'Programma 1'
+          TabOrder = 1
+          OnClick = BtnPr1Click
+        end
+        object BtnPr2: TButton
+          Left = 24
+          Top = 112
+          Width = 129
+          Height = 25
+          Caption = 'Programma 2'
+          TabOrder = 2
+          OnClick = BtnPr2Click
+        end
+        object BtnPr3: TButton
+          Left = 24
+          Top = 152
+          Width = 129
+          Height = 25
+          Caption = 'Programma 3'
+          TabOrder = 3
+          OnClick = BtnPr3Click
+        end
+        object BtnPr4: TButton
+          Left = 24
+          Top = 192
+          Width = 129
+          Height = 25
+          Caption = 'Programma 4'
+          TabOrder = 4
+          OnClick = BtnPr4Click
+        end
+        object BtnPr5: TButton
+          Left = 176
+          Top = 72
+          Width = 129
+          Height = 25
+          Caption = 'Programma 5'
+          TabOrder = 5
+          OnClick = BtnPr5Click
+        end
+        object BtnPr6: TButton
+          Left = 176
+          Top = 112
+          Width = 129
+          Height = 25
+          Caption = 'Programma 6'
+          TabOrder = 6
+          OnClick = BtnPr6Click
+        end
+        object BtnPr7: TButton
+          Left = 176
+          Top = 152
+          Width = 129
+          Height = 25
+          Caption = 'Programma 7'
+          TabOrder = 7
+          OnClick = BtnPr7Click
+        end
+        object BtnPr8: TButton
+          Left = 176
+          Top = 192
+          Width = 129
+          Height = 25
+          Caption = 'Programma 8'
+          TabOrder = 8
+          OnClick = BtnPr8Click
+        end
+        object BtnPr12: TButton
+          Left = 328
+          Top = 192
+          Width = 129
+          Height = 25
+          Caption = 'Programma 12'
+          TabOrder = 9
+          OnClick = BtnPr12Click
+        end
+        object BtnPr11: TButton
+          Left = 328
+          Top = 152
+          Width = 129
+          Height = 25
+          Caption = 'Programma 11'
+          TabOrder = 10
+          OnClick = BtnPr11Click
+        end
+        object BtnPr10: TButton
+          Left = 328
+          Top = 112
+          Width = 129
+          Height = 25
+          Caption = 'Programma 10'
+          TabOrder = 11
+          OnClick = BtnPr10Click
+        end
+        object BtnPr9: TButton
+          Left = 328
+          Top = 72
+          Width = 129
+          Height = 25
+          Caption = 'Programma 9'
+          TabOrder = 12
+          OnClick = BtnPr9Click
+        end
+        object BtnPr16: TButton
+          Left = 480
+          Top = 192
+          Width = 129
+          Height = 25
+          Caption = 'Programma 16'
+          TabOrder = 13
+          OnClick = BtnPr16Click
+        end
+        object BtnPr15: TButton
+          Left = 480
+          Top = 152
+          Width = 129
+          Height = 25
+          Caption = 'Programma 15'
+          TabOrder = 14
+          OnClick = BtnPr15Click
+        end
+        object BtnPr14: TButton
+          Left = 480
+          Top = 112
+          Width = 129
+          Height = 25
+          Caption = 'Programma 14'
+          TabOrder = 15
+          OnClick = BtnPr14Click
+        end
+        object BtnPr13: TButton
+          Left = 480
+          Top = 72
+          Width = 129
+          Height = 25
+          Caption = 'Programma 13'
+          TabOrder = 16
+          OnClick = BtnPr13Click
+        end
+        object Btn_AanUit: TButton
+          Left = 248
+          Top = 304
+          Width = 129
+          Height = 25
+          Caption = 'Aan - Uit'
+          TabOrder = 17
+          OnClick = Btn_AanUitClick
+        end
+      end
+      object TabSheet7: TTabSheet
+        Caption = 'Graphics'
+        ImageIndex = 6
+      end
+      object TabSheet2: TTabSheet
+        Caption = 'PLC control'
+        ImageIndex = 7
+        object Label126: TLabel
+          Left = 224
+          Top = 4
+          Width = 132
+          Height = 25
+          Caption = 'PLC control'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlue
+          Font.Height = -21
+          Font.Name = 'Verdana'
+          Font.Style = [fsBold]
+          ParentFont = False
+          OnClick = Label126Click
+        end
+        object RadioGroup2: TRadioGroup
+          Left = 128
+          Top = 186
+          Width = 105
+          Height = 57
+          Caption = 'Restart:'
+          ItemIndex = 0
+          Items.Strings = (
+            'COLD'
+            'WARM')
+          TabOrder = 0
+        end
+        object RadioGroup1: TRadioGroup
+          Left = 360
+          Top = 83
+          Width = 105
+          Height = 121
+          Caption = 'Resorses:'
+          ItemIndex = 2
+          Items.Strings = (
+            'OUTPUTS'
+            'REGISTERS'
+            'FLAGS'
+            'TIMERS'
+            'HISTORY'
+            'ALL')
+          TabOrder = 1
+        end
+        object BtnClear: TButton
+          Left = 272
+          Top = 88
+          Width = 75
+          Height = 25
+          Caption = 'Clear PLC'
+          TabOrder = 2
+          OnClick = BtnClearClick
+        end
+        object BtnRestart: TButton
+          Left = 40
+          Top = 192
+          Width = 75
+          Height = 25
+          Caption = 'Restart PLC'
+          TabOrder = 3
+          OnClick = BtnRestartClick
+        end
+        object BtnStop: TButton
+          Left = 40
+          Top = 144
+          Width = 75
+          Height = 25
+          Caption = 'Stop PLC'
+          TabOrder = 4
+          OnClick = BtnStopClick
+        end
+        object BtnRun: TButton
+          Left = 40
+          Top = 96
+          Width = 73
+          Height = 25
+          Caption = 'Run PLC'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 5
+          OnClick = BtnRunClick
+        end
+        object BTNKlockPLC: TButton
+          Left = 504
+          Top = 88
+          Width = 75
+          Height = 25
+          Caption = 'Clock PLC'
+          TabOrder = 6
+          OnClick = BTNKlockPLCClick
+        end
+      end
+    end
+    object StatusBarInst: TStatusBar
+      Left = 1
+      Top = 445
+      Width = 647
+      Height = 19
+      Panels = <
+        item
+          Width = 50
+        end>
+    end
+  end
+end

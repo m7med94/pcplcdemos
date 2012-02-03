@@ -1,0 +1,357 @@
+unit Instellingen;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls, ComCtrls, Mask, DB, ADODB, DBCtrls, Grids,
+  DBGrids, Spin, TeeProcs, TeEngine, Chart, Menus, ToolWin, jpeg, Series,
+  Registry;
+
+type
+  TMetRec = Record
+    Tijd      : real;
+    StartTijd : real;
+    Sewage    : real;
+    RedoxU    : real;
+    RedoxT    : real;
+    NivoH     : real;
+    DosH      : real;
+    NivoF     : real;
+    DosF      : real;
+  end;
+  TInstelForm = class(TForm)
+    Panel1: TPanel;
+    PageControl1: TPageControl;
+    TabSheet2: TTabSheet;
+    Label126: TLabel;
+    RadioGroup2: TRadioGroup;
+    RadioGroup1: TRadioGroup;
+    BtnClear: TButton;
+    BtnRestart: TButton;
+    BtnStop: TButton;
+    BtnRun: TButton;
+    BTNKlockPLC: TButton;
+    StatusBarInst: TStatusBar;
+    TabSheet1: TTabSheet;
+    CheckBox0: TCheckBox;
+    Label12: TLabel;
+    CheckBox1: TCheckBox;
+    CheckBox2: TCheckBox;
+    CheckBox3: TCheckBox;
+    CheckBox4: TCheckBox;
+    CheckBox5: TCheckBox;
+    CheckBox6: TCheckBox;
+    CheckBox7: TCheckBox;
+    CheckBox8: TCheckBox;
+    CheckBox9: TCheckBox;
+    CheckBox11: TCheckBox;
+    CheckBox10: TCheckBox;
+    CheckBox13: TCheckBox;
+    CheckBox12: TCheckBox;
+    CheckBox14: TCheckBox;
+    CheckBox15: TCheckBox;
+    CheckBox16: TCheckBox;
+    CheckBox17: TCheckBox;
+    CheckBox18: TCheckBox;
+    CheckBox19: TCheckBox;
+    CheckBox20: TCheckBox;
+    CheckBox24: TCheckBox;
+    CheckBox25: TCheckBox;
+    CheckBox26: TCheckBox;
+    CheckBox27: TCheckBox;
+    CheckBox28: TCheckBox;
+    CheckBox32: TCheckBox;
+    CheckBox33: TCheckBox;
+    CheckBox34: TCheckBox;
+    CheckBox35: TCheckBox;
+    CheckBox36: TCheckBox;
+    CheckBox37: TCheckBox;
+    CheckBox40: TCheckBox;
+    CheckBox41: TCheckBox;
+    CheckBox42: TCheckBox;
+    CheckBox43: TCheckBox;
+    CheckBox44: TCheckBox;
+    CheckBox45: TCheckBox;
+    CheckBox46: TCheckBox;
+    CheckBox48: TCheckBox;
+    CheckBox49: TCheckBox;
+    CheckBox50: TCheckBox;
+    CheckBox51: TCheckBox;
+    CheckBox52: TCheckBox;
+    CheckBox53: TCheckBox;
+    CheckBox54: TCheckBox;
+    CheckBox55: TCheckBox;
+    CheckBox56: TCheckBox;
+    CheckBox38: TCheckBox;
+    BtnSchrijven: TButton;
+    procedure BtnSchrijvenClick(Sender: TObject);
+    procedure Label126Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure BtnRunClick(Sender: TObject);
+    procedure BtnStopClick(Sender: TObject);
+    procedure BTNKlockPLCClick(Sender: TObject);
+    procedure BtnClearClick(Sender: TObject);
+    procedure BtnRestartClick(Sender: TObject);
+    procedure DoeActief;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    Status  : integer;
+  end;
+
+var
+  InstelForm: TInstelForm;
+
+implementation
+
+uses Connect, Hoofd, Password;
+
+{$R *.dfm}
+procedure TInstelForm.FormCreate(Sender: TObject);
+var
+  PrBufReg:TRegIniFile;
+begin
+  PrBufReg:= TRegIniFile.Create('Software\ET-sim');
+
+
+  PrBufReg.Free;
+
+end;
+
+procedure TInstelForm.FormActivate(Sender: TObject);
+begin
+  DoeActief;
+end;
+
+procedure TInstelForm.DoeActief;
+var
+  PrBufReg:TRegIniFile;
+  antwoord : boolean;
+begin
+
+  PrBufReg  := TRegIniFile.Create('Software\ET-sim');
+  CheckBox0.Checked := PrBufReg.ReadBool('Instellingen','ChBox0',false);
+  CheckBox1.Checked := PrBufReg.ReadBool('Instellingen','ChBox1',false);
+  CheckBox2.Checked := PrBufReg.ReadBool('Instellingen','ChBox2',false);
+  CheckBox3.Checked := PrBufReg.ReadBool('Instellingen','ChBox3',false);
+  CheckBox4.Checked := PrBufReg.ReadBool('Instellingen','ChBox4',false);
+  CheckBox5.Checked := PrBufReg.ReadBool('Instellingen','ChBox5',false);
+  CheckBox6.Checked := PrBufReg.ReadBool('Instellingen','ChBox6',false);
+  CheckBox7.Checked := PrBufReg.ReadBool('Instellingen','ChBox7',false);
+  CheckBox8.Checked := PrBufReg.ReadBool('Instellingen','ChBox8',false);
+  CheckBox9.Checked := PrBufReg.ReadBool('Instellingen','ChBox9',false);
+
+  CheckBox10.Checked := PrBufReg.ReadBool('Instellingen','ChBox10',false);
+  CheckBox11.Checked := PrBufReg.ReadBool('Instellingen','ChBox11',false);
+  CheckBox12.Checked := PrBufReg.ReadBool('Instellingen','ChBox12',false);
+  CheckBox13.Checked := PrBufReg.ReadBool('Instellingen','ChBox13',false);
+  CheckBox14.Checked := PrBufReg.ReadBool('Instellingen','ChBox14',false);
+  CheckBox15.Checked := PrBufReg.ReadBool('Instellingen','ChBox15',false);
+  CheckBox16.Checked := PrBufReg.ReadBool('Instellingen','ChBox16',false);
+  CheckBox17.Checked := PrBufReg.ReadBool('Instellingen','ChBox17',false);
+  CheckBox18.Checked := PrBufReg.ReadBool('Instellingen','ChBox18',false);
+  CheckBox19.Checked := PrBufReg.ReadBool('Instellingen','ChBox19',false);
+
+  CheckBox20.Checked := PrBufReg.ReadBool('Instellingen','ChBox20',false);
+  //CheckBox21.Checked := PrBufReg.ReadBool('Instellingen','ChBox1',false);
+  //CheckBox22.Checked := PrBufReg.ReadBool('Instellingen','ChBox2',false);
+  //CheckBox23.Checked := PrBufReg.ReadBool('Instellingen','ChBox3',false);
+  CheckBox24.Checked := PrBufReg.ReadBool('Instellingen','ChBox24',false);
+  CheckBox25.Checked := PrBufReg.ReadBool('Instellingen','ChBox25',false);
+  CheckBox26.Checked := PrBufReg.ReadBool('Instellingen','ChBox26',false);
+  CheckBox27.Checked := PrBufReg.ReadBool('Instellingen','ChBox27',false);
+  CheckBox28.Checked := PrBufReg.ReadBool('Instellingen','ChBox28',false);
+  //CheckBox29.Checked := PrBufReg.ReadBool('Instellingen','ChBox9',false);
+
+  //CheckBox30.Checked := PrBufReg.ReadBool('Instellingen','ChBox0',false);
+  //CheckBox31.Checked := PrBufReg.ReadBool('Instellingen','ChBox1',false);
+  CheckBox32.Checked := PrBufReg.ReadBool('Instellingen','ChBox32',false);
+  CheckBox33.Checked := PrBufReg.ReadBool('Instellingen','ChBox33',false);
+  CheckBox34.Checked := PrBufReg.ReadBool('Instellingen','ChBox34',false);
+  CheckBox35.Checked := PrBufReg.ReadBool('Instellingen','ChBox35',false);
+  CheckBox36.Checked := PrBufReg.ReadBool('Instellingen','ChBox36',false);
+  CheckBox37.Checked := PrBufReg.ReadBool('Instellingen','ChBox37',false);
+  CheckBox38.Checked := PrBufReg.ReadBool('Instellingen','ChBox38',false);
+  //CheckBox39.Checked := PrBufReg.ReadBool('Instellingen','ChBox9',false);
+
+  CheckBox40.Checked := PrBufReg.ReadBool('Instellingen','ChBox40',false);
+  CheckBox41.Checked := PrBufReg.ReadBool('Instellingen','ChBox41',false);
+  CheckBox42.Checked := PrBufReg.ReadBool('Instellingen','ChBox42',false);
+  CheckBox43.Checked := PrBufReg.ReadBool('Instellingen','ChBox43',false);
+  CheckBox44.Checked := PrBufReg.ReadBool('Instellingen','ChBox44',false);
+  CheckBox45.Checked := PrBufReg.ReadBool('Instellingen','ChBox45',false);
+  CheckBox46.Checked := PrBufReg.ReadBool('Instellingen','ChBox46',false);
+  //CheckBox47.Checked := PrBufReg.ReadBool('Instellingen','ChBox7',false);
+  CheckBox48.Checked := PrBufReg.ReadBool('Instellingen','ChBox48',false);
+  CheckBox49.Checked := PrBufReg.ReadBool('Instellingen','ChBox49',false);
+
+  CheckBox50.Checked := PrBufReg.ReadBool('Instellingen','ChBox50',false);
+  CheckBox51.Checked := PrBufReg.ReadBool('Instellingen','ChBox51',false);
+  CheckBox52.Checked := PrBufReg.ReadBool('Instellingen','ChBox52',false);
+  CheckBox53.Checked := PrBufReg.ReadBool('Instellingen','ChBox53',false);
+  CheckBox54.Checked := PrBufReg.ReadBool('Instellingen','ChBox54',false);
+  CheckBox55.Checked := PrBufReg.ReadBool('Instellingen','ChBox55',false);
+  CheckBox56.Checked := PrBufReg.ReadBool('Instellingen','ChBox56',false);
+
+  PrBufReg.Free;
+
+  {PLC}
+  antwoord := ConnectForm.GetChannelConnected;
+  BtnRun.Enabled      := antwoord;
+  Btnstop.Enabled     := antwoord;
+  BtnRestart.Enabled  := antwoord;
+  BtnRun.Enabled      := antwoord;
+  BtnClear.Enabled    := antwoord;
+  BTNKlockPLC.Enabled := antwoord;
+  RadioGroup1.Enabled := antwoord;
+  RadioGroup2.Enabled := antwoord;
+
+
+  StatusBarInst.Panels[0].Text:= 'Verbonden met PLC';
+  if(antwoord = false) then
+      StatusBarInst.Panels[0].Text:= 'Te doen: Maak verbinding met PLC eerst';
+
+end;
+
+//*************************************************
+//         PLC page
+//*************************************************
+procedure TInstelForm.BTNKlockPLCClick(Sender: TObject);
+begin
+  Status := PcdSetClockDialog(PcdConn,self.Handle);
+//  LabelAntwoord.Caption := PcdMessage(Status);
+end;
+procedure TInstelForm.BtnRestartClick(Sender: TObject);
+begin
+  case RadioGroup2.ItemIndex of
+    0: Status := PcdRestart(PcdConn, 0, 0);
+    1: Status := PcdRestart(PcdConn, 0, 1);
+  else Status := PcdRestart(PcdConn, 0, 0);
+  end;
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+procedure TInstelForm.BtnStopClick(Sender: TObject);
+begin
+  Status := PcdStop(PcdConn,0);
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+procedure TInstelForm.BtnClearClick(Sender: TObject);
+begin
+  case RadioGroup1.ItemIndex of
+    0: Status := PcdClear(PcdConn,'O');
+    1: Status := PcdClear(PcdConn,'R');
+    2: Status := PcdClear(PcdConn,'F');
+    3: Status := PcdClear(PcdConn,'T');
+    4: Status := PcdClear(PcdConn,'H');
+    5: Status := PcdClear(PcdConn,'A');
+  else Status := PcdClear(PcdConn,'F');
+  end;
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+
+procedure TInstelForm.BtnRunClick(Sender: TObject);
+begin
+  Status := PcdRun(PcdConn,0);
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+
+
+procedure TInstelForm.Label126Click(Sender: TObject);
+var
+  PrBufReg:TRegIniFile;
+begin
+  PrBufReg  := TRegIniFile.Create('Software\Microsoft\SAM');
+  PrBufReg.WriteBool('ET-sim','Sim',true);
+  PrBufReg.Free;
+
+end;
+
+//*************************************************
+//         PLC instellingen
+//*************************************************
+
+procedure TInstelForm.BtnSchrijvenClick(Sender: TObject);
+var
+   Inp  : array[0..60] of Char;
+begin
+   BtnSchrijven.Enabled := false;
+
+   if CheckBox0.Checked then Inp[0] := '1' else Inp[0] := '0';
+   if CheckBox1.Checked then Inp[1] := '1' else Inp[1] := '0';
+   if CheckBox2.Checked then Inp[2] := '1' else Inp[2] := '0';
+   if CheckBox3.Checked then Inp[3] := '1' else Inp[3] := '0';
+   if CheckBox4.Checked then Inp[4] := '1' else Inp[4] := '0';
+   if CheckBox5.Checked then Inp[5] := '1' else Inp[5] := '0';
+   if CheckBox6.Checked then Inp[6] := '1' else Inp[6] := '0';
+   if CheckBox7.Checked then Inp[7] := '1' else Inp[7] := '0';
+   if CheckBox8.Checked then Inp[8] := '1' else Inp[8] := '0';
+   if CheckBox9.Checked then Inp[9] := '1' else Inp[9] := '0';
+
+   if CheckBox10.Checked then Inp[10] := '1' else Inp[10] := '0';
+   if CheckBox11.Checked then Inp[11] := '1' else Inp[11] := '0';
+   if CheckBox12.Checked then Inp[12] := '1' else Inp[12] := '0';
+   if CheckBox13.Checked then Inp[13] := '1' else Inp[13] := '0';
+   if CheckBox14.Checked then Inp[14] := '1' else Inp[14] := '0';
+   if CheckBox15.Checked then Inp[15] := '1' else Inp[15] := '0';
+   if CheckBox16.Checked then Inp[16] := '1' else Inp[16] := '0';
+   if CheckBox17.Checked then Inp[17] := '1' else Inp[17] := '0';
+   if CheckBox18.Checked then Inp[18] := '1' else Inp[18] := '0';
+   if CheckBox19.Checked then Inp[19] := '1' else Inp[19] := '0';
+
+   if CheckBox20.Checked then Inp[20] := '1' else Inp[20] := '0';
+   Inp[21] := '0';
+   Inp[22] := '0';
+   Inp[23] := '0';
+   if CheckBox24.Checked then Inp[24] := '1' else Inp[24] := '0';
+   if CheckBox25.Checked then Inp[25] := '1' else Inp[25] := '0';
+   if CheckBox26.Checked then Inp[26] := '1' else Inp[26] := '0';
+   if CheckBox27.Checked then Inp[27] := '1' else Inp[27] := '0';
+   if CheckBox28.Checked then Inp[28] := '1' else Inp[28] := '0';
+   Inp[29] := '0';
+
+   Inp[30] := '0';
+   Inp[31] := '0';
+   if CheckBox32.Checked then Inp[32] := '1' else Inp[32] := '0';
+   if CheckBox33.Checked then Inp[33] := '1' else Inp[33] := '0';
+   if CheckBox34.Checked then Inp[34] := '1' else Inp[34] := '0';
+   if CheckBox35.Checked then Inp[35] := '1' else Inp[35] := '0';
+   if CheckBox36.Checked then Inp[36] := '1' else Inp[36] := '0';
+   if CheckBox37.Checked then Inp[37] := '1' else Inp[37] := '0';
+   if CheckBox38.Checked then Inp[38] := '1' else Inp[38] := '0';
+   Inp[39] := '0';
+
+   if CheckBox40.Checked then Inp[40] := '1' else Inp[40] := '0';
+   if CheckBox41.Checked then Inp[41] := '1' else Inp[41] := '0';
+   if CheckBox42.Checked then Inp[42] := '1' else Inp[42] := '0';
+   if CheckBox43.Checked then Inp[43] := '1' else Inp[43] := '0';
+   if CheckBox44.Checked then Inp[44] := '1' else Inp[44] := '0';
+   if CheckBox45.Checked then Inp[45] := '1' else Inp[45] := '0';
+   if CheckBox46.Checked then Inp[46] := '1' else Inp[46] := '0';
+   Inp[47] := '0';
+   if CheckBox48.Checked then Inp[48] := '1' else Inp[48] := '0';
+   if CheckBox49.Checked then Inp[49] := '1' else Inp[49] := '0';
+
+   if CheckBox50.Checked then Inp[50] := '1' else Inp[50] := '0';
+   if CheckBox51.Checked then Inp[51] := '1' else Inp[51] := '0';
+   if CheckBox52.Checked then Inp[52] := '1' else Inp[52] := '0';
+   if CheckBox53.Checked then Inp[53] := '1' else Inp[53] := '0';
+   if CheckBox54.Checked then Inp[54] := '1' else Inp[54] := '0';
+   if CheckBox55.Checked then Inp[55] := '1' else Inp[55] := '0';
+   if CheckBox56.Checked then Inp[56] := '1' else Inp[56] := '0';
+
+   if (ConnectForm.GetChannelConnected = true) then
+  begin
+    PcdWrOF(PcdConn, 'F', 800, 57, Inp)
+  end;
+     BtnSchrijven.Enabled := true;
+
+end;
+
+end.

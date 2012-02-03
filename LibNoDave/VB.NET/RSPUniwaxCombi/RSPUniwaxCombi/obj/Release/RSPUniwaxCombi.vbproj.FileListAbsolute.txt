@@ -1,0 +1,16 @@
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\RSPUniwaxCombi\RSPUniwaxCombi\bin\Release\RSPUniwaxCombi.exe
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\RSPUniwaxCombi\RSPUniwaxCombi\bin\Release\RSPUniwaxCombi.pdb
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\RSPUniwaxCombi\RSPUniwaxCombi\bin\Release\RSPUniwaxCombi.xml
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\RSPUniwaxCombi\RSPUniwaxCombi\bin\Release\Interop.S7PROSIMLib.dll
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\RSPUniwaxCombi\RSPUniwaxCombi\obj\Release\ResolveAssemblyReference.cache
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\RSPUniwaxCombi\RSPUniwaxCombi\obj\Release\Interop.S7PROSIMLib.dll
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\RSPUniwaxCombi\RSPUniwaxCombi\obj\Release\RSPUniwaxCombi.vbproj.ResolveComReference.cache
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\RSPUniwaxCombi\RSPUniwaxCombi\obj\Release\RSPUniwaxCombi.Form1.resources
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\RSPUniwaxCombi\RSPUniwaxCombi\obj\Release\RSPUniwaxCombi.Instellingen.resources
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\RSPUniwaxCombi\RSPUniwaxCombi\obj\Release\RSPUniwaxCombi.Resources.resources
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\RSPUniwaxCombi\RSPUniwaxCombi\obj\Release\RSPUniwaxCombi.SplashScreen1.resources
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\RSPUniwaxCombi\RSPUniwaxCombi\obj\Release\RSPUniwaxCombi.vbproj.GenerateResource.Cache
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\RSPUniwaxCombi\RSPUniwaxCombi\obj\Release\RSPUniwaxCombi.exe.licenses
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\RSPUniwaxCombi\RSPUniwaxCombi\obj\Release\RSPUniwaxCombi.exe
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\RSPUniwaxCombi\RSPUniwaxCombi\obj\Release\RSPUniwaxCombi.xml
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\RSPUniwaxCombi\RSPUniwaxCombi\obj\Release\RSPUniwaxCombi.pdb

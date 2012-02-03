@@ -1,0 +1,24 @@
+program Odfjell;
+
+uses
+  Forms,
+  Main in 'Main.pas' {MainForm},
+  FFU in 'FFU.PAS' {MDI_FFU},
+  about in 'about.pas' {AboutBox},
+  BGB in 'BGB.PAS' {MDI_BGB},
+  nodave in 'nodave.pas',
+  ConnInstel in 'ConnInstel.pas' {ConnForm},
+  MahBit32 in 'MahBit32.pas',
+  MahBit8 in 'MahBit8.pas',
+  HelpFlow in 'HelpFlow.pas' {HelpFlowForm};
+
+{$R *.RES}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TMainForm, MainForm);
+  Application.CreateForm(TAboutBox, AboutBox);
+  Application.CreateForm(TConnForm, ConnForm);
+  Application.CreateForm(THelpFlowForm, HelpFlowForm);
+  Application.Run;
+end.

@@ -1,0 +1,317 @@
+unit Hoofd;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ToolWin, ComCtrls, Menus, Buttons, ExtCtrls, ExtDlgs, StrUtils,
+  StdCtrls, Registry, nodave, Spin,  MahBit8, AppEvnts;
+
+type
+THoofdForm = class(TForm)
+    ToolBar1: TToolBar;
+    StatusBar1: TStatusBar;
+    SBCon: TSpeedButton;
+    SBEditConnection: TSpeedButton;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    OpenTextFileDialog1: TOpenTextFileDialog;
+    Timer1: TTimer;
+    SBNewConnection: TSpeedButton;
+    SBdiscon: TSpeedButton;
+    SimulatieAan: TSpeedButton;
+    SBSim: TSpeedButton;
+    SimulatieUit: TSpeedButton;
+    MainMenu1: TMainMenu;
+    Exit1: TMenuItem;
+    Connection1: TMenuItem;
+    Online1: TMenuItem;
+    Offline1: TMenuItem;
+    N3: TMenuItem;
+    ConnectionSettings: TMenuItem;
+    Instellingen1: TMenuItem;
+    Info1: TMenuItem;
+    if1: TMenuItem;
+    ComboBox3: TComboBox;
+    ApplicationEvents1: TApplicationEvents;
+    Panel1: TPanel;
+    procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
+    procedure ComboBox3Change(Sender: TObject);
+    procedure SBEditConnectionClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure SimulatieAanClick(Sender: TObject);
+    procedure SimulatieUitClick(Sender: TObject);
+    procedure ResoursesClick(Sender: TObject);
+    procedure if1Click(Sender: TObject);
+    procedure Offline1Click(Sender: TObject);
+    procedure Online1Click(Sender: TObject);
+    procedure SBNewConnectionClick(Sender: TObject);
+    procedure Exit1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    function  TimeToReal(Time:TDateTime):real;
+    procedure DoConnection;
+    procedure DoDisconnection;
+    procedure MenuAct;
+    procedure Connection(ConnName: String);
+
+  private
+    { Private declarations }
+    verbinding : boolean;
+    oBit8  : TBit8;
+    dc   : pdaveConnection;
+    dcIn : pdaveInterface;
+
+    uitgangen: Array[0..15] of byte;
+    ingangen:  Array[0..44] of byte;
+    aUit, aIn, bUit, bMel, bSch, bMcc , bFsb, bThr, bFo, bTh : byte;
+
+  public
+    { Public declarations }
+    Protocol    : integer;
+    IPAddress   : string;
+    CPURack     : integer;
+    CPUSlot     : integer;
+    MPISpeed    : integer;
+    COMPort     : string;
+    //not used
+    IntfTimeout : Integer;
+    Interval    : Integer;
+    MPILocal    : Integer;
+    MPIRemote   : Integer;
+
+
+    ProjectDir  : string;
+    SimActief   : boolean;
+    OS_Connect  : boolean;
+    RetMessage  : string;
+    readOK : boolean;
+
+ end;
+
+var
+  HoofdForm: THoofdForm;
+
+implementation
+
+uses  Instellingen, InfoRes, Info, Sim, Editor;
+
+{$R *.dfm}
+
+procedure THoofdForm.Exit1Click(Sender: TObject);
+begin
+  application.Terminate;
+end;
+
+procedure THoofdForm.FormCreate(Sender: TObject);
+begin
+  verbinding := false;
+  SimActief  := false;
+
+
+  ProjectDir:=ExtractFilePath(application.ExeName);
+  MenuAct;
+
+end;
+
+procedure THoofdForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+//
+end;
+
+procedure THoofdForm.MenuAct;
+begin
+    SBcon.Visible    :=  not verbinding;
+    SBdiscon.Visible := verbinding;
+    //SBVerbOpties.Enabled := not verbinding;
+    MainMenu1.Items[1].Items[0].Checked := verbinding;
+    MainMenu1.Items[1].Items[0].Enabled := not verbinding;
+    MainMenu1.Items[1].Items[1].Checked := not verbinding;
+    MainMenu1.Items[1].Items[1].Enabled := verbinding;
+    MainMenu1.Items[1].Items[3].Enabled := not verbinding;
+    SimulatieAan.Visible := not SimActief;
+    SimulatieUit.Visible := SimActief;
+    SBSim.Enabled := verbinding;
+end;
+
+procedure THoofdForm.ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
+begin
+   if(SimActief) then
+   StatusBar1.Panels[3].Text:='Sim AAN'
+  else
+   StatusBar1.Panels[3].Text:='Sim UIT';
+  MenuAct;
+end;
+
+procedure THoofdForm.FormShow(Sender: TObject);
+var
+  ConnList: TStringList;
+  Index: Integer;
+  ConnName: String;
+begin
+  ConnList:=TStringList.Create;
+  ConnectionEditor.IniFile.ReadSectionValues('Connections', ConnList);
+  ConnList.Sorted:=True;
+  Index:=0;
+  While Index < ConnList.Count do
+  begin
+    ConnName:=ConnList.Names[Index];
+    ComboBox3.Items.Append(ConnName);
+    Inc(Index);
+  end;
+  ConnList.Free;
+  ComboBox3.ItemIndex:=0;
+  Connection(ComboBox3.Text);
+end;
+
+procedure THoofdForm.Online1Click(Sender: TObject);
+begin
+  DoConnection;
+end;
+
+procedure THoofdForm.Offline1Click(Sender: TObject);
+begin
+  DoDisconnection;
+end;
+procedure THoofdForm.SBEditConnectionClick(Sender: TObject);
+begin
+  If ComboBox3.ItemIndex >= 0 then
+  begin
+    ConnectionEditor.SetConnection(ComboBox3.Text);
+    If ConnectionEditor.ShowModal = mrOK then Connection(ComboBox3.Text);
+  end;
+end;
+procedure THoofdForm.SBNewConnectionClick(Sender: TObject);
+var
+  Index: Integer;
+begin
+  ConnectionEditor.SetConnection('');
+  If ConnectionEditor.ShowModal = mrOK then
+  begin
+    Index:=ComboBox3.Items.Add(ConnectionEditor.Connection.Text);
+    ComboBox3.ItemIndex:=Index;
+    Connection(ComboBox3.Text);
+  end;
+end;
+
+procedure THoofdForm.Connection(ConnName: String);
+begin
+  If ConnName <> '' then
+  begin
+    Protocol :=ConnectionEditor.IniFile.ReadInteger(ConnName, 'Protocol', 122);
+    CPURack  :=ConnectionEditor.IniFile.ReadInteger(ConnName, 'CPURack', 0);
+    CPUSlot  :=ConnectionEditor.IniFile.ReadInteger(ConnName, 'CPUSlot', 2);
+    COMPort  :=ConnectionEditor.IniFile.ReadString(ConnName, 'COMPort', 'COM1:');
+    IPAddress:=ConnectionEditor.IniFile.ReadString(ConnName, 'IPAddress', '');
+    IntfTimeout:=ConnectionEditor.IniFile.ReadInteger(ConnName, 'Timeout', 100000);
+    Interval:=ConnectionEditor.IniFile.ReadInteger(ConnName, 'Interval', 1000);
+    MPISpeed :=ConnectionEditor.IniFile.ReadInteger(ConnName, 'MPISpeed', 2);
+    MPILocal:=ConnectionEditor.IniFile.ReadInteger(ConnName, 'MPILocal', 1);
+    MPIRemote:=ConnectionEditor.IniFile.ReadInteger(ConnName, 'MPIRemote', 2);
+  end;
+end;
+
+procedure THoofdForm.ComboBox3Change(Sender: TObject);
+begin
+  Connection(ComboBox3.Text);
+end;
+
+procedure THoofdForm.DoConnection;
+Var
+ ComName:Array[0..20] of Char;
+ Fds:_daveOSserialType;
+ S:String;
+ i:Integer;
+begin
+    S:=Trim(IPAddress);
+    For i:=1 To Length(S) Do
+      ComName[i-1]:=S[i];
+
+    ComName[Length(S)]:=#0;
+    StatusBar1.Panels[0].Text:='IpAdres: '+ComName+ ', port = 102';
+    fds.rfd:=openSocket(102,COMname);
+    fds.wfd:=fds.rfd;
+
+    verbinding := false;
+    StatusBar1.Panels[1].Text :='Attempt of creation of the connection';
+    //creation of the interface
+    if (fds.rfd>0) then
+    begin
+      dcIn:=daveNewInterface(fds, 'IF1',0,Protocol, MPISpeed);
+      dcIn^.timeout:=500;
+      StatusBar1.Panels[1].Text :='New interface: '+ 'protocol = '+inttostr(Protocol) + ', speed = '+inttostr(MPISpeed);
+
+      //initialize the adapter
+      if (daveInitAdapter(dcIn)=0) then
+      begin
+        dc :=daveNewConnection(dcIn,2, CPURack, CPUSlot);
+        //connection
+        if (daveConnectPLC(dc)=0) then
+        begin
+          StatusBar1.Panels[0].Text := 'Connected Siemens '+ComName;
+          verbinding := true;
+        end else StatusBar1.Panels[0].Text :='Not successful attempt of connection!';
+      end else StatusBar1.Panels[0].Text :='Not successful attempt to initialize  the adapter!';
+    end else StatusBar1.Panels[0].Text :='Not successful attempt of creation of the interface!';
+
+    MenuAct;
+
+end;
+
+procedure THoofdForm.DoDisconnection;
+begin
+  if verbinding then
+  begin
+    daveDisconnectPLC(dc);
+    daveDisconnectAdapter(dcIn);
+    verbinding := false;
+    MenuAct;
+    StatusBar1.Panels[0].Text:='Disconnected';
+  end;
+end;
+
+function THoofdForm.TimeToReal(Time:TDateTime):real;
+var
+  uur,min,sec,msec:word;
+begin
+  DecodeTime(Time,uur,min,sec,msec);
+  result:=60*uur+min+(sec/60);
+end;
+
+procedure THoofdForm.if1Click(Sender: TObject);  begin InfoForm.show;   end;
+procedure THoofdForm.ResoursesClick(Sender: TObject); begin InfoResForm.show;   end;
+procedure THoofdForm.SimulatieUitClick(Sender: TObject);
+begin
+  SimActief := false;
+end;
+procedure THoofdForm.SimulatieAanClick(Sender: TObject);
+begin
+  SimActief := true;
+end;
+
+procedure THoofdForm.Timer1Timer(Sender: TObject);
+var
+ Res:LongInt;
+ i : integer;
+begin
+  if verbinding then
+  begin
+    res := daveReadBytes(dc, daveOutputs, 0, 0, 16, NIL);
+    if (res = 0) then
+    begin
+      For i := 0 to 43 do
+           uitgangen[i] := daveGetU8(dc);
+      readOK := true;
+    end else
+      readOK := false;
+  end;
+
+  if verbinding then
+  begin
+    res := daveWriteBytes(dc, daveInputs, 0, 0, 44, @ingangen);
+  end;
+end;
+
+end.
+

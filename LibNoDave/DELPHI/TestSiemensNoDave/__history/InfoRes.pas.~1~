@@ -1,0 +1,119 @@
+unit InfoRes;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls;
+
+type
+  TInfoResForm = class(TForm)
+    ListBoxInfo: TListBox;
+    Label1: TLabel;
+    procedure FormActivate(Sender: TObject);
+    procedure SetInfo;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  InfoResForm: TInfoResForm;
+
+implementation
+
+{$R *.dfm}
+
+
+procedure TInfoResForm.FormActivate(Sender: TObject);
+begin
+  SetInfo;
+end;
+
+procedure TInfoResForm.SetInfo;
+begin
+  ListBoxInfo.Items.Add('---------------------------------------------------');
+  ListBoxInfo.Items.Add('Flags statussen');
+  ListBoxInfo.Items.Add('---------------------------------------------------');
+  ListBoxInfo.Items.Add('F 100   status skid: OFF');
+  ListBoxInfo.Items.Add('F 101   status skid: process is running');
+  ListBoxInfo.Items.Add('F 102   status skid: dosing pumps runs manual');
+  ListBoxInfo.Items.Add('F 103   status skid: rinse water');
+  ListBoxInfo.Items.Add('F 104   status skid: dosing pumps OFF');
+  ListBoxInfo.Items.Add('F 105   red signal light alarm');
+  ListBoxInfo.Items.Add('---------------------------------------------------');
+  ListBoxInfo.Items.Add('Flags alarmen');
+  ListBoxInfo.Items.Add('---------------------------------------------------');
+  ListBoxInfo.Items.Add('F 106   alarm liquid leak');
+  ListBoxInfo.Items.Add('F 107   alarm low water level in reactiontank');
+  ListBoxInfo.Items.Add('F 108   alarm low water level in watertank');
+  ListBoxInfo.Items.Add('F 109   alarm low FA level in buffertank');
+  ListBoxInfo.Items.Add(' ');
+  ListBoxInfo.Items.Add('F 110   alarm low H2O2 level in buffertank');
+  ListBoxInfo.Items.Add('F 111   alarm low water pressure in water supply system');
+  ListBoxInfo.Items.Add('F 112   alarm emergency stop');
+  ListBoxInfo.Items.Add('F 113   alarm collect failure circuit breakers');
+  ListBoxInfo.Items.Add('F 114   alarm water temperature reactiontank to high');
+  ListBoxInfo.Items.Add('F 115   alarm water temperature reactiontank to low');
+  ListBoxInfo.Items.Add('F 116   alarm H2O2 temperature in storagetank rise to fast');
+  ListBoxInfo.Items.Add('F 117   alarm FA temperature in storagetank rise to fast');
+  ListBoxInfo.Items.Add('F 118   power fail, UPS backup active');
+  ListBoxInfo.Items.Add('F 119   low battery PCD');
+  ListBoxInfo.Items.Add(' ');
+  ListBoxInfo.Items.Add('F 120   No sewage flow');
+  ListBoxInfo.Items.Add('F 121   alarm to high level in reaction tank');
+  ListBoxInfo.Items.Add(' ');
+  ListBoxInfo.Items.Add('---------------------------------------------------');
+  ListBoxInfo.Items.Add('Registers run-time, simulatie (...)');
+  ListBoxInfo.Items.Add('---------------------------------------------------');
+  ListBoxInfo.Items.Add('R 100(600)   water temperature in reaction tank (0.1 ºC)');
+  ListBoxInfo.Items.Add('R 101(601)   H2O2 temperature in storage tank (0.1 ºC)');
+  ListBoxInfo.Items.Add('R 102(602)   FA temperature in storage tank (0.1 ºC)');
+  ListBoxInfo.Items.Add('R 103(603)   pressure watersupply (0.1 Bar)');
+  ListBoxInfo.Items.Add('R 104(604)   pressure H2O2 in storage tank [0 ... 1000] (0.1Bar)');
+  ListBoxInfo.Items.Add('R 105(605)   pressure FA in storage tank [0 ... 1000] (0.1Bar)');
+  ListBoxInfo.Items.Add('R 106(606)   Redox untreated [-1500 ... 1500] (mV)');
+  ListBoxInfo.Items.Add('R 107(607)   Redox treated [-1500 ... 1500] (mV)');
+  ListBoxInfo.Items.Add('R 108(608)   Sewage flow [m3/h]');
+  ListBoxInfo.Items.Add('R 109(609)   Sewage flow 0 ... 1000 [0.1%]');
+  ListBoxInfo.Items.Add(' ');
+  ListBoxInfo.Items.Add('R 110   level of the H2O2 in storage tank  [0 ... 1000] (0.1%)');
+  ListBoxInfo.Items.Add('R 111   level of the FA in storage tank  [0 ... 1000] (0.1%)');
+  ListBoxInfo.Items.Add('R 112   value flow counter FA  (mL)');
+  ListBoxInfo.Items.Add('R 113   value flow counter H2O2 (mL)');
+  ListBoxInfo.Items.Add('R 114   setpoint dosingpump H2O2 [0 ... 1000] (0.1%)');
+  ListBoxInfo.Items.Add('R 115   setpoint dosingpump FA [0 ... 1000] (0.1%)');
+  ListBoxInfo.Items.Add('R 116   setpoint transferpump H2O2 [0 ... 1000] (0.1%)');
+  ListBoxInfo.Items.Add('R 117   setpoint transferpump FA [0 ... 1000] (0.1%)');
+  ListBoxInfo.Items.Add('');
+  ListBoxInfo.Items.Add('---------------------------------------------------');
+  ListBoxInfo.Items.Add('Registers instellingen');
+  ListBoxInfo.Items.Add('---------------------------------------------------');
+  ListBoxInfo.Items.Add('R 200   constant FA [0 ... 1000]');
+  ListBoxInfo.Items.Add('R 201   constant H2O2 [0 ... 1000]');
+  ListBoxInfo.Items.Add('R 202   setpoint transferpump H2O2 0 ... 1000 (0.1%)');
+  ListBoxInfo.Items.Add('R 203   setpoint transferpump FA 0 ... 1000 (0.1%)');
+  ListBoxInfo.Items.Add('R 204   water temperature reactiontank to high (10ºC)');
+  ListBoxInfo.Items.Add('R 205   setpoint of the water temperature in the reactiontank (0.1 ºC)');
+  ListBoxInfo.Items.Add('R 206   water temperature reactiontank to low (10 = 1 C)');
+  ListBoxInfo.Items.Add('R 207   low pressure in water supply system (10 = 1 Bar)');
+  ListBoxInfo.Items.Add('R 208   temp hysteresis of the heater 5 ... 30 (0.5 ... 3.0 ºC)');
+  ListBoxInfo.Items.Add('R 209   max range of the level sensor in the FA storage tank  [0.1 metre]');
+  ListBoxInfo.Items.Add(' ');
+  ListBoxInfo.Items.Add('R 210   max range of the level sensor in the H2O2 storage tank  [0.1 metre]');
+  ListBoxInfo.Items.Add('R 211   time for full dosing capacity with start up (sec)');
+  ListBoxInfo.Items.Add('R 212   time span for full dosing capacity (sec)');
+  ListBoxInfo.Items.Add('R 213   time for full dosing capacity every time span (sec)');
+  ListBoxInfo.Items.Add('R 214   sample time to log data [00:01 ... 24:00] (HH:MM)');
+  ListBoxInfo.Items.Add('R 215   time rinse water valve is open (sec)');
+  ListBoxInfo.Items.Add('R 216   time delay for swithing heater on and off (sec)');
+  ListBoxInfo.Items.Add('R 217   time delay for swithing cooler on and off (sec)');
+  ListBoxInfo.Items.Add('R 218   height of the FA storage tank  [0.1] (metre)');
+  ListBoxInfo.Items.Add('R 219   height of the H2O2 storage tank  [0.1] (metre)');
+  ListBoxInfo.Items.Add(' ');
+  ListBoxInfo.Items.Add('R 220   temp hysteresis of the cooler  [5 ... 30] (0.1ºC)');
+  ListBoxInfo.Items.Add('R 221   max range of the sewage sensor');
+end;
+
+end.

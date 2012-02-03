@@ -1,0 +1,305 @@
+unit Sim;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, TeEngine, Series, TeeProcs, Chart, ExtCtrls, StdCtrls, ComCtrls,
+  Buttons;
+
+ const  aantal = 99;
+
+type
+  TGraRec = Record
+    Tijd      : real;
+    NivoH     : real;
+    DosH      : real;
+    NivoF     : real;
+    DosF      : real;
+
+    TempHO    : real;
+    tempFA    : real;
+    TempRT    : real;
+
+  end;
+  TSimForm = class(TForm)
+    Panel2: TPanel;
+    TrackBarWT: TTrackBar;
+    LabelWT: TLabel;
+    TrackBarBH2O2: TTrackBar;
+    LabelBH2O2: TLabel;
+    TrackBarBFA: TTrackBar;
+    LabelBFA: TLabel;
+    LabelR: TLabel;
+    TrackBarR: TTrackBar;
+    TrackBarSFA: TTrackBar;
+    TrackBarSH2O2: TTrackBar;
+    LabelSFA: TLabel;
+    LabelSH2O2: TLabel;
+    Panel1: TPanel;
+    Panel4: TPanel;
+    Chart1: TChart;
+    Series1: TLineSeries;
+    Series2: TLineSeries;
+    Series3: TLineSeries;
+    Series4: TLineSeries;
+    procedure FormCreate(Sender: TObject);
+    procedure SpeedButtonSelectClick(Sender: TObject);
+    procedure TrackBarBH2O2Change(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure TrackBarWTChange(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure SetTrackBars;
+    procedure SetFlag(nummer : integer);
+    procedure VulGegevens;
+    procedure ToevoegWaardes;
+
+  private
+    { Private declarations }
+    TempHO  : array[0..aantal] of real;
+    tempFA  : array[0..aantal] of real;
+    TempRT  : array[0..aantal] of real;
+
+    NivoWT  : array[0..aantal] of real;
+    NivoHO  : array[0..aantal] of real;
+    NivoFA  : array[0..aantal] of real;
+    NivoRT  : array[0..aantal] of real;
+
+
+    DrukW   : array[0..aantal] of real;
+
+  public
+    { Public declarations }
+    FlagIn  : array[0..1] of Char;
+    indexCB : integer;
+ end;
+
+var
+  SimForm: TSimForm;
+
+implementation
+uses Connect, Instellingen, Hoofd;
+{$R *.dfm}
+procedure TSimForm.FormCreate(Sender: TObject);
+var
+  i : byte;
+begin
+  For i := 0 to aantal do
+  begin
+    TempHO[i] := 0;
+    TempFA[i] := 0;
+    TempRT[i] := 0;
+
+    NivoWT[i] := 0;
+    NivoHO[i] := 0;
+    NivoFA[i] := 0;
+    NivoRT[i] := 0;
+
+    DrukW[i] := 0;
+
+  end;
+end;
+
+procedure TSimForm.FormActivate(Sender: TObject);
+begin
+    SetTrackBars;
+    indexCB := 0;
+    VulGegevens;
+end;
+procedure TSimForm.SetTrackBars;
+begin
+    LabelWT.Caption    := 'Water tank level: '      +IntToStr(TrackBarWT.Position)+'%';
+    LabelBH2O2.Caption := 'Buffer H2O2 tank level: '+IntToStr(TrackBarBH2O2.Position)+'%';
+    LabelBFA.Caption   := 'Buffer FA tank level: '  +IntToStr(TrackBarBFA.Position)+'%';
+    LabelR.Caption     := 'Reactor tank level: '    +IntToStr(TrackBarR.Position)+'%';
+    LabelSH2O2.Caption := 'Storage H2O2 tank druk: '+floatToStr(TrackBarSH2O2.Position/100.0)+'Bar';
+    LabelSFA.Caption   := 'Storage FA tank druk: '  +floatToStr(TrackBarsFA.Position/100.0)+'Bar';
+    end;
+
+procedure TSimForm.Timer1Timer(Sender: TObject);
+var
+  Uit  : array[0..8] of Char;
+  ip   : byte;
+begin
+  For ip := 0 to 98 do
+  begin
+    TempHO[ip] := TempHO[ip+1];
+    TempFA[ip] := TempFA[ip+1];
+    TempRT[ip] := TempRT[ip+1];
+
+    NivoWT[ip] := NivoWT[ip+1];
+    NivoHO[ip] := NivoHO[ip+1];
+    NivoFA[ip] := NivoFA[ip+1];
+    NivoRT[ip] := NivoRT[ip+1];
+
+   DrukW[ip]  := DrukW[ip+1];
+  end;
+
+  if (ConnectForm.GetChannelConnected = true) then
+  begin
+
+    respons := PcdRdRTC(PcdConn, 'R', 620, 4, lpData);
+    if (respons=0) then
+    begin
+      TrackBarWT.Position    :=lpData[0];
+      TrackBarBH2O2.Position :=lpData[1];
+      TrackBarBFA.Position   :=lpData[2];
+      TrackBarR.Position     :=lpData[3];
+    end;
+    NivoWT[aantal] := TrackBarWT.Position/1.0;
+    NivoHO[aantal] := TrackBarBH2O2.Position/1.0;
+    NivoFA[aantal] := TrackBarBFA.Position/1.0;
+    NivoRT[aantal] := TrackBarR.Position/1.0;
+
+
+    respons := PcdRdRTC(PcdConn, 'R', 600, 6, lpData);
+    if (respons=0) then
+    begin
+      TrackBarSH2O2.Position    :=lpData[4];
+      TrackBarSFA.Position      :=lpData[5];
+    end;
+
+
+
+
+  end else
+  begin
+    //zonder verbinding
+    TempHO[aantal] := 0;
+    TempFA[aantal] := 0;
+    TempRT[aantal] := 0;
+
+    NivoWT[aantal] := 0;
+    NivoHO[aantal] := 0;
+    NivoFA[aantal] := 0;
+    NivoRT[aantal] := 0;
+
+    DrukW[aantal]  := 0;
+
+  end;
+  ToevoegWaardes;
+end;
+
+procedure TSimForm.TrackBarWTChange(Sender: TObject);
+var
+  Data   : lpDataType;
+begin
+  if (ConnectForm.GetChannelConnected = true) then
+  begin
+      Data[0] := TrackBarWT.Position;
+      Data[1] := TrackBarBH2O2.Position;
+      Data[2] := TrackBarBFA.Position;
+      Data[3] := TrackBarR.Position;
+      PcdWrRTC(PcdConn, 'R', 620, 4, Data);
+  end;
+  SetTrackBars;
+end;
+
+procedure TSimForm.TrackBarBH2O2Change(Sender: TObject);
+var
+  Data   : lpDataType;
+begin
+  if (ConnectForm.GetChannelConnected = true) then
+  begin
+      Data[4] := TrackBarSH2O2.Position;
+      Data[5] := TrackBarSFA.Position;
+      PcdWrRTC(PcdConn, 'R', 600, 6, Data);
+  end;
+  SetTrackBars;
+end;
+procedure TSimForm.SetFlag(nummer : integer);
+begin
+  if (ConnectForm.GetChannelConnected = true) then
+  begin
+    respons := PcdRdIOF(PcdConn, 'F', nummer, 1, FlagIn);
+    if (respons=0) then
+    begin
+      if (FlagIn[0] = '1') then   PcdWrOF(PcdConn, 'F', nummer, 1, '0')
+      else                        PcdWrOF(PcdConn, 'F', nummer, 1, '1');
+    end;
+  end;
+end;
+
+
+procedure TSimForm.SpeedButtonSelectClick(Sender: TObject);
+begin
+  indexCB   := indexCB +1;
+  if indexCB = 5 then indexCB := 0;
+   VulGegevens;
+
+end;
+procedure TSimForm.VulGegevens;
+begin
+  Chart1.Series[0].Clear;
+  Chart1.Series[1].Clear;
+  Chart1.Series[2].Clear;
+
+  Chart1.Title.Text.Clear;
+
+  case indexCB of
+     0: begin
+        Chart1.Title.Text.Add('Temperature tanks: Reaction(red), H2O2(blue), FA(green)');
+        Chart1.LeftAxis.Title.Caption := 'Temperature (dig.C)';
+        Chart1.LeftAxis.Maximum := InstelForm.EditScaleMaxTemp.Value;//100;
+        Chart1.LeftAxis.Minimum := 0;
+        end;
+     1: begin
+        Chart1.Title.Text.Add('Content tanks:  Water(red), H2O2(blue), FA(green), Reaction(Paarse)');
+        Chart1.LeftAxis.Title.Caption := 'Content (%)';
+        Chart1.LeftAxis.Maximum := 100;
+        Chart1.LeftAxis.Minimum := 0;
+        end;
+     2: begin
+        Chart1.Title.Text.Add('Sewage flow(red)');
+        Chart1.LeftAxis.Title.Caption := 'Flow (m3/h)';
+        Chart1.LeftAxis.Maximum := InstelForm.EditScaleMaxSew.Value; //10000
+        Chart1.LeftAxis.Minimum := 0;
+        end;
+     3: begin
+        Chart1.Title.Text.Add('Redox: untreated(red), treated(blue)');
+        Chart1.LeftAxis.Title.Caption := 'Redox (mV)';
+        Chart1.LeftAxis.Maximum := InstelForm.EditScaleMaxRed.Value;//1600;
+        Chart1.LeftAxis.Minimum := -1600;
+        end;
+     4: begin
+        Chart1.Title.Text.Add('Water pressure(blue)');
+        Chart1.LeftAxis.Title.Caption := 'Pressure (Bar)';
+        Chart1.LeftAxis.Maximum := InstelForm.EditScaleMaxPrs.Value;//5;
+        Chart1.LeftAxis.Minimum := 0;
+        end;
+  end;
+end;
+procedure TSimForm.ToevoegWaardes;
+var
+  ip : byte;
+begin
+  Chart1.Series[0].Clear;
+  Chart1.Series[1].Clear;
+  Chart1.Series[2].Clear;
+  Chart1.Series[3].Clear;
+
+  case indexCB of
+     0: For ip := 0 to aantal-1 do
+        begin
+          Chart1.SeriesList.Series[0].AddXY(ip,TempRT[ip],'bla',clRed);
+          Chart1.SeriesList.Series[1].AddXY(ip,TempHO[ip],'bla',clBlue);
+          Chart1.SeriesList.Series[2].AddXY(ip,TempFA[ip],'bla',clGreen);
+        end;
+     1: For ip := 0 to 98 do
+          begin
+          Chart1.SeriesList.Series[0].AddXY(ip,NivoWT[ip],'bla',clRed);
+          Chart1.SeriesList.Series[1].AddXY(ip,NivoHO[ip],'bla',clBlue);
+          Chart1.SeriesList.Series[2].AddXY(ip,NivoFA[ip],'bla',clGreen);
+          Chart1.SeriesList.Series[3].AddXY(ip,NivoRT[ip],'bla',clPurple);
+        end;
+     4: For ip := 0 to 98 do
+          begin
+          Chart1.SeriesList.Series[1].AddXY(ip,DrukW[ip],'bla',clBlue);
+        end;
+  end;
+
+end;
+
+end.
+
+

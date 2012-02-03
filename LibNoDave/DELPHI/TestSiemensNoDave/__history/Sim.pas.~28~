@@ -1,0 +1,40 @@
+unit Sim;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, TeEngine, Series, TeeProcs, Chart, ExtCtrls, StdCtrls, ComCtrls,
+  Buttons;
+
+ const  aantal = 99;
+
+type
+  TSimForm = class(TForm)
+    Panel1: TPanel;
+    Panel4: TPanel;
+    Chart1: TChart;
+    Series1: TLineSeries;
+    Series2: TLineSeries;
+    Series3: TLineSeries;
+    Series4: TLineSeries;
+    Panel2: TPanel;
+
+  private
+    { Private declarations }
+
+  public
+    { Public declarations }
+ end;
+
+var
+  SimForm: TSimForm;
+
+implementation
+uses Connect, Instellingen, Hoofd;
+{$R *.dfm}
+
+
+
+end.
+

@@ -1,0 +1,351 @@
+unit Instellingen;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls, ComCtrls, Mask, DB, ADODB, DBCtrls, Grids,
+  DBGrids, Spin, TeeProcs, TeEngine, Chart, Menus, ToolWin, jpeg, Series,
+  Registry;
+
+type
+  TMetRec = Record
+    Tijd      : real;
+    StartTijd : real;
+    Sewage    : real;
+    RedoxU    : real;
+    RedoxT    : real;
+    NivoH     : real;
+    DosH      : real;
+    NivoF     : real;
+    DosF      : real;
+  end;
+  TInstelForm = class(TForm)
+    Panel1: TPanel;
+    PageControl1: TPageControl;
+    TabSheet2: TTabSheet;
+    Label126: TLabel;
+    RadioGroup2: TRadioGroup;
+    RadioGroup1: TRadioGroup;
+    BtnClear: TButton;
+    BtnRestart: TButton;
+    BtnStop: TButton;
+    BtnRun: TButton;
+    BTNKlockPLC: TButton;
+    StatusBarInst: TStatusBar;
+    TabSheet1: TTabSheet;
+    CheckBox0: TCheckBox;
+    Label12: TLabel;
+    CheckBox1: TCheckBox;
+    CheckBox2: TCheckBox;
+    CheckBox3: TCheckBox;
+    CheckBox4: TCheckBox;
+    CheckBox5: TCheckBox;
+    CheckBox6: TCheckBox;
+    CheckBox7: TCheckBox;
+    CheckBox8: TCheckBox;
+    CheckBox9: TCheckBox;
+    CheckBox11: TCheckBox;
+    CheckBox10: TCheckBox;
+    CheckBox13: TCheckBox;
+    CheckBox12: TCheckBox;
+    CheckBox14: TCheckBox;
+    CheckBox15: TCheckBox;
+    CheckBox16: TCheckBox;
+    CheckBox17: TCheckBox;
+    CheckBox18: TCheckBox;
+    CheckBox19: TCheckBox;
+    CheckBox20: TCheckBox;
+    CheckBox24: TCheckBox;
+    CheckBox25: TCheckBox;
+    CheckBox26: TCheckBox;
+    CheckBox27: TCheckBox;
+    CheckBox28: TCheckBox;
+    CheckBox32: TCheckBox;
+    CheckBox33: TCheckBox;
+    CheckBox34: TCheckBox;
+    CheckBox35: TCheckBox;
+    CheckBox36: TCheckBox;
+    CheckBox37: TCheckBox;
+    CheckBox40: TCheckBox;
+    CheckBox41: TCheckBox;
+    CheckBox42: TCheckBox;
+    CheckBox43: TCheckBox;
+    CheckBox44: TCheckBox;
+    CheckBox45: TCheckBox;
+    CheckBox46: TCheckBox;
+    CheckBox48: TCheckBox;
+    CheckBox49: TCheckBox;
+    CheckBox50: TCheckBox;
+    CheckBox51: TCheckBox;
+    CheckBox52: TCheckBox;
+    CheckBox53: TCheckBox;
+    CheckBox54: TCheckBox;
+    CheckBox55: TCheckBox;
+    CheckBox56: TCheckBox;
+    CheckBox38: TCheckBox;
+    procedure FormDeactivate(Sender: TObject);
+    procedure Label126Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure BtnRunClick(Sender: TObject);
+    procedure BtnStopClick(Sender: TObject);
+    procedure BTNKlockPLCClick(Sender: TObject);
+    procedure BtnClearClick(Sender: TObject);
+    procedure BtnRestartClick(Sender: TObject);
+    procedure DoeActief;
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    Status  : integer;
+  end;
+
+var
+  InstelForm: TInstelForm;
+
+implementation
+
+uses Connect, Hoofd, Password;
+
+{$R *.dfm}
+procedure TInstelForm.FormCreate(Sender: TObject);
+var
+  PrBufReg:TRegIniFile;
+begin
+  PrBufReg:= TRegIniFile.Create('Software\ET-sim');
+
+
+  PrBufReg.Free;
+
+end;
+
+procedure TInstelForm.FormActivate(Sender: TObject);
+begin
+  DoeActief;
+end;
+
+procedure TInstelForm.DoeActief;
+var
+  antwoord : boolean;
+begin
+  CheckBox0.Checked := HoofdForm.InitVar[0];
+  CheckBox1.Checked := HoofdForm.InitVar[1];
+  CheckBox2.Checked := HoofdForm.InitVar[2];
+  CheckBox3.Checked := HoofdForm.InitVar[3];
+  CheckBox4.Checked := HoofdForm.InitVar[4];
+  CheckBox5.Checked := HoofdForm.InitVar[5];
+  CheckBox6.Checked := HoofdForm.InitVar[6];
+  CheckBox7.Checked := HoofdForm.InitVar[7];
+  CheckBox8.Checked := HoofdForm.InitVar[8];
+  CheckBox9.Checked := HoofdForm.InitVar[9];
+
+  CheckBox10.Checked := HoofdForm.InitVar[10];
+  CheckBox11.Checked := HoofdForm.InitVar[11];
+  CheckBox12.Checked := HoofdForm.InitVar[12];
+  CheckBox13.Checked := HoofdForm.InitVar[13];
+  CheckBox14.Checked := HoofdForm.InitVar[14];
+  CheckBox15.Checked := HoofdForm.InitVar[15];
+  CheckBox16.Checked := HoofdForm.InitVar[16];
+  CheckBox17.Checked := HoofdForm.InitVar[17];
+  CheckBox18.Checked := HoofdForm.InitVar[18];
+  CheckBox19.Checked := HoofdForm.InitVar[19];
+
+  CheckBox20.Checked := HoofdForm.InitVar[20];
+  //CheckBox21.Checked := HoofdForm.InitVar[21];
+  //CheckBox22.Checked := HoofdForm.InitVar[22];
+  //CheckBox23.Checked := HoofdForm.InitVar[23];
+  CheckBox24.Checked := HoofdForm.InitVar[24];
+  CheckBox25.Checked := HoofdForm.InitVar[25];
+  CheckBox26.Checked := HoofdForm.InitVar[26];
+  CheckBox27.Checked := HoofdForm.InitVar[27];
+  CheckBox28.Checked := HoofdForm.InitVar[28];
+  //CheckBox29.Checked := HoofdForm.InitVar[29];
+
+  //CheckBox30.Checked := HoofdForm.InitVar[30];
+  //CheckBox31.Checked := HoofdForm.InitVar[31];
+  CheckBox32.Checked := HoofdForm.InitVar[32];
+  CheckBox33.Checked := HoofdForm.InitVar[33];
+  CheckBox34.Checked := HoofdForm.InitVar[34];
+  CheckBox35.Checked := HoofdForm.InitVar[35];
+  CheckBox36.Checked := HoofdForm.InitVar[36];
+  CheckBox37.Checked := HoofdForm.InitVar[37];
+  CheckBox38.Checked := HoofdForm.InitVar[38];
+  //CheckBox39.Checked := HoofdForm.InitVar[39];
+
+  CheckBox40.Checked := HoofdForm.InitVar[40];
+  CheckBox41.Checked := HoofdForm.InitVar[41];
+  CheckBox42.Checked := HoofdForm.InitVar[42];
+  CheckBox43.Checked := HoofdForm.InitVar[43];
+  CheckBox44.Checked := HoofdForm.InitVar[44];
+  CheckBox45.Checked := HoofdForm.InitVar[45];
+  CheckBox46.Checked := HoofdForm.InitVar[46];
+  //CheckBox47.Checked := HoofdForm.InitVar[47];
+  CheckBox48.Checked := HoofdForm.InitVar[48];
+  CheckBox49.Checked := HoofdForm.InitVar[49];
+
+  CheckBox50.Checked := HoofdForm.InitVar[50];
+  CheckBox51.Checked := HoofdForm.InitVar[51];
+  CheckBox52.Checked := HoofdForm.InitVar[52];
+  CheckBox53.Checked := HoofdForm.InitVar[53];
+  CheckBox54.Checked := HoofdForm.InitVar[54];
+  CheckBox55.Checked := HoofdForm.InitVar[55];
+  CheckBox56.Checked := HoofdForm.InitVar[56];
+
+
+  {PLC}
+  antwoord := ConnectForm.GetChannelConnected;
+  BtnRun.Enabled      := antwoord;
+  Btnstop.Enabled     := antwoord;
+  BtnRestart.Enabled  := antwoord;
+  BtnRun.Enabled      := antwoord;
+  BtnClear.Enabled    := antwoord;
+  BTNKlockPLC.Enabled := antwoord;
+  RadioGroup1.Enabled := antwoord;
+  RadioGroup2.Enabled := antwoord;
+
+
+  StatusBarInst.Panels[0].Text:= 'Verbonden met PLC';
+  if(antwoord = false) then
+      StatusBarInst.Panels[0].Text:= 'Te doen: Maak verbinding met PLC eerst';
+
+end;
+
+//*************************************************
+//         PLC page
+//*************************************************
+procedure TInstelForm.BTNKlockPLCClick(Sender: TObject);
+begin
+  Status := PcdSetClockDialog(PcdConn,self.Handle);
+//  LabelAntwoord.Caption := PcdMessage(Status);
+end;
+procedure TInstelForm.BtnRestartClick(Sender: TObject);
+begin
+  case RadioGroup2.ItemIndex of
+    0: Status := PcdRestart(PcdConn, 0, 0);
+    1: Status := PcdRestart(PcdConn, 0, 1);
+  else Status := PcdRestart(PcdConn, 0, 0);
+  end;
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+procedure TInstelForm.BtnStopClick(Sender: TObject);
+begin
+  Status := PcdStop(PcdConn,0);
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+procedure TInstelForm.BtnClearClick(Sender: TObject);
+begin
+  case RadioGroup1.ItemIndex of
+    0: Status := PcdClear(PcdConn,'O');
+    1: Status := PcdClear(PcdConn,'R');
+    2: Status := PcdClear(PcdConn,'F');
+    3: Status := PcdClear(PcdConn,'T');
+    4: Status := PcdClear(PcdConn,'H');
+    5: Status := PcdClear(PcdConn,'A');
+  else Status := PcdClear(PcdConn,'F');
+  end;
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+
+procedure TInstelForm.BtnRunClick(Sender: TObject);
+begin
+  Status := PcdRun(PcdConn,0);
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+
+
+procedure TInstelForm.Label126Click(Sender: TObject);
+var
+  PrBufReg:TRegIniFile;
+begin
+  PrBufReg  := TRegIniFile.Create('Software\Microsoft\SAM');
+  PrBufReg.WriteBool('ET-sim','Sim',true);
+  PrBufReg.Free;
+
+end;
+
+//*************************************************
+//         PLC instellingen
+//*************************************************
+
+
+
+procedure TInstelForm.FormDeactivate(Sender: TObject);
+begin
+
+  HoofdForm.InitVar[0] := CheckBox0.Checked;
+  HoofdForm.InitVar[1] := CheckBox1.Checked;
+  HoofdForm.InitVar[2] := CheckBox2.Checked;
+  HoofdForm.InitVar[3] := CheckBox3.Checked;
+  HoofdForm.InitVar[4] := CheckBox4.Checked;
+  HoofdForm.InitVar[5] := CheckBox5.Checked;
+  HoofdForm.InitVar[6] := CheckBox6.Checked;
+  HoofdForm.InitVar[7] := CheckBox7.Checked;
+  HoofdForm.InitVar[8] := CheckBox8.Checked;
+  HoofdForm.InitVar[9] := CheckBox9.Checked;
+
+  HoofdForm.InitVar[10] := CheckBox10.Checked;
+  HoofdForm.InitVar[11] := CheckBox11.Checked;
+  HoofdForm.InitVar[12] := CheckBox12.Checked;
+  HoofdForm.InitVar[13] := CheckBox13.Checked;
+  HoofdForm.InitVar[14] := CheckBox14.Checked;
+  HoofdForm.InitVar[15] := CheckBox15.Checked;
+  HoofdForm.InitVar[16] := CheckBox16.Checked;
+  HoofdForm.InitVar[17] := CheckBox17.Checked;
+  HoofdForm.InitVar[18] := CheckBox18.Checked;
+  HoofdForm.InitVar[19] := CheckBox19.Checked;
+
+  HoofdForm.InitVar[20] := CheckBox20.Checked;
+  //HoofdForm.InitVar[21] := CheckBox21.Checked;
+  //HoofdForm.InitVar[22] := CheckBox22.Checked;
+  //HoofdForm.InitVar[23] := CheckBox23.Checked;
+  HoofdForm.InitVar[24] := CheckBox24.Checked;
+  HoofdForm.InitVar[25] := CheckBox25.Checked;
+  HoofdForm.InitVar[26] := CheckBox26.Checked;
+  HoofdForm.InitVar[27] := CheckBox27.Checked;
+  HoofdForm.InitVar[28] := CheckBox28.Checked;
+  //HoofdForm.InitVar[29] := CheckBox29.Checked;
+
+  //HoofdForm.InitVar[30] := CheckBox30.Checked;
+  //HoofdForm.InitVar[31] := CheckBox31.Checked;
+  HoofdForm.InitVar[32] := CheckBox32.Checked;
+  HoofdForm.InitVar[33] := CheckBox33.Checked;
+  HoofdForm.InitVar[34] := CheckBox34.Checked;
+  HoofdForm.InitVar[35] := CheckBox35.Checked;
+  HoofdForm.InitVar[36] := CheckBox36.Checked;
+  HoofdForm.InitVar[37] := CheckBox37.Checked;
+  HoofdForm.InitVar[38] := CheckBox38.Checked;
+  //HoofdForm.InitVar[39] := CheckBox39.Checked;
+
+  HoofdForm.InitVar[40] := CheckBox40.Checked;
+  HoofdForm.InitVar[41] := CheckBox41.Checked;
+  HoofdForm.InitVar[42] := CheckBox42.Checked;
+  HoofdForm.InitVar[43] := CheckBox43.Checked;
+  HoofdForm.InitVar[44] := CheckBox44.Checked;
+  HoofdForm.InitVar[45] := CheckBox45.Checked;
+  HoofdForm.InitVar[46] := CheckBox46.Checked;
+  //HoofdForm.InitVar[47] := CheckBox47.Checked;
+  HoofdForm.InitVar[48] := CheckBox48.Checked;
+  HoofdForm.InitVar[49] := CheckBox49.Checked;
+
+  HoofdForm.InitVar[50] := CheckBox50.Checked;
+  HoofdForm.InitVar[51] := CheckBox51.Checked;
+  HoofdForm.InitVar[52] := CheckBox52.Checked;
+  HoofdForm.InitVar[53] := CheckBox53.Checked;
+  HoofdForm.InitVar[54] := CheckBox54.Checked;
+  HoofdForm.InitVar[55] := CheckBox55.Checked;
+  HoofdForm.InitVar[56] := CheckBox56.Checked;
+
+
+
+end;
+
+
+end.
+
+

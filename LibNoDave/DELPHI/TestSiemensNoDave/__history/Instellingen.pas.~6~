@@ -1,0 +1,273 @@
+unit Instellingen;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls, ComCtrls, Mask, DB, ADODB, DBCtrls, Grids,
+  DBGrids, Spin, TeeProcs, TeEngine, Chart, Menus, ToolWin, jpeg, Series,
+  Registry;
+
+type
+  TMetRec = Record
+    Tijd      : real;
+    StartTijd : real;
+    Sewage    : real;
+    RedoxU    : real;
+    RedoxT    : real;
+    NivoH     : real;
+    DosH      : real;
+    NivoF     : real;
+    DosF      : real;
+  end;
+  TInstelForm = class(TForm)
+    Panel1: TPanel;
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    Antwoord3: TLabel;
+    Label123: TLabel;
+    ListView1: TListView;
+    TabSheet2: TTabSheet;
+    Label126: TLabel;
+    RadioGroup2: TRadioGroup;
+    RadioGroup1: TRadioGroup;
+    BtnClear: TButton;
+    BtnRestart: TButton;
+    BtnStop: TButton;
+    BtnRun: TButton;
+    BTNKlockPLC: TButton;
+    TabSheet7: TTabSheet;
+    StatusBarInst: TStatusBar;
+    BtnPr1: TButton;
+    BtnPr2: TButton;
+    BtnPr3: TButton;
+    BtnPr4: TButton;
+    BtnPr5: TButton;
+    BtnPr6: TButton;
+    BtnPr7: TButton;
+    BtnPr8: TButton;
+    BtnPr12: TButton;
+    BtnPr11: TButton;
+    BtnPr10: TButton;
+    BtnPr9: TButton;
+    BtnPr16: TButton;
+    BtnPr15: TButton;
+    BtnPr14: TButton;
+    BtnPr13: TButton;
+    Btn_AanUit: TButton;
+    procedure Btn_AanUitClick(Sender: TObject);
+    procedure BtnPr16Click(Sender: TObject);
+    procedure BtnPr15Click(Sender: TObject);
+    procedure BtnPr14Click(Sender: TObject);
+    procedure BtnPr13Click(Sender: TObject);
+    procedure BtnPr12Click(Sender: TObject);
+    procedure BtnPr11Click(Sender: TObject);
+    procedure BtnPr10Click(Sender: TObject);
+    procedure BtnPr9Click(Sender: TObject);
+    procedure BtnPr8Click(Sender: TObject);
+    procedure BtnPr7Click(Sender: TObject);
+    procedure BtnPr6Click(Sender: TObject);
+    procedure BtnPr5Click(Sender: TObject);
+    procedure BtnPr4Click(Sender: TObject);
+    procedure BtnPr3Click(Sender: TObject);
+    procedure BtnPr2Click(Sender: TObject);
+    procedure BtnPr1Click(Sender: TObject);
+    procedure Label126Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure BtnRunClick(Sender: TObject);
+    procedure BtnStopClick(Sender: TObject);
+    procedure BTNKlockPLCClick(Sender: TObject);
+    procedure BtnClearClick(Sender: TObject);
+    procedure BtnRestartClick(Sender: TObject);
+    procedure DoeActief;
+    procedure StartProgramma(nummer:integer);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    Status  : integer;
+  end;
+
+var
+  InstelForm: TInstelForm;
+
+implementation
+
+uses Connect, Hoofd, Password;
+
+{$R *.dfm}
+procedure TInstelForm.FormCreate(Sender: TObject);
+var
+  PrBufReg:TRegIniFile;
+begin
+  PrBufReg              := TRegIniFile.Create('Software\NRS-sim');
+
+  BtnPr1.Caption := hoofdform.prog.programma1;
+  BtnPr2.Caption := hoofdform.prog.programma2;
+  BtnPr3.Caption := hoofdform.prog.programma3;
+  BtnPr4.Caption := hoofdform.prog.programma4;
+  BtnPr5.Caption := hoofdform.prog.programma5;
+  BtnPr6.Caption := hoofdform.prog.programma6;
+  BtnPr7.Caption := hoofdform.prog.programma7;
+  BtnPr8.Caption := hoofdform.prog.programma8;
+  BtnPr9.Caption := hoofdform.prog.programma9;
+  BtnPr10.Caption := hoofdform.prog.programma10;
+  BtnPr11.Caption := hoofdform.prog.programma11;
+  BtnPr12.Caption := hoofdform.prog.programma12;
+  BtnPr13.Caption := hoofdform.prog.programma13;
+  BtnPr14.Caption := hoofdform.prog.programma14;
+  BtnPr15.Caption := hoofdform.prog.programma15;
+  BtnPr16.Caption := hoofdform.prog.programma16;
+  PrBufReg.Free;
+
+end;
+
+procedure TInstelForm.FormActivate(Sender: TObject);
+begin
+  DoeActief;
+end;
+
+procedure TInstelForm.DoeActief;
+var
+  antwoord : boolean;
+begin
+  {PLC}
+  antwoord := ConnectForm.GetChannelConnected;
+  BtnRun.Enabled      := antwoord;
+  Btnstop.Enabled     := antwoord;
+  BtnRestart.Enabled  := antwoord;
+  BtnRun.Enabled      := antwoord;
+  BtnClear.Enabled    := antwoord;
+  BTNKlockPLC.Enabled := antwoord;
+  RadioGroup1.Enabled := antwoord;
+  RadioGroup2.Enabled := antwoord;
+
+  BtnPr1.Enabled := antwoord;
+  BtnPr2.Enabled := antwoord;
+  BtnPr3.Enabled := antwoord;
+  BtnPr4.Enabled := antwoord;
+  BtnPr5.Enabled := antwoord;
+  BtnPr6.Enabled := antwoord;
+  BtnPr7.Enabled := antwoord;
+  BtnPr8.Enabled := antwoord;
+  BtnPr9.Enabled := antwoord;
+  BtnPr10.Enabled := antwoord;
+  BtnPr11.Enabled := antwoord;
+  BtnPr12.Enabled := antwoord;
+  BtnPr13.Enabled := antwoord;
+  BtnPr14.Enabled := antwoord;
+  BtnPr15.Enabled := antwoord;
+  BtnPr16.Enabled := antwoord;
+  //LabelAntwoord.Caption := 'Connected';
+  StatusBarInst.Panels[0].Text:= 'Verbonden met PLC';
+  if(antwoord = false) then
+    //LabelAntwoord.Caption := 'Connect first!';
+      StatusBarInst.Panels[0].Text:= 'Te doen: Maak verbinding met PLC eerst';
+end;
+
+//*************************************************
+//         PLC page
+//*************************************************
+
+procedure TInstelForm.BTNKlockPLCClick(Sender: TObject);
+begin
+  Status := PcdSetClockDialog(PcdConn,self.Handle);
+//  LabelAntwoord.Caption := PcdMessage(Status);
+end;
+procedure TInstelForm.BtnRestartClick(Sender: TObject);
+begin
+  case RadioGroup2.ItemIndex of
+    0: Status := PcdRestart(PcdConn, 0, 0);
+    1: Status := PcdRestart(PcdConn, 0, 1);
+  else Status := PcdRestart(PcdConn, 0, 0);
+  end;
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+procedure TInstelForm.BtnStopClick(Sender: TObject);
+begin
+  Status := PcdStop(PcdConn,0);
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+procedure TInstelForm.BtnClearClick(Sender: TObject);
+begin
+  case RadioGroup1.ItemIndex of
+    0: Status := PcdClear(PcdConn,'O');
+    1: Status := PcdClear(PcdConn,'R');
+    2: Status := PcdClear(PcdConn,'F');
+    3: Status := PcdClear(PcdConn,'T');
+    4: Status := PcdClear(PcdConn,'H');
+    5: Status := PcdClear(PcdConn,'A');
+  else Status := PcdClear(PcdConn,'F');
+  end;
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+
+procedure TInstelForm.BtnRunClick(Sender: TObject);
+begin
+  Status := PcdRun(PcdConn,0);
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+
+
+procedure TInstelForm.Label126Click(Sender: TObject);
+var
+  PrBufReg:TRegIniFile;
+begin
+  PrBufReg  := TRegIniFile.Create('Software\Microsoft\SAM');
+  PrBufReg.WriteBool('NRS-sim','Sim',true);
+  PrBufReg.Free;
+
+end;
+
+//*************************************************
+//         INSTELLINGEN page
+//*************************************************
+
+procedure TInstelForm.BtnPr1Click(Sender: TObject);  begin StartProgramma(1); end;
+procedure TInstelForm.BtnPr2Click(Sender: TObject);  begin StartProgramma(2); end;
+procedure TInstelForm.BtnPr3Click(Sender: TObject);  begin StartProgramma(3); end;
+procedure TInstelForm.BtnPr4Click(Sender: TObject);  begin StartProgramma(4); end;
+procedure TInstelForm.BtnPr5Click(Sender: TObject);  begin StartProgramma(5); end;
+procedure TInstelForm.BtnPr6Click(Sender: TObject);  begin StartProgramma(6); end;
+procedure TInstelForm.BtnPr7Click(Sender: TObject);  begin StartProgramma(7); end;
+procedure TInstelForm.BtnPr8Click(Sender: TObject);  begin StartProgramma(8); end;
+procedure TInstelForm.BtnPr9Click(Sender: TObject);  begin StartProgramma(9); end;
+procedure TInstelForm.BtnPr10Click(Sender: TObject); begin StartProgramma(10); end;
+procedure TInstelForm.BtnPr11Click(Sender: TObject); begin StartProgramma(11); end;
+procedure TInstelForm.BtnPr12Click(Sender: TObject); begin StartProgramma(12); end;
+procedure TInstelForm.BtnPr13Click(Sender: TObject); begin StartProgramma(13); end;
+procedure TInstelForm.BtnPr14Click(Sender: TObject); begin StartProgramma(14); end;
+procedure TInstelForm.BtnPr15Click(Sender: TObject); begin StartProgramma(15); end;
+procedure TInstelForm.BtnPr16Click(Sender: TObject); begin StartProgramma(16); end;
+
+procedure TInstelForm.StartProgramma(nummer:integer);
+var
+  Data   : lpDataType;
+begin
+  if ConnectForm.GetChannelConnected = true then
+  begin
+    Data[0] := nummer;
+    respons := PcdWrRTC(PcdConn, 'R', 1050, 1, Data);
+    if (respons=0) then
+    begin
+       PcdWrOF(PcdConn, 'F', 1050, 1, '1');
+       StatusBarInst.Panels[0].Text := 'Programma '+IntToStr(nummer) + 'geschreven in de PLC'
+    end;
+  end else
+        StatusBarInst.Panels[0].Text :='Schrijven programma '+IntToStr(nummer) + ' niet gelukt.'
+end;
+
+procedure TInstelForm.Btn_AanUitClick(Sender: TObject);
+begin
+  if ConnectForm.GetChannelConnected = true then
+  begin
+       PcdWrOF(PcdConn, 'F', 10, 1, '1');
+  end;
+end;
+
+end.

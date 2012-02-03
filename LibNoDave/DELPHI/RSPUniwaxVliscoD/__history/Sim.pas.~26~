@@ -1,0 +1,123 @@
+unit Sim;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, TeEngine, Series, TeeProcs, Chart, ExtCtrls, StdCtrls, ComCtrls,
+  Buttons;
+
+ const  aantal = 99;
+
+type
+  TGraRec = Record
+    Tijd      : real;
+    NivoH     : real;
+    DosH      : real;
+    NivoF     : real;
+    DosF      : real;
+
+    TempHO    : real;
+    tempFA    : real;
+    TempRT    : real;
+
+  end;
+  TSimForm = class(TForm)
+    Panel1: TPanel;
+    Panel4: TPanel;
+    Chart1: TChart;
+    Series1: TLineSeries;
+    Series2: TLineSeries;
+    Series3: TLineSeries;
+    Series4: TLineSeries;
+    Panel2: TPanel;
+    procedure FormActivate(Sender: TObject);
+    procedure TrackBarPkChange(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure SetTrackBars;
+    procedure SetFlag(nummer : integer);
+
+  private
+    { Private declarations }
+
+  public
+    { Public declarations }
+    FlagIn  : array[0..1] of Char;
+ end;
+
+var
+  SimForm: TSimForm;
+
+implementation
+uses Connect, Instellingen, Hoofd;
+{$R *.dfm}
+procedure TSimForm.FormActivate(Sender: TObject);
+begin
+    SetTrackBars;
+end;
+procedure TSimForm.SetTrackBars;
+begin
+    L_Pk.Caption := 'Pk: '+floatToStr(TrackBarPk.Position/10.0)+' kPa';
+    L_Pm.Caption := 'Pm: '+floatToStr(TrackBarPm.Position/10.0)+' kPa';
+    L_Ta.Caption := 'Ta: '+floatToStr(TrackBarTa.Position/10.0)+' C';
+
+    L_Ppb.Caption := 'Ppb: '+IntToStr(TrackBarPpb.Position)+' Bar';
+    L_Ppo.Caption := 'Bpo: '+IntToStr(TrackBarPpo.Position)+' Bar';
+    L_T1.Caption  := 'T1: ' +IntToStr(TrackBarT1.Position)+' C';
+    end;
+
+procedure TSimForm.Timer1Timer(Sender: TObject);
+var
+  Uit  : array[0..8] of Char;
+  ip   : byte;
+begin
+
+  if (ConnectForm.GetChannelConnected = true) then
+  begin
+
+    respons := PcdRdRTC(PcdConn, 'R', 20, 6, lpData);
+    if (respons=0) then
+    begin
+      TrackBarPk.Position    :=lpData[0];
+      TrackBarPm.Position    :=lpData[1];
+      TrackBarTa.Position    :=lpData[2];
+      TrackBarPpb.Position   :=lpData[3];
+      TrackBarPpo.Position   :=lpData[4];
+      TrackBarT1.Position    :=lpData[5];
+    end;
+  end else
+  begin
+    //zonder verbinding
+
+  end;
+  //ToevoegWaardes;
+end;
+
+procedure TSimForm.TrackBarPkChange(Sender: TObject);
+var
+  Data   : lpDataType;
+begin
+  if (ConnectForm.GetChannelConnected = true) then
+  begin
+      Data[0] := TrackBarPk.Position;
+      PcdWrRTC(PcdConn, 'R', 950, 1, Data);
+  end;
+  SetTrackBars;
+end;
+
+procedure TSimForm.SetFlag(nummer : integer);
+begin
+  if (ConnectForm.GetChannelConnected = true) then
+  begin
+    respons := PcdRdIOF(PcdConn, 'F', nummer, 1, FlagIn);
+    if (respons=0) then
+    begin
+      if (FlagIn[0] = '1') then   PcdWrOF(PcdConn, 'F', nummer, 1, '0')
+      else                        PcdWrOF(PcdConn, 'F', nummer, 1, '1');
+    end;
+  end;
+end;
+
+end.
+
+

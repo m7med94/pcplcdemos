@@ -1,0 +1,28 @@
+program RSPUniwaxFliscol;
+
+uses
+  Forms,
+  Main in 'Main.pas' {MainForm},
+  Instellingen in 'Instellingen.pas' {InstelForm},
+  Password in 'Password.pas' {PasswordDlg},
+  Info in 'Info.pas' {InfoForm},
+  Sim in 'Sim.pas' {SimForm},
+  nodave in 'nodave.pas',
+  MahBit8 in 'MahBit8.pas',
+  Editor in 'Editor.pas' {ConnectionEditor},
+  MahBit16 in 'MahBit16.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.Title := 'BasisNoDaveApl';
+  Application.CreateForm(TMainForm, MainForm);
+  Application.CreateForm(TInstelForm, InstelForm);
+  Application.CreateForm(TInstelForm, InstelForm);
+  Application.CreateForm(TPasswordDlg, PasswordDlg);
+  Application.CreateForm(TInfoForm, InfoForm);
+  Application.CreateForm(TSimForm, SimForm);
+  Application.CreateForm(TConnectionEditor, ConnectionEditor);
+  Application.Run;
+end.

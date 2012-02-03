@@ -1,0 +1,47 @@
+object InfoResForm: TInfoResForm
+  Left = 0
+  Top = 0
+  Width = 659
+  Height = 582
+  Caption = 'FUU simulatie software'
+  Color = 16774636
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnActivate = FormActivate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 240
+    Top = 12
+    Width = 163
+    Height = 25
+    Caption = 'PLC resourses'
+    Color = 16774636
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -21
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object ListBoxInfo: TListBox
+    Left = 8
+    Top = 48
+    Width = 641
+    Height = 473
+    Color = clMoneyGreen
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ItemHeight = 16
+    ParentFont = False
+    TabOrder = 0
+  end
+end

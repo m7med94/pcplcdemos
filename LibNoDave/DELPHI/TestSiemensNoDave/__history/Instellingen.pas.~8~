@@ -1,0 +1,157 @@
+unit Instellingen;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls, ComCtrls, Mask, DB, ADODB, DBCtrls, Grids,
+  DBGrids, Spin, TeeProcs, TeEngine, Chart, Menus, ToolWin, jpeg, Series,
+  Registry;
+
+type
+  TMetRec = Record
+    Tijd      : real;
+    StartTijd : real;
+    Sewage    : real;
+    RedoxU    : real;
+    RedoxT    : real;
+    NivoH     : real;
+    DosH      : real;
+    NivoF     : real;
+    DosF      : real;
+  end;
+  TInstelForm = class(TForm)
+    Panel1: TPanel;
+    PageControl1: TPageControl;
+    TabSheet2: TTabSheet;
+    Label126: TLabel;
+    RadioGroup2: TRadioGroup;
+    RadioGroup1: TRadioGroup;
+    BtnClear: TButton;
+    BtnRestart: TButton;
+    BtnStop: TButton;
+    BtnRun: TButton;
+    BTNKlockPLC: TButton;
+    StatusBarInst: TStatusBar;
+    procedure Label126Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure BtnRunClick(Sender: TObject);
+    procedure BtnStopClick(Sender: TObject);
+    procedure BTNKlockPLCClick(Sender: TObject);
+    procedure BtnClearClick(Sender: TObject);
+    procedure BtnRestartClick(Sender: TObject);
+    procedure DoeActief;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    Status  : integer;
+  end;
+
+var
+  InstelForm: TInstelForm;
+
+implementation
+
+uses Connect, Hoofd, Password;
+
+{$R *.dfm}
+procedure TInstelForm.FormCreate(Sender: TObject);
+var
+  PrBufReg:TRegIniFile;
+begin
+  PrBufReg:= TRegIniFile.Create('Software\ET-sim');
+
+
+  PrBufReg.Free;
+
+end;
+
+procedure TInstelForm.FormActivate(Sender: TObject);
+begin
+  DoeActief;
+end;
+
+procedure TInstelForm.DoeActief;
+var
+  antwoord : boolean;
+begin
+  {PLC}
+  antwoord := ConnectForm.GetChannelConnected;
+  BtnRun.Enabled      := antwoord;
+  Btnstop.Enabled     := antwoord;
+  BtnRestart.Enabled  := antwoord;
+  BtnRun.Enabled      := antwoord;
+  BtnClear.Enabled    := antwoord;
+  BTNKlockPLC.Enabled := antwoord;
+  RadioGroup1.Enabled := antwoord;
+  RadioGroup2.Enabled := antwoord;
+
+
+  //LabelAntwoord.Caption := 'Connected';
+  StatusBarInst.Panels[0].Text:= 'Verbonden met PLC';
+  if(antwoord = false) then
+    //LabelAntwoord.Caption := 'Connect first!';
+      StatusBarInst.Panels[0].Text:= 'Te doen: Maak verbinding met PLC eerst';
+end;
+
+//*************************************************
+//         PLC page
+//*************************************************
+
+procedure TInstelForm.BTNKlockPLCClick(Sender: TObject);
+begin
+  Status := PcdSetClockDialog(PcdConn,self.Handle);
+//  LabelAntwoord.Caption := PcdMessage(Status);
+end;
+procedure TInstelForm.BtnRestartClick(Sender: TObject);
+begin
+  case RadioGroup2.ItemIndex of
+    0: Status := PcdRestart(PcdConn, 0, 0);
+    1: Status := PcdRestart(PcdConn, 0, 1);
+  else Status := PcdRestart(PcdConn, 0, 0);
+  end;
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+procedure TInstelForm.BtnStopClick(Sender: TObject);
+begin
+  Status := PcdStop(PcdConn,0);
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+procedure TInstelForm.BtnClearClick(Sender: TObject);
+begin
+  case RadioGroup1.ItemIndex of
+    0: Status := PcdClear(PcdConn,'O');
+    1: Status := PcdClear(PcdConn,'R');
+    2: Status := PcdClear(PcdConn,'F');
+    3: Status := PcdClear(PcdConn,'T');
+    4: Status := PcdClear(PcdConn,'H');
+    5: Status := PcdClear(PcdConn,'A');
+  else Status := PcdClear(PcdConn,'F');
+  end;
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+
+procedure TInstelForm.BtnRunClick(Sender: TObject);
+begin
+  Status := PcdRun(PcdConn,0);
+  //LabelAntwoord.Caption := PcdMessage(Status);
+  StatusBarInst.Panels[0].Text := PcdMessage(Status);
+end;
+
+
+procedure TInstelForm.Label126Click(Sender: TObject);
+var
+  PrBufReg:TRegIniFile;
+begin
+  PrBufReg  := TRegIniFile.Create('Software\Microsoft\SAM');
+  PrBufReg.WriteBool('ET-sim','Sim',true);
+  PrBufReg.Free;
+
+end;
+
+end.

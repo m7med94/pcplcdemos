@@ -1,0 +1,12 @@
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\NoDaveDotNET\NoDaveVBNetTest\NoDaveVBNet\NoDaveVBNet\bin\Debug\NoDaveVBNet.exe
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\NoDaveDotNET\NoDaveVBNetTest\NoDaveVBNet\NoDaveVBNet\bin\Debug\NoDaveVBNet.pdb
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\NoDaveDotNET\NoDaveVBNetTest\NoDaveVBNet\NoDaveVBNet\bin\Debug\NoDaveVBNet.xml
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\NoDaveDotNET\NoDaveVBNetTest\NoDaveVBNet\NoDaveVBNet\bin\Debug\libnodave.net.dll
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\NoDaveDotNET\NoDaveVBNetTest\NoDaveVBNet\NoDaveVBNet\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\NoDaveDotNET\NoDaveVBNetTest\NoDaveVBNet\NoDaveVBNet\obj\Debug\NoDaveVBNet.Form1.resources
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\NoDaveDotNET\NoDaveVBNetTest\NoDaveVBNet\NoDaveVBNet\obj\Debug\NoDaveVBNet.Resources.resources
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\NoDaveDotNET\NoDaveVBNetTest\NoDaveVBNet\NoDaveVBNet\obj\Debug\NoDaveVBNet.vbproj.GenerateResource.Cache
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\NoDaveDotNET\NoDaveVBNetTest\NoDaveVBNet\NoDaveVBNet\obj\Debug\NoDaveVBNet.exe
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\NoDaveDotNET\NoDaveVBNetTest\NoDaveVBNet\NoDaveVBNet\obj\Debug\NoDaveVBNet.xml
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\NoDaveDotNET\NoDaveVBNetTest\NoDaveVBNet\NoDaveVBNet\obj\Debug\NoDaveVBNet.pdb
+C:\Users\Public\Documents\VisualStudio_projcten\dotNET projecten\NoDaveDotNET\NoDaveVBNetTest\NoDaveVBNet\NoDaveVBNet\obj\Debug\NoDaveVBNet.exe.licenses

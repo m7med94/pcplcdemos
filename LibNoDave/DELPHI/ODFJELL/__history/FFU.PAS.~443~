@@ -1,0 +1,2614 @@
+unit FFU;
+
+interface
+
+uses Windows, Classes, Graphics, Forms, Controls, StdCtrls, ComCtrls, Buttons,
+  ToolWin, ExtCtrls,  nodave, Messages, SysUtils, Variants,
+  Dialogs, ExtDlgs, StrUtils, MahBit32, MahBit8, Spin, TeEngine, Series,
+  TeeProcs, Chart;
+
+ const  aantal = 599;
+
+type
+  TMDI_FFU = class(TForm)
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    SBCon: TSpeedButton;
+    SBdiscon: TSpeedButton;
+    ToolButton2: TToolButton;
+    SimulatieUit: TSpeedButton;
+    SimulatieAan: TSpeedButton;
+    StatusBar1: TStatusBar;
+    Timer1: TTimer;
+    Panel1: TPanel;
+    Page_Cotrol: TPageControl;
+    TabSheet1: TTabSheet;
+    Label2: TLabel;
+    Label10: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    klep_LSV_011: TAnimate;
+    klep_LSV_021: TAnimate;
+    klep_LSV_031: TAnimate;
+    TabSheet2: TTabSheet;
+    Label1: TLabel;
+    Label13: TLabel;
+    Label14: TLabel;
+    Label15: TLabel;
+    Label16: TLabel;
+    Label17: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
+    Label20: TLabel;
+    Label21: TLabel;
+    Label_tank1400: TLabel;
+    skimer_R1212: TAnimate;
+    Mcc_skimer_R1212: TCheckBox;
+    pomp_P1213: TAnimate;
+    Mcc_pomp_P1213: TCheckBox;
+    Mcc_skimer_R1222: TCheckBox;
+    skimer_R1222: TAnimate;
+    Mcc_pomp_P1223: TCheckBox;
+    pomp_P1223: TAnimate;
+    Mcc_skimer_R1232: TCheckBox;
+    skimer_R1232: TAnimate;
+    Mcc_pomp_P1233: TCheckBox;
+    pomp_P1233: TAnimate;
+    Mcc_pomp_P1401: TCheckBox;
+    pomp_P1401: TAnimate;
+    Mcc_pomp_P1402: TCheckBox;
+    pomp_P1402: TAnimate;
+    Mcc_pomp_P1403: TCheckBox;
+    pomp_P1403: TAnimate;
+    TrBar_P1401: TTrackBar;
+    TrBar_P1402: TTrackBar;
+    TrBar_P1403: TTrackBar;
+    PBar_tank1400: TProgressBar;
+    TrBar_tank1400: TTrackBar;
+    nivo_tank1400_HH: TPanel;
+    nivo_tank1400_LL: TPanel;
+    TabSheet3: TTabSheet;
+    Label3: TLabel;
+    Label22: TLabel;
+    Label23: TLabel;
+    Label_tank2410: TLabel;
+    Label_tank2610: TLabel;
+    Label_tank2620: TLabel;
+    Label27: TLabel;
+    Label28: TLabel;
+    Label29: TLabel;
+    Label30: TLabel;
+    Label31: TLabel;
+    Label25: TLabel;
+    Label26: TLabel;
+    Label32: TLabel;
+    Label33: TLabel;
+    Label_P2002: TLabel;
+    Label_P2003: TLabel;
+    pomp_P2002: TAnimate;
+    Mcc_pomp_P2002: TCheckBox;
+    pomp_P2003: TAnimate;
+    Mcc_pomp_P2003: TCheckBox;
+    TrBar_P2002: TTrackBar;
+    TrBar_P2003: TTrackBar;
+    PBar_tank2410: TProgressBar;
+    TrBar_tank2410: TTrackBar;
+    TrBar_tank2610: TTrackBar;
+    PBar_tank2610: TProgressBar;
+    TrBar_tank2620: TTrackBar;
+    PBar_tank2620: TProgressBar;
+    Mcc_roer_R2611: TCheckBox;
+    roer_R2611: TAnimate;
+    roer_R2621: TAnimate;
+    Mcc_roer_R2621: TCheckBox;
+    roer_R2612: TAnimate;
+    Mcc_roer_R2612: TCheckBox;
+    roer_R2622: TAnimate;
+    Mcc_roer_R2622: TCheckBox;
+    Mcc_roer_R2411: TCheckBox;
+    roer_R2411: TAnimate;
+    nivo_tank2410_HH: TPanel;
+    nivo_tank2410_LL: TPanel;
+    nivo_tank2620_HH: TPanel;
+    nivo_tank2620_LL: TPanel;
+    nivo_tank2610_LL: TPanel;
+    nivo_tank2610_HH: TPanel;
+    klep_24_QSV_002: TAnimate;
+    klep_24_QSV_006: TAnimate;
+    klep_22_QSV_010: TAnimate;
+    klep_22_QSV_020: TAnimate;
+    TabSheet4: TTabSheet;
+    Label4: TLabel;
+    Label_tank341x: TLabel;
+    Label35: TLabel;
+    Label36: TLabel;
+    Label_tank342x: TLabel;
+    Label38: TLabel;
+    Label39: TLabel;
+    Label41: TLabel;
+    Label42: TLabel;
+    Label_flowFF2: TLabel;
+    Label_flowFF1: TLabel;
+    labelp: TLabel;
+    Label_P3201: TLabel;
+    PBar_tank341x: TProgressBar;
+    TrBar_tank341x: TTrackBar;
+    nivo_tank341x_HH: TPanel;
+    nivo_tank341x_H: TPanel;
+    Mcc_roer_R3413: TCheckBox;
+    roer_R3413: TAnimate;
+    Mcc_roer_R3412: TCheckBox;
+    roer_R3412: TAnimate;
+    nivo_tank342x_H: TPanel;
+    nivo_tank342x_HH: TPanel;
+    TrBar_tank342x: TTrackBar;
+    PBar_tank342x: TProgressBar;
+    roer_R3423: TAnimate;
+    Mcc_roer_R3423: TCheckBox;
+    roer_R3422: TAnimate;
+    Mcc_roer_R3422: TCheckBox;
+    TrBar_flowFF2: TTrackBar;
+    TrBar_flowFF1: TTrackBar;
+    TrBar_P3201: TTrackBar;
+    Mcc_pomp_P3201: TCheckBox;
+    pomp_P3201: TAnimate;
+    TabSheet5: TTabSheet;
+    Label5: TLabel;
+    Label24: TLabel;
+    Label43: TLabel;
+    Label44: TLabel;
+    Label_tank5100: TLabel;
+    pomp_P5112: TAnimate;
+    Mcc_pomp_P5112: TCheckBox;
+    pomp_P5110: TAnimate;
+    Mcc_pomp_P5110: TCheckBox;
+    ProgressBar3: TProgressBar;
+    PBar_tank5100: TProgressBar;
+    TrBar_tank5100: TTrackBar;
+    TabSheet6: TTabSheet;
+    Label6: TLabel;
+    Label46: TLabel;
+    Label47: TLabel;
+    Label55: TLabel;
+    Label48: TLabel;
+    Label49: TLabel;
+    Label_P3613: TLabel;
+    Label_P3614: TLabel;
+    LabeL_P3624: TLabel;
+    Label_P3623: TLabel;
+    Label54: TLabel;
+    Label59: TLabel;
+    Label60: TLabel;
+    Label61: TLabel;
+    Label65: TLabel;
+    Label_R3612: TLabel;
+    LabeL_R3622: TLabel;
+    Label_flow38: TLabel;
+    skimer_R3622: TAnimate;
+    Mcc_skimer_R3622: TCheckBox;
+    Mcc_skimer_R3612: TCheckBox;
+    skimer_R3612: TAnimate;
+    PBar_tank3700water: TProgressBar;
+    TrBar_P3614: TTrackBar;
+    TrBar_P3613: TTrackBar;
+    Mcc_pomp_P3614: TCheckBox;
+    pomp_P3614: TAnimate;
+    Mcc_pomp_P3613: TCheckBox;
+    pomp_P3613: TAnimate;
+    pomp_P3623: TAnimate;
+    Mcc_pomp_P3623: TCheckBox;
+    pomp_P3624: TAnimate;
+    Mcc_pomp_P3624: TCheckBox;
+    TrBar_P3623: TTrackBar;
+    TrBar_P3624: TTrackBar;
+    Mcc_pomp_P3701: TCheckBox;
+    pomp_P3701: TAnimate;
+    Mcc_pomp_P3625: TCheckBox;
+    pomp_P3625: TAnimate;
+    pomp_P3615: TAnimate;
+    Mcc_pomp_P3615: TCheckBox;
+    TrBar_R3612: TTrackBar;
+    TrBar_R3622: TTrackBar;
+    TrBar_flow38: TTrackBar;
+    TabSheet7: TTabSheet;
+    Label7: TLabel;
+    Label_tank1600nivo: TLabel;
+    Label_tank1602: TLabel;
+    Label73: TLabel;
+    Label75: TLabel;
+    Label77: TLabel;
+    Label_tank1600laag: TLabel;
+    PBar_tank1600nivo: TProgressBar;
+    TrBar_tank1600nivo: TTrackBar;
+    nivo_tank1602_LL: TPanel;
+    nivo_tank1602_HH: TPanel;
+    PBar_tank1602: TProgressBar;
+    TrBar_tank1602: TTrackBar;
+    Mcc_pomp_P1602: TCheckBox;
+    pomp_P1602: TAnimate;
+    Mcc_pomp_P1601: TCheckBox;
+    pomp_P1601: TAnimate;
+    Mcc_pomp_P1603: TCheckBox;
+    pomp_P1603: TAnimate;
+    TabSheet8: TTabSheet;
+    Label8: TLabel;
+    Label83: TLabel;
+    Label84: TLabel;
+    Label86: TLabel;
+    Label88: TLabel;
+    Label_tank4300: TLabel;
+    pomp_P4201: TAnimate;
+    Mcc_pomp_P4201: TCheckBox;
+    Mcc_pomp_P4203: TCheckBox;
+    pomp_P4203: TAnimate;
+    Mcc_pomp_P4202: TCheckBox;
+    pomp_P4202: TAnimate;
+    roer_R4301: TAnimate;
+    Mcc_roer_R4301: TCheckBox;
+    PBar_tank4300: TProgressBar;
+    TrBar_tank4300: TTrackBar;
+    TabSheet9: TTabSheet;
+    Label9: TLabel;
+    Label_tank6700: TLabel;
+    Label91: TLabel;
+    Label92: TLabel;
+    Label_tank6200: TLabel;
+    Label94: TLabel;
+    Label95: TLabel;
+    nivo_tank6700_LL: TPanel;
+    nivo_tank6700_HH: TPanel;
+    TrBar_tank6700: TTrackBar;
+    PBar_tank6700: TProgressBar;
+    pomp_P6701: TAnimate;
+    Mcc_pomp_P6701: TCheckBox;
+    pomp_P6702: TAnimate;
+    Mcc_pomp_P6702: TCheckBox;
+    TrBar_tank6200: TTrackBar;
+    nivo_tank6200_HH: TPanel;
+    nivo_tank6200_LL: TPanel;
+    Mcc_pomp_P6201: TCheckBox;
+    pomp_P6201: TAnimate;
+    Mcc_pomp_P6202: TCheckBox;
+    pomp_P6202: TAnimate;
+    PBar_tank6200: TProgressBar;
+    pomp_P3201H: TPanel;
+    pomp_P3201L: TPanel;
+    Sch_skimer_R1232: TCheckBox;
+    Sch_skimer_R1222: TCheckBox;
+    Sch_skimer_R1212: TCheckBox;
+    Sch_pomp_P1213: TCheckBox;
+    Sch_pomp_P1223: TCheckBox;
+    Sch_pomp_P1233: TCheckBox;
+    Sch_pomp_P1403: TCheckBox;
+    Sch_pomp_P1402: TCheckBox;
+    Sch_pomp_P1401: TCheckBox;
+    Sch_pomp_P2003: TCheckBox;
+    Sch_pomp_P2002: TCheckBox;
+    Sch_roer_R2411: TCheckBox;
+    Sch_roer_R2622: TCheckBox;
+    Sch_roer_R2612: TCheckBox;
+    Sch_roer_R2621: TCheckBox;
+    Sch_roer_R2611: TCheckBox;
+    Fsb_roer_R2411: TCheckBox;
+    Fsb_roer_R2622: TCheckBox;
+    Fsb_roer_R2612: TCheckBox;
+    Fsb_roer_R2621: TCheckBox;
+    Fsb_roer_R2611: TCheckBox;
+    Sch_pomp_P3201: TCheckBox;
+    Sch_roer_R3422: TCheckBox;
+    Sch_roer_R3423: TCheckBox;
+    Sch_roer_R3412: TCheckBox;
+    Sch_roer_R3413: TCheckBox;
+    Sch_pomp_P5110: TCheckBox;
+    Sch_pomp_P5112: TCheckBox;
+    Thr_pomp_P5112: TCheckBox;
+    Thr_pomp_P5110: TCheckBox;
+    FO_pomp_P5112: TCheckBox;
+    Sch_pomp_P3624: TCheckBox;
+    Sch_pomp_P3623: TCheckBox;
+    Sch_pomp_P3613: TCheckBox;
+    Sch_pomp_P3614: TCheckBox;
+    Fo_pomp_P3624: TCheckBox;
+    Fo_pomp_P3623: TCheckBox;
+    Fo_pomp_P3613: TCheckBox;
+    Fo_pomp_P3614: TCheckBox;
+    Sch_pomp_P3625: TCheckBox;
+    Sch_pomp_P3615: TCheckBox;
+    Sch_pomp_P3701: TCheckBox;
+    Sch_skimer_R3612: TCheckBox;
+    Sch_skimer_R3622: TCheckBox;
+    Fo_skimer_R3612: TCheckBox;
+    Fo_skimer_R3622: TCheckBox;
+    Sch_pomp_P1603: TCheckBox;
+    Sch_pomp_P1601: TCheckBox;
+    Sch_pomp_P1602: TCheckBox;
+    Sch_pomp_P4202: TCheckBox;
+    Sch_pomp_P4203: TCheckBox;
+    Sch_pomp_P4201: TCheckBox;
+    Sch_pomp_P6202: TCheckBox;
+    Sch_pomp_P6201: TCheckBox;
+    Sch_pomp_P6702: TCheckBox;
+    Sch_pomp_P6701: TCheckBox;
+    TrBar_tank3700olie: TTrackBar;
+    Label_tank3700olie: TLabel;
+    Label_tank3700water: TLabel;
+    TrBar_tank3700water: TTrackBar;
+    PBar_tank3700olie: TProgressBar;
+    Label45: TLabel;
+    Label_P1401: TLabel;
+    Label_P1402: TLabel;
+    Label_P1403: TLabel;
+    PBar_tank1600laag: TProgressBar;
+    TrBar_tank1600laag: TTrackBar;
+    Label34: TLabel;
+    PBar_tank1230: TProgressBar;
+    TrBar_tank1230: TTrackBar;
+    Label_tank1230: TLabel;
+    TrBar_Flow2000: TTrackBar;
+    Label_Flow2000: TLabel;
+    TabSheet11: TTabSheet;
+    Label37: TLabel;
+    TrBar_Analyser751: TTrackBar;
+    Label_Analyser751: TLabel;
+    TrBar_Analyser851: TTrackBar;
+    Label51: TLabel;
+    Label_Analyser851: TLabel;
+    TrBar_Analyser951: TTrackBar;
+    Label53: TLabel;
+    Label_Analyser951: TLabel;
+    TrBar_H2S_1001: TTrackBar;
+    Label57: TLabel;
+    Label_H2S_1001: TLabel;
+    Label_H2S_1002: TLabel;
+    Label63: TLabel;
+    TrBar_H2S_1002: TTrackBar;
+    TrBar_LEL1003: TTrackBar;
+    Label67: TLabel;
+    Label_LEL1003: TLabel;
+    Label_LEL1004: TLabel;
+    Label70: TLabel;
+    TrBar_LEL1004: TTrackBar;
+    Label64: TLabel;
+    TabSheet12: TTabSheet;
+    Sch_pomp_P6411: TCheckBox;
+    Mcc_pomp_P6411: TCheckBox;
+    pomp_P6411: TAnimate;
+    Label50: TLabel;
+    klep_64XSV101: TAnimate;
+    Label52: TLabel;
+    Label56: TLabel;
+    Th_pomp_P3613: TCheckBox;
+    Th_pomp_P3614: TCheckBox;
+    Th_pomp_P3623: TCheckBox;
+    Th_pomp_P3624: TCheckBox;
+    Th_skimer_R3612: TCheckBox;
+    Th_skimer_R3622: TCheckBox;
+    Mel_30FCV113: TCheckBox;
+    Mel_30FCV213: TCheckBox;
+    flow_P4201: TAnimate;
+    Mel_flow_P4201: TCheckBox;
+    Mel_flow_P4202: TCheckBox;
+    flow_P4202: TAnimate;
+    Mel_flow_P4203: TCheckBox;
+    flow_P4203: TAnimate;
+    flow_P3201: TAnimate;
+    Mel_flow_P3201: TCheckBox;
+    Mel_flow_P2002: TCheckBox;
+    flow_P2002: TAnimate;
+    ProgressBar1: TProgressBar;
+    Label40: TLabel;
+    ProgressBar2: TProgressBar;
+    Label58: TLabel;
+    Label62: TLabel;
+    Label66: TLabel;
+    Label68: TLabel;
+    Label69: TLabel;
+    Label71: TLabel;
+    ProgressBar4: TProgressBar;
+    ProgressBar5: TProgressBar;
+    TabSheet10: TTabSheet;
+    nivo_tank6120_L: TPanel;
+    TrBar_tank6110: TTrackBar;
+    PBar_tank6110: TProgressBar;
+    CheckBox17: TCheckBox;
+    CheckBox18: TCheckBox;
+    CheckBox19: TCheckBox;
+    Animate5: TAnimate;
+    CheckBox20: TCheckBox;
+    CheckBox13: TCheckBox;
+    CheckBox14: TCheckBox;
+    CheckBox15: TCheckBox;
+    Animate4: TAnimate;
+    CheckBox16: TCheckBox;
+    Animate1: TAnimate;
+    CheckBox4: TCheckBox;
+    Animate6: TAnimate;
+    CheckBox2: TCheckBox;
+    Label72: TLabel;
+    Label_tank6110: TLabel;
+    Label74: TLabel;
+    Label76: TLabel;
+    Label80: TLabel;
+    Label82: TLabel;
+    Label85: TLabel;
+    TabSheet13: TTabSheet;
+    CheckBoxAnaSimOI: TCheckBox;
+    CheckBoxDIgSimOI: TCheckBox;
+    Label124: TLabel;
+    SpeedButton1: TSpeedButton;
+    Mel_Klep011: TCheckBox;
+    Mel_Klep021: TCheckBox;
+    Mel_Klep031: TCheckBox;
+    Label78: TLabel;
+    Label79: TLabel;
+    Label87: TLabel;
+    Label89: TLabel;
+    Label90: TLabel;
+    Label93: TLabel;
+    Label96: TLabel;
+    Label97: TLabel;
+    Panel4: TPanel;
+    Panel5: TPanel;
+    Panel6: TPanel;
+    Label98: TLabel;
+    nivo_tank1600_flotter: TPanel;
+    Label81: TLabel;
+    Label99: TLabel;
+    Label100: TLabel;
+    Label101: TLabel;
+    Label102: TLabel;
+    Label103: TLabel;
+    Label104: TLabel;
+    Label105: TLabel;
+    Label106: TLabel;
+    Label107: TLabel;
+    Panel7: TPanel;
+    Panel8: TPanel;
+    Panel9: TPanel;
+    Panel10: TPanel;
+    Label108: TLabel;
+    Label109: TLabel;
+    Label110: TLabel;
+    Label111: TLabel;
+    Label112: TLabel;
+    Label113: TLabel;
+    Label114: TLabel;
+    Panel11: TPanel;
+    Panel12: TPanel;
+    Label115: TLabel;
+    Label116: TLabel;
+    Label117: TLabel;
+    Label118: TLabel;
+    Label120: TLabel;
+    Panel13: TPanel;
+    Panel14: TPanel;
+    Label119: TLabel;
+    Label121: TLabel;
+    Panel15: TPanel;
+    Panel16: TPanel;
+    Label122: TLabel;
+    Panel17: TPanel;
+    Label123: TLabel;
+    Label125: TLabel;
+    Label126: TLabel;
+    Label127: TLabel;
+    Label128: TLabel;
+    Label129: TLabel;
+    Label130: TLabel;
+    Label131: TLabel;
+    Label132: TLabel;
+    Label133: TLabel;
+    Label134: TLabel;
+    Label135: TLabel;
+    Label136: TLabel;
+    Label137: TLabel;
+    Label138: TLabel;
+    Label139: TLabel;
+    Label140: TLabel;
+    Label141: TLabel;
+    Label142: TLabel;
+    Panel18: TPanel;
+    Label143: TLabel;
+    Label144: TLabel;
+    Panel19: TPanel;
+    Label145: TLabel;
+    Label146: TLabel;
+    Label147: TLabel;
+    Panel20: TPanel;
+    Panel21: TPanel;
+    Label148: TLabel;
+    Label149: TLabel;
+    Label150: TLabel;
+    Panel22: TPanel;
+    Label151: TLabel;
+    Panel23: TPanel;
+    Panel24: TPanel;
+    Panel3: TPanel;
+    Panel2: TPanel;
+    Label152: TLabel;
+    Label153: TLabel;
+    ToolButton3: TToolButton;
+    Label154: TLabel;
+    Label155: TLabel;
+    Label156: TLabel;
+    Label157: TLabel;
+    Label158: TLabel;
+    Label159: TLabel;
+    Label160: TLabel;
+    Label161: TLabel;
+    Panel25: TPanel;
+    Label162: TLabel;
+    klep_30_FSV_121: TAnimate;
+    Label163: TLabel;
+    Label164: TLabel;
+    klep_30_FSV_221: TAnimate;
+    PB_30FCV113: TProgressBar;
+    PB_30FCV213: TProgressBar;
+    PB_R3612: TProgressBar;
+    PB_P3614: TProgressBar;
+    PB_R3622: TProgressBar;
+    PB_P3624: TProgressBar;
+    PB_P3613: TProgressBar;
+    PB_P3623: TProgressBar;
+    Label165: TLabel;
+    L_R3612: TLabel;
+    L_P3614: TLabel;
+    L_R3622: TLabel;
+    L_P3613: TLabel;
+    L_P3623: TLabel;
+    L_P3624: TLabel;
+    L_30FCV213: TLabel;
+    L_30FCV113: TLabel;
+    TimerGr: TTimer;
+    Timer2: TTimer;
+    Chart1: TChart;
+    Series1: TLineSeries;
+    Series2: TLineSeries;
+    Series3: TLineSeries;
+    Series4: TLineSeries;
+    Series5: TLineSeries;
+    CheckBox1: TCheckBox;
+    Button_Start2000: TButton;
+    Button_Stop2000: TButton;
+    Lamp_2000: TAnimate;
+    Lamp_1600: TAnimate;
+    Label166: TLabel;
+    Button_Start1600: TButton;
+    Button_Stop1600: TButton;
+    Lamp1_H2S: TAnimate;
+    Lamp2_H2S: TAnimate;
+    Label167: TLabel;
+    Label168: TLabel;
+    Lamp_dummy3: TAnimate;
+    Lamp_dummy2: TAnimate;
+    Lamp_dummy1: TAnimate;
+    procedure Button_Stop1600Click(Sender: TObject);
+    procedure Button_Start1600Click(Sender: TObject);
+    procedure Button_Stop2000Click(Sender: TObject);
+    procedure Button_Start2000Click(Sender: TObject);
+    procedure CheckBox1Click(Sender: TObject);
+    procedure Timer2Timer(Sender: TObject);
+    procedure TimerGrTimer(Sender: TObject);
+    procedure SimulatieAanClick(Sender: TObject);
+    procedure SimulatieUitClick(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure CheckBoxAnaSimOIClick(Sender: TObject);
+    procedure CheckBoxDIgSimOIClick(Sender: TObject);
+    procedure TrBar_LEL1004Change(Sender: TObject);
+    procedure TrBar_LEL1003Change(Sender: TObject);
+    procedure TrBar_H2S_1002Change(Sender: TObject);
+    procedure TrBar_H2S_1001Change(Sender: TObject);
+    procedure TrBar_Analyser951Change(Sender: TObject);
+    procedure TrBar_Analyser851Change(Sender: TObject);
+    procedure TrBar_Analyser751Change(Sender: TObject);
+    procedure TrBar_Flow2000Change(Sender: TObject);
+    procedure TrBar_flow38Change(Sender: TObject);
+    procedure TrBar_P3201Change(Sender: TObject);
+    procedure TrBar_tank1230Change(Sender: TObject);
+    procedure TrBar_tank1600laagChange(Sender: TObject);
+    procedure TrBar_R3622Change(Sender: TObject);
+    procedure TrBar_R3612Change(Sender: TObject);
+    procedure TrBar_P3624Change(Sender: TObject);
+    procedure TrBar_P3623Change(Sender: TObject);
+    procedure TrBar_P3614Change(Sender: TObject);
+    procedure TrBar_P3613Change(Sender: TObject);
+    procedure TrBar_P1403Change(Sender: TObject);
+    procedure TrBar_P1402Change(Sender: TObject);
+    procedure TrBar_P1401Change(Sender: TObject);
+    procedure TrBar_tank342xChange(Sender: TObject);
+    procedure TrBar_tank341xChange(Sender: TObject);
+    procedure TrBar_tank6200Change(Sender: TObject);
+    procedure TrBar_tank6700Change(Sender: TObject);
+    procedure TrBar_tank4300Change(Sender: TObject);
+    procedure TrBar_tank1602Change(Sender: TObject);
+    procedure TrBar_tank1600nivoChange(Sender: TObject);
+    procedure TrBar_tank3700waterChange(Sender: TObject);
+    procedure TrBar_tank3700olieChange(Sender: TObject);
+    procedure TrBar_tank5100Change(Sender: TObject);
+    procedure TrBar_P2003Change(Sender: TObject);
+    procedure TrBar_P2002Change(Sender: TObject);
+    procedure SBdisconClick(Sender: TObject);
+    procedure SBConClick(Sender: TObject);
+    procedure TrBar_flowFF2Change(Sender: TObject);
+    procedure TrBar_flowFF1Change(Sender: TObject);
+    procedure TrBar_tank2620Change(Sender: TObject);
+    procedure TrBar_tank2610Change(Sender: TObject);
+    procedure TrBar_tank2410Change(Sender: TObject);
+    procedure TrBar_tank1400Change(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    function  TimeToReal(Time:TDateTime):real;
+    procedure MaakVerbinding;
+    procedure VerbrVerbinding;
+    procedure MenuAct;
+    procedure WriteAnaDB;
+    procedure Conv(nDB, waarde  : integer);
+    procedure SetToolBar;
+    procedure InitFFU;
+    procedure UpdateStroom;
+    procedure UpdateDebiet;
+    procedure UpdateOpnemers;
+    procedure area1100;
+    procedure area1200;
+    procedure area2000;
+    procedure area3000;
+    procedure area5100;
+    procedure area3600;
+    procedure area1600;
+    procedure area4200;
+    procedure area6200;
+    procedure area6400;
+
+    procedure tank341x;
+    procedure tank342x;
+    procedure tank1230;
+    procedure tank1400;
+    procedure tank2410;
+    procedure tank2610;
+    procedure tank2620;
+    procedure tank1600;
+    procedure tank1602;
+    procedure tank6200;
+    procedure tank6700;
+    procedure acknowledge;
+    procedure ANAOutputs;
+    function OmrekProc(input:integer):string;
+    function OmrekProcDouble(input:integer):double;
+    procedure DataNaarGrafiek;
+    procedure VulData;
+    procedure Area2000_Start;
+    procedure Area1600_Start;
+    procedure H2S;
+
+  private
+    { Private declarations }
+    dc   : pdaveConnection;
+    dcIn : pdaveInterface;
+    verbinding : boolean;
+
+    oBit8In   : TBit8;
+    oBit8Out  : TBit8;
+
+    uitgangenDG: Array[0..50] of byte;
+    ingangenDG: Array[0..50] of byte;
+    ingangenANA:  Array[0..250] of byte;
+    uitgangenAO: Array[0..50] of SmallInt;
+    instellingenDB: Array[0..50] of SmallInt;
+    aUit, aIn, bUit, bMel, bSch, bMcc , bFsb, bThr, bFo, bTh : byte;
+
+    //tbv grafiek
+    MW1   : array[0..aantal] of real;
+    SP1   : array[0..aantal] of real;
+    UIT1  : array[0..aantal] of real;
+    MAX1  : array[0..aantal] of real;
+    MIN1  : array[0..aantal] of real;
+    MW2   : array[0..aantal] of real;
+    SP2   : array[0..aantal] of real;
+    UIT2  : array[0..aantal] of real;
+    MAX2  : array[0..aantal] of real;
+    MIN2  : array[0..aantal] of real;
+
+  public
+    { Public declarations }
+
+    IP_Siemens  : string;
+    rack        : string;
+    slot        : string;
+    ProjectDir  : string;
+    CommonDir   : string;
+    DataDir     : string;
+    SimActief   : boolean;
+    OS_Connect  : boolean;
+    RetMessage  : string;
+    readOk : boolean;
+    ackn : boolean;
+    button2000start : boolean;
+    button2000stop : boolean;
+    button1600start : boolean;
+    button1600stop : boolean;
+  end;
+
+implementation
+
+uses Main;
+
+
+{$R *.dfm}
+
+
+procedure TMDI_FFU.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  oBit8In.Free;
+  oBit8Out.Free;
+  Action := caFree;
+end;
+
+procedure TMDI_FFU.FormCreate(Sender: TObject);
+begin
+  verbinding := false;
+  SimActief  := false;
+  ProjectDir := MainForm.ProjectDir;
+  IP_Siemens := MainForm.IP_Siemens_FFU;
+  rack := MainForm.rack_FFU;
+  slot := MainForm.slot_FFU;
+
+  MenuAct;
+  InitFFU;
+end;
+
+procedure TMDI_FFU.InitFFU;
+var
+  j,i:integer;
+begin
+  aUit :=0; aIn:=0;
+  bUit:=0; bMcc :=0; bSch :=0; bMel :=0; bFsb:=0; bThr :=0; bFo :=0; bTh :=0;
+  oBit8In := TBit8.Create;
+  oBit8Out := TBit8.Create;
+  //initAREA 6400  AFZUIGING
+  klep_64XSV101.FileName  := ProjectDir + '\Pics\FFU.avi';
+  klep_64XSV101.Stop;
+  klep_64XSV101.Seek(1);
+  pomp_P6411.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P6411.Stop;
+  pomp_P6411.Seek(4);
+
+  button2000start := false;
+  button2000stop := false;
+  button1600start := false;
+  button1600stop := false;
+  Lamp_2000.FileName  := ProjectDir + '\Pics\FFU.avi';
+  Lamp_2000.Stop;
+  Lamp_2000.Seek(10);
+  Lamp_1600.FileName  := ProjectDir + '\Pics\FFU.avi';
+  Lamp_1600.Stop;
+  Lamp_1600.Seek(10);
+
+
+  //init area 1100
+  klep_LSV_011.FileName  := ProjectDir + '\Pics\FFU.avi';
+  klep_LSV_011.Stop;
+  klep_LSV_011.Seek(1);
+
+  klep_LSV_021.FileName  := ProjectDir + '\Pics\FFU.avi';
+  klep_LSV_021.Stop;
+  klep_LSV_021.Seek(1);
+
+  klep_LSV_031.FileName  := ProjectDir + '\Pics\FFU.avi';
+  klep_LSV_031.Stop;
+  klep_LSV_031.Seek(1);
+
+  //init area 1200
+  skimer_R1212.FileName  := ProjectDir + '\Pics\FFU.avi';
+  skimer_R1212.Stop;
+  skimer_R1212.Seek(13);
+  skimer_R1222.FileName  := ProjectDir + '\Pics\FFU.avi';
+  skimer_R1222.Stop;
+  skimer_R1222.Seek(13);
+  skimer_R1232.FileName  := ProjectDir + '\Pics\FFU.avi';
+  skimer_R1232.Stop;
+  skimer_R1232.Seek(13);
+
+  pomp_P1213.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P1213.Stop;
+  pomp_P1213.Seek(4);
+  pomp_P1223.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P1223.Stop;
+  pomp_P1223.Seek(4);
+  pomp_P1233.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P1233.Stop;
+  pomp_P1233.Seek(4);
+
+  pomp_P1401.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P1401.Stop;
+  pomp_P1401.Seek(4);
+  pomp_P1402.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P1402.Stop;
+  pomp_P1402.Seek(4);
+  pomp_P1403.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P1403.Stop;
+  pomp_P1403.Seek(4);
+
+  //init area 2000
+  pomp_P2002.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P2002.Stop;
+  pomp_P2002.Seek(4);
+  pomp_P2003.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P2003.Stop;
+  pomp_P2003.Seek(4);
+
+  roer_R2411.FileName  := ProjectDir + '\Pics\FFU.avi';
+  roer_R2411.Stop;
+  roer_R2411.Seek(13);
+  roer_R2611.FileName  := ProjectDir + '\Pics\FFU.avi';
+  roer_R2611.Stop;
+  roer_R2611.Seek(13);
+  roer_R2612.FileName  := ProjectDir + '\Pics\FFU.avi';
+  roer_R2612.Stop;
+  roer_R2612.Seek(13);
+  roer_R2621.FileName  := ProjectDir + '\Pics\FFU.avi';
+  roer_R2621.Stop;
+  roer_R2621.Seek(13);
+  roer_R2622.FileName  := ProjectDir + '\Pics\FFU.avi';
+  roer_R2622.Stop;
+  roer_R2622.Seek(13);
+
+  klep_22_QSV_010.FileName  := ProjectDir + '\Pics\FFU.avi';
+  klep_22_QSV_010.Stop;
+  klep_22_QSV_010.Seek(1);
+  klep_22_QSV_020.FileName  := ProjectDir + '\Pics\FFU.avi';
+  klep_22_QSV_020.Stop;
+  klep_22_QSV_020.Seek(1);
+  klep_24_QSV_002.FileName  := ProjectDir + '\Pics\FFU.avi';
+  klep_24_QSV_002.Stop;
+  klep_24_QSV_002.Seek(1);
+  klep_24_QSV_006.FileName  := ProjectDir + '\Pics\FFU.avi';
+  klep_24_QSV_006.Stop;
+  klep_24_QSV_006.Seek(1);
+
+  //AREA 3000, 3200, 3400, FLOCCULATIE
+  pomp_P3201.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P3201.Stop;
+  pomp_P3201.Seek(4);
+  pomp_P3201H.Color  := clGray;
+  pomp_P3201L.Color  := clGray;
+  roer_R3412.FileName  := ProjectDir + '\Pics\FFU.avi';
+  roer_R3412.Stop;
+  roer_R3412.Seek(13);
+  roer_R3413.FileName  := ProjectDir + '\Pics\FFU.avi';
+  roer_R3413.Stop;
+  roer_R3413.Seek(13);
+  roer_R3422.FileName  := ProjectDir + '\Pics\FFU.avi';
+  roer_R3422.Stop;
+  roer_R3422.Seek(13);
+  roer_R3423.FileName  := ProjectDir + '\Pics\FFU.avi';
+  roer_R3423.Stop;
+  roer_R3423.Seek(13);
+
+  klep_30_FSV_121.FileName  := ProjectDir + '\Pics\FFU.avi';
+  klep_30_FSV_121.Stop;
+  klep_30_FSV_121.Seek(1);
+  klep_30_FSV_221.FileName  := ProjectDir + '\Pics\FFU.avi';
+  klep_30_FSV_221.Stop;
+  klep_30_FSV_221.Seek(1);
+
+  //AREA 5100, PE DOSERING
+  pomp_P5110.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P5110.Stop;
+  pomp_P5110.Seek(4);
+  pomp_P5112.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P5112.Stop;
+  pomp_P5112.Seek(4);
+
+  //AREA 3600, 3800, FLOTATIE
+  pomp_P3613.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P3613.Stop;
+  pomp_P3613.Seek(4);
+  pomp_P3614.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P3614.Stop;
+  pomp_P3614.Seek(4);
+  pomp_P3615.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P3615.Stop;
+  pomp_P3615.Seek(4);
+  pomp_P3623.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P3623.Stop;
+  pomp_P3623.Seek(4);
+  pomp_P3624.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P3624.Stop;
+  pomp_P3624.Seek(4);
+  pomp_P3625.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P3625.Stop;
+  pomp_P3625.Seek(4);
+  pomp_P3701.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P3701.Stop;
+  pomp_P3701.Seek(4);
+
+  skimer_R3612.FileName  := ProjectDir + '\Pics\FFU.avi';
+  skimer_R3612.Stop;
+  skimer_R3612.Seek(13);
+  skimer_R3622.FileName  := ProjectDir + '\Pics\FFU.avi';
+  skimer_R3622.Stop;
+  skimer_R3622.Seek(13);
+
+  //AREA 1600, DRIJFLAAGBEHANDELING
+  pomp_P1601.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P1601.Stop;
+  pomp_P1601.Seek(4);
+  pomp_P1602.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P1602.Stop;
+  pomp_P1602.Seek(4);
+  pomp_P1603.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P1603.Stop;
+  pomp_P1603.Seek(4);
+
+  //AREA 4200, 4300, 4400, SLIBVERWERKING
+  pomp_P4201.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P4201.Stop;
+  pomp_P4201.Seek(4);
+  pomp_P4202.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P4202.Stop;
+  pomp_P4202.Seek(4);
+  pomp_P4203.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P4203.Stop;
+  pomp_P4203.Seek(4);
+
+  roer_R4301.FileName  := ProjectDir + '\Pics\FFU.avi';
+  roer_R4301.Stop;
+  roer_R4301.Seek(13);
+  Mcc_roer_R4301.Checked := false;
+
+  //AREA 6200, 6700, 8800, VUILWATERPUTTEN
+  pomp_P6701.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P6701.Stop;
+  pomp_P6701.Seek(4);
+  pomp_P6702.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P6702.Stop;
+  pomp_P6702.Seek(4);
+  pomp_P6201.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P6201.Stop;
+  pomp_P6201.Seek(4);
+  pomp_P6202.FileName  := ProjectDir + '\Pics\FFU.avi';
+  pomp_P6202.Stop;
+  pomp_P6202.Seek(4);
+
+  flow_P3201.FileName  := ProjectDir + '\Pics\FFU.avi';
+  flow_P3201.Stop;
+  flow_P3201.Seek(19);
+  flow_P4201.FileName  := ProjectDir + '\Pics\FFU.avi';
+  flow_P4201.Stop;
+  flow_P4201.Seek(19);
+  flow_P4202.FileName  := ProjectDir + '\Pics\FFU.avi';
+  flow_P4202.Stop;
+  flow_P4202.Seek(19);
+  flow_P4203.FileName  := ProjectDir + '\Pics\FFU.avi';
+  flow_P4203.Stop;
+  flow_P4203.Seek(19);
+  flow_P2002.FileName  := ProjectDir + '\Pics\FFU.avi';
+  flow_P2002.Stop;
+  flow_P2002.Seek(19);
+
+
+  Lamp1_H2S.FileName  := ProjectDir + '\Pics\FFU.avi';
+  Lamp1_H2S.Stop;
+  Lamp1_H2S.Seek(7);
+  Lamp2_H2S.FileName  := ProjectDir + '\Pics\FFU.avi';
+  Lamp2_H2S.Stop;
+  Lamp2_H2S.Seek(7);
+
+  Lamp_dummy1.FileName  := ProjectDir + '\Pics\FFU.avi';
+  Lamp_dummy1.Stop;
+  Lamp_dummy1.Seek(7);
+  Lamp_dummy2.FileName  := ProjectDir + '\Pics\FFU.avi';
+  Lamp_dummy2.Stop;
+  Lamp_dummy2.Seek(7);
+  Lamp_dummy3.FileName  := ProjectDir + '\Pics\FFU.avi';
+  Lamp_dummy3.Stop;
+  Lamp_dummy3.Seek(7);
+
+
+  tank341x;
+  tank342x;
+  tank1230;
+  tank1400;
+  tank2410;
+  tank2610;
+  tank2620;
+  tank1600;
+  tank1602;
+  tank6200;
+  tank6700;
+
+  TrBar_P1401.Position := 20;
+  TrBar_P1402.Position := 20;
+  TrBar_P1403.Position := 20;
+  TrBar_P2002.Position := 20;
+  TrBar_P2003.Position := 20;
+  TrBar_P3201.Position := 20;
+  TrBar_P3613.Position := 20;
+  TrBar_P3614.Position := 20;
+  TrBar_P3623.Position := 20;
+  TrBar_P3624.Position := 20;
+  TrBar_R3612.Position := 20;
+  TrBar_R3622.Position := 20;
+  UpdateStroom;
+  UpdateDebiet;
+  UpdateOpnemers;
+
+  j := 599;
+  For i := 0 to j do
+  begin
+    SP1[i]  := 0;
+    MW1[i]  := 0;
+    UIT1[i] := 0;
+    MAX1[i] := 0;
+    MIN1[i] := 0;
+
+    SP2[i]  := 0;
+    MW2[i]  := 0;
+    UIT2[i] := 0;
+    MAX2[i] := 0;
+    MIN2[i] := 0;
+  end;
+
+
+end;
+procedure TMDI_FFU.acknowledge;
+begin
+    aIn:=39; bMel :=7;
+    oBit8In.AsByte := ingangenDG[aIn];
+    if ackn then oBit8In.SetBit(bMel)else oBit8In.ClrBit(bMel);
+    ingangenDG[aIn] := oBit8In.AsByte;
+    ackn := false;
+
+end;
+procedure TMDI_FFU.SpeedButton1Click(Sender: TObject); begin ackn := true; end;
+procedure TMDI_FFU.SimulatieUitClick(Sender: TObject); begin SimActief := true; SetToolBar; end;
+procedure TMDI_FFU.SimulatieAanClick(Sender: TObject); begin SimActief := false; SetToolBar; end;
+procedure TMDI_FFU.MenuAct;
+begin
+    SBcon.Visible    :=  not verbinding;
+    SBdiscon.Visible := verbinding;
+    SimulatieUit.Visible := not SimActief;
+    SimulatieAan.Visible := SimActief;
+   // StatusBar1.Panels[3].Text:='';
+end;
+procedure TMDI_FFU.SetToolBar;
+begin
+   if(SimActief) then StatusBar1.Panels[3].Text:='Sim AAN'
+   else StatusBar1.Panels[3].Text:='Sim UIT';
+   MenuAct;
+end;
+procedure TMDI_FFU.MaakVerbinding;
+Var
+ ComName:Array[0..20] of Char;
+ Fds:_daveOSserialType;
+ S:String;
+ I:Integer;
+begin
+    S:=Trim(IP_Siemens);
+    For I:=1 To Length(S) Do
+      ComName[I-1]:=S[I];
+
+    ComName[Length(S)]:=#0;
+    StatusBar1.Panels[0].Text:='IpAdres: '+ComName+ ', port = 102';
+    fds.rfd:=openSocket(102,COMname);
+    fds.wfd:=fds.rfd;
+
+    verbinding := false;
+    StatusBar1.Panels[1].Text :='Attempt of creation of the connection';
+    //creation of the interface
+    if (fds.rfd>0) then
+    begin
+      dcIn:=daveNewInterface(fds, 'IF1',0,daveProtoISOTCP, daveSpeed187k);
+      dcIn^.timeout:=500;
+      StatusBar1.Panels[1].Text :='New interface: '+ 'protocol = '+inttostr(daveProtoISOTCP) + ', speed 187k = '+inttostr(daveSpeed187k);
+
+      //initialize the adapter
+      if (daveInitAdapter(dcIn)=0) then
+      begin
+        dc :=daveNewConnection(dcIn,2, StrToInt(rack), StrToInt(slot));
+        StatusBar1.Panels[1].Text :='Connection: MPI = 2, rack = '+rack+', slot = '+slot;
+        //connection
+        if (daveConnectPLC(dc)=0) then
+        begin
+          StatusBar1.Panels[0].Text := 'Connected Siemens '+ComName+ ', port=102';
+          verbinding := true;
+        end else StatusBar1.Panels[0].Text :='Not successful attempt of connection!';
+      end else StatusBar1.Panels[0].Text :='Not successful attempt to initialize  the adapter!';
+    end else StatusBar1.Panels[0].Text :='Not successful attempt of creation of the interface!';
+
+    MenuAct;
+
+end;
+procedure TMDI_FFU.VerbrVerbinding;
+begin
+  if verbinding then
+  begin
+    daveDisconnectPLC(dc);
+    daveDisconnectAdapter(dcIn);
+    verbinding := false;
+    MenuAct;
+    StatusBar1.Panels[0].Text:='Disconnected';
+  end;
+end;
+function TMDI_FFU.TimeToReal(Time:TDateTime):real;
+var
+  uur,min,sec,msec:word;
+begin
+  DecodeTime(Time,uur,min,sec,msec);
+  result:=60*uur+min+(sec/60);
+end;
+procedure TMDI_FFU.SBConClick(Sender: TObject);
+begin  MaakVerbinding; end;
+procedure TMDI_FFU.SBdisconClick(Sender: TObject);
+begin  VerbrVerbinding; end;
+procedure TMDI_FFU.Timer1Timer(Sender: TObject);
+var
+  aUit1, aUit2 : byte;
+ Res:LongInt;
+ i : integer;
+ sm:SmallInt;
+begin
+  if verbinding then
+  begin
+    res := daveReadBytes(dc, daveOutputs, 0, 0, 16, NIL);
+    if (res = 0) then
+    begin
+      For i := 0 to 43 do
+           uitgangenDG[i] := daveGetU8(dc);
+      readOK := true;
+    end else
+      readOK := false;
+  end;
+
+  area1100;
+  area1200;
+  area2000;
+  area3000;
+  area5100;
+  area3600;
+  area1600;
+  area4200;
+  area6200;
+  area6400;
+  acknowledge;
+  Area2000_Start;
+  Area1600_Start;
+  H2S;
+  
+  if verbinding then
+  begin
+   //res := daveReadBytes(dc, daveAnaOut, 400, 0, 44, NIL);
+    res := daveReadBytes(dc, daveFlags, 0, 1200, 20, NIL);
+    if (res = 0) then
+    begin
+      For i := 0 to 9 do
+           uitgangenAO[i] := daveGetU16(dc);
+      readOK := true;
+    end else
+      readOK := false;
+  end;
+  ANAOutputs;
+  //76 - 0 Instelling 30-FC-111 S4
+  //78 - 1 Instelling 30-FC-111 S5
+  //80 - 2 Instelling 30-FC-111 setpoint
+  //82 - 3 Instelling 30-FC-111 Y-waarde
+  //84 - 4 Instelling 30-FC-211 D-actie
+  //86 - 5 Instelling 30-FC-211 I-actie
+  //88 - 6 Instelling 30-FC-211 P-actie
+  //90 - 7 Instelling 30-FC-211 S2
+  //92 - 8 Instelling 30-FC-211 S3
+  //94 - 9 Instelling 30-FC-211 S4
+  //96 - 10 Instelling 30-FC-211 S5
+  //98 - 11 Instelling 30-FC-211 setpoint
+  //100- 12 Instelling 30-FC-211 Y-waarde
+
+  if verbinding then
+  begin
+    res := daveReadBytes(dc, daveDB, 3, 76, 24, NIL);
+    if (res = 0) then
+    begin
+      For i := 0 to 11 do
+           instellingenDB[i] := daveGetU16(dc);
+      readOK := true;
+      VulData;
+    end else
+      readOK := false;
+  end;
+
+  WriteAnaDB;
+  if verbinding then
+  begin
+    if CheckBoxDIgSimOI.Checked then
+      res := daveWriteBytes(dc, daveFlags, 0, 100, 44, @ingangenDG)
+    else
+      res := daveWriteBytes(dc, daveInputs, 0, 0, 44, @ingangenDG);
+    if CheckBoxAnaSimOI.Checked then
+      res := daveWriteBytes(dc, daveFlags, 0, 1400, 120, @ingangenANA)
+    else
+      res := daveWriteBytes(dc, daveAnaIn, 0, 400, 120, @ingangenANA);
+
+  end;
+end;
+procedure TMDI_FFU.ANAOutputs;
+begin  //
+      PB_30FCV113.Position := uitgangenAO[0];
+      PB_30FCV213.Position := uitgangenAO[1];
+      PB_P3613.Position :=  uitgangenAO[2];
+      PB_P3614.Position :=  uitgangenAO[3];
+      PB_P3623.Position :=  uitgangenAO[4];
+      PB_P3624.Position :=  uitgangenAO[5];
+      PB_R3612.Position :=  uitgangenAO[7];
+      PB_R3622.Position :=  uitgangenAO[8];
+
+      L_30FCV113.Caption := IntToStr(PB_30FCV113.Position)+'%';
+      L_30FCV213.Caption := IntToStr(PB_30FCV213.Position)+'%';
+      L_P3613.Caption :=  IntToStr(PB_P3613.Position)+'%';
+      L_P3614.Caption :=  IntToStr(PB_P3614.Position)+'%';
+      L_P3623.Caption :=  IntToStr(PB_P3623.Position)+'%';
+      L_P3624.Caption :=  IntToStr(PB_P3624.Position)+'%';
+      L_R3612.Caption :=  IntToStr(PB_R3612.Position)+'%';
+      L_R3622.Caption :=  IntToStr(PB_R3622.Position)+'%';
+
+end;
+function TMDI_FFU.OmrekProc(input:integer):string;
+var
+  waarde : integer;
+begin
+  waarde :=  input * 100  div 27648;
+  result := IntToStr(waarde)+'%';
+end;
+function TMDI_FFU.OmrekProcDouble(input:integer):double;
+var
+  waarde : integer;
+begin
+  waarde :=  input * 100  div 27648;
+  result := waarde/1.0;
+end;
+procedure TMDI_FFU.WriteAnaDB;
+begin
+    //niveaus
+    Conv(0, TrBar_tank1400.position);      //400
+    Conv(2, TrBar_tank1600laag.position);  //402 Niveau 16-T-1600 olie niveau
+    Conv(4, 100 - TrBar_tank1600nivo.position);  //404 Niveau 16-T-1600 olie dikte
+                                           //406 leeg
+    Conv(8, TrBar_tank2410.position);      //408
+    Conv(10, TrBar_tank2610.position);     //410
+    Conv(12, TrBar_tank2620.position);     //412
+    Conv(14, TrBar_tank3700water.position);//414 Niveau 37-LT-001 waterspiegel
+    Conv(16, TrBar_tank3700olie.position); //416 Niveau 37-LT-002 drijflaag
+    Conv(18, TrBar_tank5100.position);     //418
+    Conv(20, TrBar_tank1230.position);     //420 Niveau 12-T-1230
+    Conv(22, TrBar_tank6200.position);     //422
+    Conv(24, TrBar_tank6700.position);     //424
+    Conv(26, TrBar_tank1602.position);     //426
+                                           //428 leeg
+                                           //430 leeg
+    Conv(32, TrBar_flow2000.position);     //432 Debietsmeting 22-FT-002
+    Conv(34, TrBar_flowFF1.position);      //434 Debietsmeting 30-FT-111
+    Conv(36, TrBar_flowFF2.position);      //436 Debietsmeting 30-FT-211
+    Conv(38, TrBar_flow38.position);       //438 Debietsmeting 38-FT-005
+
+    //stroom
+    //pomp_P1401
+    if SimActief then begin
+      aUit :=4; bUit:=3; oBit8Out.AsByte := uitgangenDG[aUit];
+      if (oBit8Out.BitSet(bUit)) then  Conv(48, TrBar_P1401.position) else Conv(48, 0);   //448
+    end else  Conv(48, TrBar_P1401.position);
+    //pomp_P1402
+    if SimActief then begin
+      aUit :=4; bUit:=4; oBit8Out.AsByte := uitgangenDG[aUit];
+      if (oBit8Out.BitSet(bUit)) then  Conv(50, TrBar_P1402.position) else Conv(50, 0);   //450
+    end else  Conv(50, TrBar_P1402.position);
+    //pomp_P1403
+    if SimActief then begin
+      aUit :=4; bUit:=5; oBit8Out.AsByte := uitgangenDG[aUit];
+      if (oBit8Out.BitSet(bUit)) then  Conv(52, TrBar_P1403.position) else Conv(52, 0);   //452
+    end else Conv(52, TrBar_P1403.position);
+    //pomp_P2002
+    if SimActief then begin
+      aUit :=5; bUit:=0; oBit8Out.AsByte := uitgangenDG[aUit];
+      if (oBit8Out.BitSet(bUit)) then  Conv(54, TrBar_P2002.position) else Conv(54, 0);   //454
+    end else  Conv(54, TrBar_P2002.position);
+    //pomp_P2003
+    if SimActief then begin
+      aUit :=5; bUit:=1; oBit8Out.AsByte := uitgangenDG[aUit];
+      if (oBit8Out.BitSet(bUit)) then  Conv(56, TrBar_P2003.position) else Conv(56, 0);   //456
+    end else  Conv(56, TrBar_P2003.position);
+
+    //pomp_P3201
+    Conv(58, TrBar_P3201.position);        //458
+
+    //pomp_P3613
+    if SimActief then begin
+      aUit :=8; bUit:=2; oBit8Out.AsByte := uitgangenDG[aUit];
+      if (oBit8Out.BitSet(bUit)) then  Conv(60, TrBar_P3613.position) else Conv(60, 0);   //460
+    end else  Conv(60, TrBar_P3613.position);
+    //pomp_P3614
+    if SimActief then begin
+      aUit :=8; bUit:=4; oBit8Out.AsByte := uitgangenDG[aUit];
+      if (oBit8Out.BitSet(bUit)) then  Conv(62, TrBar_P3614.position) else Conv(62, 0);   //462
+    end else  Conv(62, TrBar_P3614.position);
+    //pomp_P3623
+    if SimActief then begin
+      aUit :=8; bUit:=7; oBit8Out.AsByte := uitgangenDG[aUit];
+      if (oBit8Out.BitSet(bUit)) then  Conv(64, TrBar_P3623.position) else Conv(64, 0);   //464
+    end else Conv(64, TrBar_P3623.position);
+    //pomp_P3624
+    if SimActief then begin
+      aUit :=9; bUit:=1; oBit8Out.AsByte := uitgangenDG[aUit];
+      if (oBit8Out.BitSet(bUit)) then  Conv(66, TrBar_P3624.position) else Conv(66, 0);   //466
+    end else Conv(66, TrBar_P3624.position);
+    //RUIMER_R3612
+    if SimActief then begin
+      aUit :=14; bUit:=7; oBit8Out.AsByte := uitgangenDG[aUit];
+      if (oBit8Out.BitSet(bUit)) then  Conv(94, TrBar_R3612.position) else Conv(94, 0);   //494
+    end else Conv(94, TrBar_R3612.position);
+    //RUIMER_R3622
+    if SimActief then begin
+      aUit :=15; bUit:=2; oBit8Out.AsByte := uitgangenDG[aUit];
+      if (oBit8Out.BitSet(bUit)) then  Conv(96, TrBar_R3622.position) else Conv(96, 0);   //496
+    end else Conv(96,TrBar_R3622.position);
+
+    Conv(98, TrBar_Analyser751.position);  //498 Analyser 95-QT-751
+    Conv(100, TrBar_Analyser851.position); //500 Analyser 95-QT-851
+    Conv(102, TrBar_Analyser951.position); //502 Analyser 95-QT-951
+    Conv(104, TrBar_H2S_1001.position);    //504 H2S meting FFU 37-QT-1001
+    Conv(106, TrBar_H2S_1002.position);    //506 H2S meting FFU 37-QT-1002
+    Conv(108, TrBar_LEL1003.position);     //508 LEL meting FFU 37-QT-1003
+    Conv(110, TrBar_LEL1004.position);     //510 LEL meting FFU 37-QT-1004
+
+end;
+procedure TMDI_FFU.Conv(nDB, waarde  : integer);
+var
+  waardeR : double;
+  waardeN : integer;
+  waardeS : SmallInt;
+begin
+       //incomende waarde in %
+       waardeR := waarde * 27760.0 / 100.0;
+       waardeN := round(waardeR);
+       waardeS := waardeN;
+       ingangenANA[nDB]   :=  Hi(waardeS);
+       ingangenANA[nDB+1] :=  Lo(waardeS);
+end;
+procedure TMDI_FFU.area6400;
+begin //AREA 6400, 8700, 8800, 9500, AFZUIGING
+  if ((verbinding) and (readOK)) then
+  begin
+    aUit :=2; aIn:= 0;
+    bUit:=1; bMel :=0;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin klep_64XSV101.Seek(2); {oBit8In.SetBit(bMel);} end
+                            else begin klep_64XSV101.Seek(3); {oBit8In.ClrBit(bMel);} end;
+                          //  ingangenDG[aIn] := oBit8In.AsByte;
+    //pomp_P6411
+    aUit :=5; aIn:=27;
+    bUit:=3; bMcc :=6; bSch :=4; bMel :=5;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P6411.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P6411.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P6411.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P6411.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+  end else
+  begin
+    klep_LSV_011.Seek(1);
+    pomp_P6411.Seek(4);
+  end;
+end;
+procedure TMDI_FFU.area1100;
+begin //AREA 1100, TOEVOERVERDEELWERK
+  if ((verbinding) and (readOK)) then
+  begin
+    aUit :=0; aIn:=0;
+    bUit:=0; bMel :=0;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then klep_LSV_011.Seek(2)else klep_LSV_011.Seek(3);
+    if SimActief then
+      if (oBit8Out.BitSet(bUit)) then oBit8In.ClrBit(bMel) else oBit8In.SetBit(bMel)
+    else
+      if (Mel_Klep011.Checked) then oBit8In.SetBit(bMel) else oBit8In.ClrBit(bMel);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+
+    bUit:=1; bMel :=1;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then klep_LSV_021.Seek(2)else klep_LSV_021.Seek(3);
+    if SimActief then
+      if (oBit8Out.BitSet(bUit)) then oBit8In.ClrBit(bMel) else oBit8In.SetBit(bMel)
+    else
+      if (Mel_Klep021.Checked) then oBit8In.SetBit(bMel) else oBit8In.ClrBit(bMel);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    bUit:=2; bMel :=2;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then klep_LSV_031.Seek(2)else klep_LSV_031.Seek(3);
+    if SimActief then
+      if (oBit8Out.BitSet(bUit)) then oBit8In.ClrBit(bMel) else oBit8In.SetBit(bMel)
+    else
+      if (Mel_Klep031.Checked) then oBit8In.SetBit(bMel) else oBit8In.ClrBit(bMel);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+  end else
+  begin
+    klep_LSV_011.Seek(1);
+    klep_LSV_021.Seek(1);
+    klep_LSV_031.Seek(1);
+  end;
+end;
+procedure TMDI_FFU.area1200;
+begin //AREA 1200, 1400, OLIEAFSCHEIDERS EN BUFFERPOMPEN
+  if ((verbinding) and (readOK)) then
+  begin
+    //pomp_P1213
+    aUit :=4; aIn:=12;
+    bUit:=0; bMcc :=0; bSch :=1; bMel :=2;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P1213.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P1213.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P1213.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P1213.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //pomp_P1223
+    aUit :=4; aIn:=12;
+    bUit:=1; bMcc :=3; bSch :=4; bMel :=5;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P1223.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P1223.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P1223.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P1223.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //pomp_P1233
+    aUit :=4; aIn:=13;
+    bUit:=2; bMcc :=6; bSch :=7; bMel :=0;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P1233.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P1233.Seek(6); oBit8In.ClrBit(bMel); end;
+                            ingangenDG[aIn] := oBit8In.AsByte;
+                            aIn:=12;
+                            oBit8In.AsByte := ingangenDG[aIn];
+        if Mcc_pomp_P1233.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P1233.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //skimer_R1212
+    aUit :=12; aIn:=28;
+    bUit:=1; bMcc :=5; bSch :=3; bMel :=4;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin skimer_R1212.Seek(14); oBit8In.SetBit(bMel); end
+                            else begin skimer_R1212.Seek(15); oBit8In.ClrBit(bMel); end;
+        if Mcc_skimer_R1212.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_skimer_R1212.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //skimer_R1222
+    aUit :=12; aIn:=29;
+    bUit:=3; bMcc :=4; bSch :=2; bMel :=3;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin skimer_R1222.Seek(14); oBit8In.SetBit(bMel); end
+                            else begin skimer_R1222.Seek(15); oBit8In.ClrBit(bMel); end;
+        if Mcc_skimer_R1222.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_skimer_R1222.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //skimer_R1232
+    aUit :=12; aIn:=30;
+    bUit:=5; bMcc :=3; bSch :=1; bMel :=2;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin skimer_R1232.Seek(14); oBit8In.SetBit(bMel); end
+                            else begin skimer_R1232.Seek(15); oBit8In.ClrBit(bMel); end;
+        if Mcc_skimer_R1232.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_skimer_R1232.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+
+    //pomp_P1401
+    aUit :=4; aIn:=13;
+    bUit:=3; bMcc :=1; bSch :=2; bMel :=3;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P1401.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P1401.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P1401.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P1401.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //pomp_P1402
+    aUit :=4; aIn:=13;
+    bUit:=4; bMcc :=4; bSch :=5; bMel :=6;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P1402.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P1402.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P1402.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P1402.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //pomp_P1403
+    aUit :=4; aIn:=14;
+    bUit:=5; bMcc :=7; bSch :=0; bMel :=1;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P1403.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P1403.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Sch_pomp_P1403.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+                            aIn:=13; oBit8In.AsByte := ingangenDG[aIn];
+        if Mcc_pomp_P1403.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+
+  end else
+  begin
+    pomp_P1213.Seek(4);
+    pomp_P1223.Seek(4);
+    pomp_P1233.Seek(4);
+    skimer_R1212.Seek(13);
+    skimer_R1222.Seek(13);
+    skimer_R1232.Seek(13);
+    pomp_P1401.Seek(4);
+    pomp_P1402.Seek(4);
+    pomp_P1403.Seek(4);
+  end;
+end;
+procedure TMDI_FFU.area2000;
+var
+  aUit1, aUit2 : byte;
+  flow : boolean;
+  var P1, P2 : boolean;
+
+begin //AREA 2000, 2200, 2400, 2600, EGALISATIE EN BUFFERING
+  if ((verbinding) and (readOK)) then
+  begin
+    //pomp_P2002
+    aUit:=5; aIn:=15;
+    bUit:=0; bMcc :=0; bSch :=1; bMel :=2;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin P1:= true;pomp_P2002.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin P1:=false;pomp_P2002.Seek(6); oBit8In.ClrBit(bMel); end;
+
+        if Mcc_pomp_P2002.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P2002.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //pomp_P2003
+    aUit:=5; aIn:=15;
+    bUit:=1; bMcc :=3; bSch :=4; bMel :=5;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin P2:= true;pomp_P2003.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin P2:=false;pomp_P2003.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P2003.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P2003.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+   
+    aIn:=6; bMel :=7;  oBit8In.AsByte := ingangenDG[aIn];
+    if SimActief then flow := P1 or P2 else flow := Mel_flow_P2002.Checked;
+    if (flow) then begin flow_P2002.Seek(20); oBit8In.SetBit(bMel); end
+      else begin flow_P2002.Seek(21); oBit8In.ClrBit(bMel); end;
+    ingangenDG[aIn] := oBit8In.AsByte;
+
+    //klep_22_QSV_010
+    aUit :=0; aIn:=1;
+    bUit:=3; bMel :=3;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin klep_22_QSV_010.Seek(2); oBit8In.ClrBit(bMel); end
+                            else begin klep_22_QSV_010.Seek(3); oBit8In.SetBit(bMel); end;
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //klep_22_QSV_020
+    aUit :=0; aIn:=1;
+    bUit:=4; bMel :=4;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin klep_22_QSV_020.Seek(2); oBit8In.ClrBit(bMel); end
+                            else begin klep_22_QSV_020.Seek(3); oBit8In.SetBit(bMel); end;
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //klep_24_QSV_002
+    aUit :=0; aIn:=1;
+    bUit:=5; bMel :=7;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin klep_24_QSV_002.Seek(2); oBit8In.ClrBit(bMel); end
+                            else begin klep_24_QSV_002.Seek(3); oBit8In.SetBit(bMel); end;
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //klep_24_QSV_006
+    aUit :=0; aIn:=2;
+    bUit:=6; bMel :=0;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin klep_24_QSV_006.Seek(2); oBit8In.ClrBit(bMel); end
+                            else begin klep_24_QSV_006.Seek(3); oBit8In.SetBit(bMel); end;
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //roer_R2411
+    aUit :=12; aIn:=31;
+    bUit:=7; bSch :=1; bMel :=2; bMcc :=3; bFsb :=4;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin roer_R2411.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin roer_R2411.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_roer_R2411.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_roer_R2411.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+        if Fsb_roer_R2411.Checked then oBit8In.SetBit(bFsb)else oBit8In.ClrBit(bFsb);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //roer_R2611
+    aUit :=13; aIn:=32;
+    bUit:=0; bSch :=0; bMel :=1; bMcc :=2; bFsb :=3;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin roer_R2611.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin roer_R2611.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_roer_R2611.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_roer_R2611.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+        if Fsb_roer_R2611.Checked then oBit8In.SetBit(bFsb)else oBit8In.ClrBit(bFsb);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //roer_R2612
+    aUit :=13; aIn:=32;
+    bUit:=1; bSch :=4; bMel :=5; bMcc :=6; bFsb :=7;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin roer_R2612.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin roer_R2612.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_roer_R2612.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_roer_R2612.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+        if Fsb_roer_R2612.Checked then oBit8In.SetBit(bFsb)else oBit8In.ClrBit(bFsb);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //roer_R2621
+    aUit :=13; aIn:=33;
+    bUit:=2; bSch :=0; bMel :=1; bMcc :=2; bFsb :=3;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin roer_R2621.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin roer_R2621.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_roer_R2621.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_roer_R2621.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+        if Fsb_roer_R2621.Checked then oBit8In.SetBit(bFsb)else oBit8In.ClrBit(bFsb);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //roer_R2622
+    aUit :=13; aIn:=33;
+    bUit:=3; bSch :=4; bMel :=5; bMcc :=6; bFsb :=7;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin roer_R2622.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin roer_R2622.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_roer_R2622.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_roer_R2622.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+        if Fsb_roer_R2622.Checked then oBit8In.SetBit(bFsb)else oBit8In.ClrBit(bFsb);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+
+    //Lamp 2000
+    aUit :=5; oBit8Out.AsByte := uitgangenDG[aUit];
+    bUit:=5; if (oBit8Out.BitSet(bUit)) then lamp_2000.Seek(11) else  lamp_2000.Seek(12);
+
+    lamp_dummy2.Seek(8);;
+  end else
+  begin
+    pomp_P2002.Seek(4);
+    pomp_P2003.Seek(4);
+    klep_22_QSV_010.Seek(1);
+    klep_22_QSV_020.Seek(1);
+    klep_24_QSV_002.Seek(1);
+    klep_24_QSV_006.Seek(1);
+    roer_R2411.Seek(13);
+    roer_R2611.Seek(13);
+    roer_R2612.Seek(13);
+    roer_R2621.Seek(13);
+    roer_R2622.Seek(13);
+    lamp_2000.Seek(10);;
+    lamp_dummy2.Seek(7);;
+  end;
+
+end;
+procedure TMDI_FFU.area3000;
+var
+  bUit1, bUit2, bMel1, bmel2: byte;
+  flow : boolean;
+begin //AREA 3000, 3200, 3400, FLOCCULATIE
+  if ((verbinding) and (readOK)) then
+  begin
+    //klep 73FCV113
+    aIn := 4;
+    bMel :=0;
+                               oBit8In.AsByte := ingangenDG[aIn];
+    if Mel_30FCV113.Checked then oBit8In.SetBit(bMel)else oBit8In.ClrBit(bMel);
+                               ingangenDG[aIn] := oBit8In.AsByte;
+    //klep 73FCV113
+    aIn := 4;
+    bMel :=3;
+                               oBit8In.AsByte := ingangenDG[aIn];
+    if Mel_30FCV213.Checked then oBit8In.SetBit(bMel)else oBit8In.ClrBit(bMel);
+                               ingangenDG[aIn] := oBit8In.AsByte;
+    //pomp_P3201
+    aUit :=8; aIn:=16;
+    bUit1:=0; bUit2:=1; bMcc :=3; bSch :=2; bMel1 :=0; bMel2 :=1;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit1)) then oBit8In.SetBit(bMel1) else oBit8In.ClrBit(bMel1);
+    if (oBit8Out.BitSet(bUit2)) then oBit8In.SetBit(bMel2) else oBit8In.ClrBit(bMel2);
+      if Mcc_pomp_P3201.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+      if Sch_pomp_P3201.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+      ingangenDG[aIn] := oBit8In.AsByte;
+      if ((oBit8Out.BitSet(bUit1)) or (oBit8Out.BitSet(bUit2)))
+      then pomp_P3201.Seek(5) else pomp_P3201.Seek(6);
+      pomp_P3201H.Color:= clGray; pomp_P3201L.Color:= clGray;
+      if oBit8Out.BitSet(bUit1) then pomp_P3201H.Color:= clLime else  pomp_P3201H.Color:= clGray;
+      if oBit8Out.BitSet(bUit2) then pomp_P3201L.Color:= clLime else  pomp_P3201L.Color:= clGray;
+
+    aIn:=4; bMel :=4;  oBit8In.AsByte := ingangenDG[aIn];
+    if SimActief then flow := ((oBit8Out.BitSet(bUit1)) or (oBit8Out.BitSet(bUit2))) else flow := Mel_flow_P3201.Checked;
+    if (flow) then begin flow_P3201.Seek(20); oBit8In.SetBit(bMel); end
+      else begin flow_P3201.Seek(21); oBit8In.ClrBit(bMel); end;
+    ingangenDG[aIn] := oBit8In.AsByte;
+
+    //roer_R3412
+    aUit :=13; aIn:=34;
+    bUit:=5;  bMcc :=3; bSch :=4; bMel :=5;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin roer_R3412.Seek(14); oBit8In.SetBit(bMel); end
+                            else begin roer_R3412.Seek(15); oBit8In.ClrBit(bMel); end;
+        if Mcc_roer_R3412.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_roer_R3412.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //roer_R3413
+    aUit :=13; aIn:=35;
+    bUit:=7;  bMcc :=7; bSch :=0; bMel :=1;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin roer_R3413.Seek(14); oBit8In.SetBit(bMel); end
+                            else begin roer_R3413.Seek(15); oBit8In.ClrBit(bMel); end;
+        if Sch_roer_R3413.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+                            aIn:=34;
+                            oBit8In.AsByte := ingangenDG[aIn];
+        if Mcc_roer_R3413.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //roer_R3422
+    aUit :=14; aIn:=36;
+    bUit:=2;  bMcc :=3; bSch :=4; bMel :=5;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin roer_R3422.Seek(14); oBit8In.SetBit(bMel); end
+                            else begin roer_R3422.Seek(15); oBit8In.ClrBit(bMel); end;
+        if Mcc_roer_R3422.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_roer_R3422.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //roer_R3423
+    aUit :=14; aIn:=37;
+    bUit:=4;  bMcc :=7; bSch :=0; bMel :=1;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin roer_R3423.Seek(14); oBit8In.SetBit(bMel); end
+                            else begin roer_R3423.Seek(15); oBit8In.ClrBit(bMel); end;
+        if Sch_roer_R3423.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+                            aIn:=36;
+                            oBit8In.AsByte := ingangenDG[aIn];
+        if Mcc_roer_R3423.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+
+
+    //klep_30_FSV_121
+    aUit :=1; aIn:=4;
+    bUit:=0; bMel :=1; bMel2 :=2;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin klep_30_FSV_121.Seek(2); oBit8In.ClrBit(bMel);oBit8In.SetBit(bMel2) end
+                            else begin klep_30_FSV_121.Seek(3); oBit8In.SetBit(bMel);oBit8In.ClrBit(bMel2) end;
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //klep_30_FSV_221
+    aUit :=1; aIn:=4;
+    bUit:=3; bMel :=5;  bMel2 :=6;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin klep_30_FSV_221.Seek(2); oBit8In.ClrBit(bMel); oBit8In.SetBit(bMel2);end
+                            else begin klep_30_FSV_221.Seek(3); oBit8In.SetBit(bMel); oBit8In.ClrBit(bMel2);end;
+                            ingangenDG[aIn] := oBit8In.AsByte;
+
+  end else
+  begin
+    pomp_P3201.Seek(4);
+    pomp_P3201H.Color := clGray;
+    pomp_P3201L.Color := clGray;
+    roer_R3412.Seek(13);
+    roer_R3413.Seek(13);
+    roer_R3422.Seek(13);
+    roer_R3423.Seek(13);
+    pomp_P3201H.Color:= clGray; pomp_P3201L.Color:= clGray;
+    klep_30_FSV_121.Seek(1);
+    klep_30_FSV_221.Seek(1);
+
+  end;
+
+end;
+procedure TMDI_FFU.area5100;
+begin //AREA 5100, PE DOSERING
+  if ((verbinding) and (readOK)) then
+  begin
+    //pomp_P5110
+    aUit :=10; aIn:=21;
+    bUit:=0; bMcc :=4; bSch :=5; bMel :=6; bThr:= 0;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P5110.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P5110.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P5110.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P5110.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+                            aIn:=22;
+                            oBit8In.AsByte := ingangenDG[aIn];
+        if Thr_pomp_P5110.Checked then oBit8In.SetBit(bThr)else oBit8In.ClrBit(bThr);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //pomp_P5112
+    aUit :=10; aIn:=22;
+    bUit:=2; bMcc :=1; bSch :=2; bMel :=3; bFo :=4; bThr :=5;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P5112.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P5112.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P5112.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P5112.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+        if Thr_pomp_P5112.Checked then oBit8In.SetBit(bThr)else oBit8In.ClrBit(bThr);
+        if FO_pomp_P5112.Checked then oBit8In.SetBit(bFo)else oBit8In.ClrBit(bFo);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+  end else
+  begin
+    pomp_P5110.Seek(4);
+    pomp_P5112.Seek(4);
+  end;
+end;
+procedure TMDI_FFU.area3600;
+begin //AREA 3600, 3800, FLOTATIE
+  if ((verbinding) and (readOK)) then
+  begin
+    //pomp_P3613
+    aUit :=8; aIn:=16;
+    bUit:=2; bMcc :=4; bSch :=5; bMel :=6; bFo :=7;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P3613.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P3613.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P3613.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P3613.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+        if Fo_pomp_P3613.Checked then oBit8In.SetBit(bFo)else oBit8In.ClrBit(bFo);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+
+    //pomp_P3614
+    aUit :=8; aIn:=17;
+    bUit:=4; bMcc :=1; bSch :=2; bMel :=3; bFo :=4;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P3614.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P3614.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P3614.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P3614.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+        if Fo_pomp_P3614.Checked then oBit8In.SetBit(bFo)else oBit8In.ClrBit(bFo);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+
+    //pomp_P3615
+    aUit :=8; aIn:=17;
+    bUit:=6; bMcc :=0; bSch :=6; bMel :=7;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P3615.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P3615.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Sch_pomp_P3615.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+                            aIn:=18;
+                            oBit8In.AsByte := ingangenDG[aIn];
+        if Mcc_pomp_P3615.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+                             ingangenDG[aIn] := oBit8In.AsByte;
+
+    //pomp_P3623
+    aUit :=8; aIn:=18;
+    bUit:=7; bMcc :=1; bSch :=2; bMel :=3;  bFo :=4;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P3623.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P3623.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P3623.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P3623.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+        if Fo_pomp_P3623.Checked then oBit8In.SetBit(bFo)else oBit8In.ClrBit(bFo);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+
+    //pomp_P3624
+    aUit :=9; aIn:=19;
+    bUit:=1; bMcc :=6; bSch :=7; bMel :=0; bFo :=1;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P3624.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P3624.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Fo_pomp_P3624.Checked then oBit8In.SetBit(bFo)else oBit8In.ClrBit(bFo);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+                            aIn:=18;
+                            oBit8In.AsByte := ingangenDG[aIn];
+        if Mcc_pomp_P3624.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P3624.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+
+    //pomp_P3625
+    aUit :=9; aIn:=19;
+    bUit:=3; bMcc :=5; bSch :=3; bMel :=4;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P3625.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P3625.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P3625.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P3625.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+
+    //pomp_P3701
+    aUit :=9; aIn:=20;
+    bUit:=4; bMcc :=2; bSch :=0; bMel :=1;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P3701.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P3701.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P3701.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P3701.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+
+    //skimer_R3612
+    aUit :=14; aIn:=38;
+    bUit:=7; bMcc :=7; bSch :=0; bMel :=1; bFo := 2;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin skimer_R3612.Seek(14); oBit8In.SetBit(bMel); end
+                            else begin skimer_R3612.Seek(15); oBit8In.ClrBit(bMel); end;
+        if Sch_skimer_R3612.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+        if Fo_skimer_R3612.Checked then oBit8In.SetBit(bFo)else oBit8In.ClrBit(bFo);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+                            aIn:=37;
+                            oBit8In.AsByte := ingangenDG[aIn];
+        if Mcc_skimer_R3612.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //skimer_R3622
+    aUit :=15; aIn:=39;
+    bUit:=2; bMcc :=6; bSch :=7; bMel :=0; bFo := 1;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin skimer_R3622.Seek(14); oBit8In.SetBit(bMel); end
+                            else begin skimer_R3622.Seek(15); oBit8In.ClrBit(bMel); end;
+        if Fo_skimer_R3622.Checked then oBit8In.SetBit(bFo)else oBit8In.ClrBit(bFo);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+                            aIn:=38;
+                            oBit8In.AsByte := ingangenDG[aIn];
+        if Mcc_skimer_R3622.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_skimer_R3622.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+
+                            aIn:=40; oBit8In.AsByte := ingangenDG[aIn];
+                            bThr :=0;
+        if Th_pomp_P3613.Checked then oBit8In.SetBit(bThr)else oBit8In.ClrBit(bTh);
+                             bThr :=1;
+        if Th_pomp_P3614.Checked then oBit8In.SetBit(bThr)else oBit8In.ClrBit(bTh);
+                            bThr :=2;
+        if Th_pomp_P3623.Checked then oBit8In.SetBit(bThr)else oBit8In.ClrBit(bTh);
+                            bThr :=3;
+        if Th_pomp_P3624.Checked then oBit8In.SetBit(bThr)else oBit8In.ClrBit(bTh);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+                            aIn:=41;
+                            oBit8In.AsByte := ingangenDG[aIn];
+                            bThr :=0;
+        if Th_skimer_R3612.Checked then oBit8In.SetBit(bThr)else oBit8In.ClrBit(bTh);
+                            bThr :=1;
+        if Th_skimer_R3622.Checked then oBit8In.SetBit(bThr)else oBit8In.ClrBit(bTh);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+
+
+
+  end else
+  begin
+    pomp_P3613.Seek(4);
+    pomp_P3614.Seek(4);
+    pomp_P3615.Seek(4);
+    pomp_P3623.Seek(4);
+    pomp_P3624.Seek(4);
+    pomp_P3625.Seek(4);
+    pomp_P3701.Seek(4);
+    skimer_R3612.Seek(13);
+    skimer_R3622.Seek(13);
+  end;
+end;
+procedure TMDI_FFU.area1600;
+begin //AREA 1600, DRIJFLAAGBEHANDELING
+  if ((verbinding) and (readOK)) then
+  begin
+    //pomp_P1601
+    aUit :=4; aIn:=14;
+    bUit:=6; bMcc :=2; bSch :=3; bMel :=4;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P1601.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P1601.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P1601.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P1601.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //pomp_P1602
+    aUit :=15; aIn:=43;
+    bUit:=3; bMcc :=1; bSch :=7; bMel :=0;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P1602.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P1602.Seek(6); oBit8In.ClrBit(bMel); end;
+         if Mcc_pomp_P1602.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+                            aIn:=42;
+                            oBit8In.AsByte := ingangenDG[aIn];
+         if Sch_pomp_P1602.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                             ingangenDG[aIn] := oBit8In.AsByte;
+    //pomp_P1603
+    aUit :=4; aIn:=14;
+    bUit:=7; bMcc :=5; bSch :=6; bMel :=7;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P1603.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P1603.Seek(6); oBit8In.ClrBit(bMel); end;
+       if Mcc_pomp_P1603.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+       if Sch_pomp_P1603.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    //Lamp 1600
+    aUit :=5; oBit8Out.AsByte := uitgangenDG[aUit];
+    bUit:=4; if (oBit8Out.BitSet(bUit)) then lamp_1600.Seek(11) else  lamp_1600.Seek(12);
+    lamp_dummy1.Seek(8);;
+  end else
+  begin
+    pomp_P1601.Seek(4);
+    pomp_P1602.Seek(4);
+    pomp_P1603.Seek(4);
+    lamp_1600.Seek(10);
+    lamp_dummy1.Seek(7);;
+  end;
+
+end;
+procedure TMDI_FFU.area4200;
+var
+  flow : boolean;
+begin //AREA 4200, 4300, 4400, SLIBVERWERKING
+  if ((verbinding) and (readOK)) then
+  begin
+    //pomp_P4201
+    aUit :=9; aIn:=20;
+    bUit:=5; bMcc :=5; bSch :=3; bMel :=4;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P4201.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P4201.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P4201.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P4201.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+
+    aIn:=4; bMel :=7;  oBit8In.AsByte := ingangenDG[aIn];
+    if SimActief then flow := oBit8Out.BitSet(bUit) else flow := Mel_flow_P4201.Checked;
+    if (flow) then begin flow_P4201.Seek(20); oBit8In.SetBit(bMel); end
+      else begin flow_P4201.Seek(21); oBit8In.ClrBit(bMel); end;
+    ingangenDG[aIn] := oBit8In.AsByte;
+
+    //pomp_P4202
+    aUit :=9; aIn:=20;
+    bUit:=6; bMcc :=0; bSch :=6; bMel :=7;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P4202.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P4202.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Sch_pomp_P4202.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+                            aIn:=21;
+                            oBit8In.AsByte := ingangenDG[aIn];
+        if Mcc_pomp_P4202.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+    aIn:=5; bMel :=0;  oBit8In.AsByte := ingangenDG[aIn];
+    if SimActief then flow := oBit8Out.BitSet(bUit) else flow := Mel_flow_P4202.Checked;
+    if (flow) then begin flow_P4202.Seek(20); oBit8In.SetBit(bMel); end
+      else begin flow_P4202.Seek(21); oBit8In.ClrBit(bMel); end;
+    ingangenDG[aIn] := oBit8In.AsByte;
+
+    //pomp_P4203
+    aUit :=9; aIn:=21;
+    bUit:=7; bMcc :=3; bSch :=1; bMel :=2;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P4203.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P4203.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P4203.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P4203.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+
+    aIn:=5; bMel :=1;  oBit8In.AsByte := ingangenDG[aIn];
+    if SimActief then flow := oBit8Out.BitSet(bUit) else flow := Mel_flow_P4203.Checked;
+    if (flow) then begin flow_P4203.Seek(20); oBit8In.SetBit(bMel); end
+      else begin flow_P4203.Seek(21); oBit8In.ClrBit(bMel); end;
+    ingangenDG[aIn] := oBit8In.AsByte;
+ {   //roer_R4301
+    aUit :=x; aIn:=x;
+    bUit:=x; bSch :=x; bMel :=x; bMcc :=x; bFzb :=x;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin roer_R4301.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin roer_R4301.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_roer_R4301.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+                            oBit8In.SetBit(bSch);
+                            oBit8In.SetBit(bFzb);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+ }
+  end else
+  begin
+    pomp_P4201.Seek(4);
+    pomp_P4202.Seek(4);
+    pomp_P4203.Seek(4);
+    roer_R4301.Seek(13);
+  end;
+end;
+procedure TMDI_FFU.area6200;
+begin //AREA 6200, 6700, 8800, VUILWATERPUTTEN
+  if ((verbinding) and (readOK)) then
+  begin
+    //pomp_P6201
+    aUit :=11; aIn:=26;
+    bUit:=4; bMcc :=2; bSch :=0; bMel :=1;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P6201.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P6201.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P6201.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P6201.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+     //pomp_P6202
+    aUit :=11; aIn:=26;
+    bUit:=5; bMcc :=5; bSch :=3; bMel :=4;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P6202.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P6202.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P6202.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P6202.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+     //pomp_P6701
+    aUit :=11; aIn:=26;
+    bUit:=6; bMcc :=0; bSch :=6; bMel :=7;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P6701.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P6701.Seek(6); oBit8In.ClrBit(bMel); end;
+         if Sch_pomp_P6701.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+                            aIn:=27;
+                            oBit8In.AsByte := ingangenDG[aIn];
+        if Mcc_pomp_P6701.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+     //pomp_P6702
+    aUit :=11; aIn:=27;
+    bUit:=7; bMcc :=3; bSch :=1; bMel :=2;
+    oBit8Out.AsByte := uitgangenDG[aUit];   oBit8In.AsByte := ingangenDG[aIn];
+    if (oBit8Out.BitSet(bUit)) then begin pomp_P6702.Seek(5); oBit8In.SetBit(bMel); end
+                            else begin pomp_P6702.Seek(6); oBit8In.ClrBit(bMel); end;
+        if Mcc_pomp_P6702.Checked then oBit8In.SetBit(bMcc)else oBit8In.ClrBit(bMcc);
+        if Sch_pomp_P6702.Checked then oBit8In.SetBit(bSch)else oBit8In.ClrBit(bSch);
+                            ingangenDG[aIn] := oBit8In.AsByte;
+  end else
+  begin
+    pomp_P6201.Seek(4);
+    pomp_P6201.Seek(4);
+    pomp_P6701.Seek(4);
+    pomp_P6701.Seek(4);
+  end;
+end;
+procedure TMDI_FFU.H2S;
+begin
+  if ((verbinding) and (readOK)) then
+  begin
+    //Lamp H2S
+    aUit :=7; oBit8Out.AsByte := uitgangenDG[aUit];
+    bUit:=6; if (oBit8Out.BitSet(bUit)) then lamp1_H2S.Seek(8) else  lamp1_H2S.Seek(9);
+    //Lamp H2S
+    aUit :=7; oBit8Out.AsByte := uitgangenDG[aUit];
+    bUit:=7; if (oBit8Out.BitSet(bUit)) then lamp2_H2S.Seek(8) else  lamp2_H2S.Seek(9);
+    lamp_dummy3.Seek(8);
+  end else
+  begin
+    lamp1_H2S.Seek(7);
+    lamp2_H2S.Seek(7);
+    lamp_dummy3.Seek(7);
+  end;
+
+end;
+procedure TMDI_FFU.TrBar_tank1230Change(Sender: TObject);begin tank1230; end;
+procedure TMDI_FFU.tank1230;
+begin //AREA 1200, OLIEAFSCHEIDERS EN BUFFERPOMPEN
+   Label_tank1230.Caption := 'Tank 1230 = '+ IntToStr(TrBar_tank1230.Position)+ '%';
+   PBar_tank1230.Position := TrBar_tank1230.Position;
+end;
+procedure TMDI_FFU.TrBar_tank1400Change(Sender: TObject); begin tank1400; end;
+procedure TMDI_FFU.tank1400;
+begin //AREA 1400, OLIEAFSCHEIDERS EN BUFFERPOMPEN
+   Label_tank1400.Caption := 'Tank 1400 = '+ IntToStr(TrBar_tank1400.Position)+ '%';
+   PBar_tank1400.Position := TrBar_tank1400.Position;
+   aIn := 0;
+   oBit8In.AsByte := ingangenDG[aIn];
+   if (TrBar_tank1400.Position > 95) then begin
+     oBit8In.SetBit(6); nivo_tank1400_HH.Color := clRed;
+   end else begin
+     oBit8In.ClrBit(6); nivo_tank1400_HH.Color := clGreen;
+   end;
+   if TrBar_tank1400.Position < 5 then begin
+     oBit8In.SetBit(7); nivo_tank1400_LL.Color := clRed;
+   end else begin
+     oBit8In.ClrBit(7); nivo_tank1400_LL.Color := clGreen;
+   end;
+   ingangenDG[aIn] := oBit8In.AsByte;
+end;
+procedure TMDI_FFU.TrBar_tank2410Change(Sender: TObject);begin tank2410; end;
+procedure TMDI_FFU.tank2410;
+begin //AREA 2400, 2600, EGALISATIE EN BUFFERING
+   Label_tank2410.Caption := 'Tank 2410 = '+ IntToStr(TrBar_tank2410.Position)+ '%';
+   PBar_tank2410.Position := TrBar_tank2410.Position;
+   aIn := 2;
+   oBit8In.AsByte := ingangenDG[aIn];
+   if (TrBar_tank2410.Position > 95) then begin
+     oBit8In.SetBit(1); nivo_tank2410_HH.Color := clRed;
+   end else begin
+     oBit8In.ClrBit(1); nivo_tank2410_HH.Color := clGreen;
+   end;
+   if TrBar_tank2410.Position < 5 then begin
+     oBit8In.SetBit(2); nivo_tank2410_LL.Color := clRed;
+   end else begin
+     oBit8In.ClrBit(2); nivo_tank2410_LL.Color := clGreen;
+   end;
+   ingangenDG[aIn] := oBit8In.AsByte;
+end;
+procedure TMDI_FFU.TrBar_tank2610Change(Sender: TObject); begin tank2610; end;
+procedure TMDI_FFU.tank2610;
+begin //AREA 2600, EGALISATIE EN BUFFERING
+   Label_tank2610.Caption := 'Tank 2610 = '+ IntToStr(TrBar_tank2610.Position)+ '%';
+   PBar_tank2610.Position := TrBar_tank2610.Position;
+   aIn := 2;
+   oBit8In.AsByte := ingangenDG[aIn];
+   if (TrBar_tank2610.Position > 95) then begin
+     oBit8In.SetBit(3); nivo_tank2610_HH.Color := clRed;
+   end else begin
+     oBit8In.ClrBit(3); nivo_tank2610_HH.Color := clGreen;
+   end;
+   if TrBar_tank2610.Position < 5 then begin
+     oBit8In.SetBit(4); nivo_tank2610_LL.Color := clRed;
+   end else  begin
+     oBit8In.ClrBit(4); nivo_tank2610_LL.Color := clGreen;
+   end;
+   ingangenDG[aIn] := oBit8In.AsByte;
+end;
+procedure TMDI_FFU.TrBar_tank2620Change(Sender: TObject); begin tank2620; end;
+procedure TMDI_FFU.tank2620;
+begin //AREA 2600, EGALISATIE EN BUFFERING
+   Label_tank2620.Caption := 'Tank 2620 = '+ IntToStr(TrBar_tank2620.Position)+ '%';
+   PBar_tank2620.Position := TrBar_tank2620.Position;
+   aIn := 2;
+   oBit8In.AsByte := ingangenDG[aIn];
+   if (TrBar_tank2620.Position > 95) then begin
+     oBit8In.SetBit(5); nivo_tank2620_HH.Color := clRed;
+   end else begin
+     oBit8In.ClrBit(5); nivo_tank2620_HH.Color := clGreen;
+   end;
+   if TrBar_tank2620.Position < 5 then begin
+     oBit8In.SetBit(6); nivo_tank2620_LL.Color := clRed;
+   end else begin
+     oBit8In.ClrBit(6); nivo_tank2620_LL.Color := clGreen;
+   end;
+   ingangenDG[aIn] := oBit8In.AsByte;
+end;
+procedure TMDI_FFU.TrBar_tank341xChange(Sender: TObject);begin tank341x; end;
+procedure TMDI_FFU.tank341x;
+begin
+   Label_tank341x.Caption := 'Tank 341x = '+ IntToStr(TrBar_tank341x.Position)+ '%';
+   PBar_tank341x.Position := TrBar_tank341x.Position;
+   aIn := 3;
+   oBit8In.AsByte := ingangenDG[aIn];
+   if (TrBar_tank341x.Position > 95) then begin
+     oBit8In.SetBit(2); nivo_tank341x_HH.Color := clRed;
+   end else begin
+     oBit8In.ClrBit(2); nivo_tank341x_HH.Color := clGreen;
+   end;
+   if TrBar_tank341x.Position > 70 then begin
+     oBit8In.SetBit(3); nivo_tank341x_H.Color := clRed;
+   end else begin
+     oBit8In.ClrBit(3); nivo_tank341x_H.Color := clGreen;
+   end;
+   ingangenDG[aIn] := oBit8In.AsByte;
+end;
+procedure TMDI_FFU.TrBar_tank342xChange(Sender: TObject);begin  tank342x; end;
+procedure TMDI_FFU.tank342x;
+begin
+   Label_tank342x.Caption := 'Tank 342x = '+ IntToStr(TrBar_tank342x.Position)+ '%';
+   PBar_tank342x.Position := TrBar_tank342x.Position;
+   aIn := 3;
+   oBit8In.AsByte := ingangenDG[aIn];
+   if (TrBar_tank342x.Position > 95) then begin
+     oBit8In.SetBit(4); nivo_tank342x_HH.Color := clRed;
+   end else begin
+     oBit8In.ClrBit(4); nivo_tank342x_HH.Color := clGreen;
+   end;
+   if TrBar_tank342x.Position > 70 then begin
+     oBit8In.SetBit(5); nivo_tank342x_H.Color := clRed;
+   end else begin
+     oBit8In.ClrBit(5); nivo_tank342x_H.Color := clGreen;
+   end;
+   ingangenDG[aIn] := oBit8In.AsByte;
+
+end;
+procedure TMDI_FFU.TrBar_tank5100Change(Sender: TObject);
+begin//AREA 5100
+   Label_tank5100.Caption := 'Tank 5100 = '+ IntToStr(TrBar_tank5100.Position)+ '%';
+   PBar_tank5100.Position := TrBar_tank5100.Position;
+end;
+procedure TMDI_FFU.TrBar_tank3700olieChange(Sender: TObject);
+begin
+   Label_tank3700olie.Caption := 'Olie = '+ IntToStr(TrBar_tank3700olie.Position)+ '%';
+   PBar_tank3700olie.Position := TrBar_tank3700olie.Position;
+
+end;
+procedure TMDI_FFU.TrBar_tank3700waterChange(Sender: TObject);
+begin
+   Label_tank3700water.Caption := 'Water = '+ IntToStr(TrBar_tank3700water.Position)+ '%';
+   PBar_tank3700water.Position := TrBar_tank3700water.Position;
+end;
+procedure TMDI_FFU.TrBar_tank1600nivoChange(Sender: TObject);begin tank1600 end;
+procedure TMDI_FFU.tank1600;
+begin
+   Label_tank1600nivo.Caption := 'OlieDikte= '+ IntToStr(TrBar_tank1600nivo.Position)+ '%';
+   PBar_tank1600nivo.Position := TrBar_tank1600nivo.Position;
+   aIn := 42;
+   oBit8In.AsByte := ingangenDG[aIn];
+   if TrBar_tank1600nivo.Position > 70 then begin
+     oBit8In.SetBit(6); nivo_tank1600_flotter.Color := clRed;
+   end else begin
+     oBit8In.ClrBit(6); nivo_tank1600_flotter.Color := clGreen;
+   end;
+   ingangenDG[aIn] := oBit8In.AsByte;
+
+end;
+procedure TMDI_FFU.TrBar_tank1600laagChange(Sender: TObject);
+begin
+   Label_tank1600laag.Caption := 'OlieNiveau= '+ IntToStr(TrBar_tank1600laag.Position)+ '%';
+   PBar_tank1600laag.Position := TrBar_tank1600laag.Position;
+end;
+procedure TMDI_FFU.TrBar_tank1602Change(Sender: TObject);begin tank1602 end;
+procedure TMDI_FFU.tank1602;
+begin
+   Label_tank1602.Caption := 'Tank 1602 = '+ IntToStr(100 - TrBar_tank1602.Position)+ '%';
+   PBar_tank1602.Position := 100 - TrBar_tank1602.Position;
+   aIn := 1;
+   oBit8In.AsByte := ingangenDG[aIn];
+   if (TrBar_tank1602.Position > 95) then begin
+     oBit8In.SetBit(0); nivo_tank1602_HH.Color := clRed;
+   end else begin
+     oBit8In.ClrBit(0); nivo_tank1602_HH.Color := clGreen;
+   end;
+   if TrBar_tank1602.Position < 5 then begin
+     oBit8In.SetBit(1); nivo_tank1602_LL.Color := clRed;
+   end else begin
+     oBit8In.ClrBit(1); nivo_tank1602_LL.Color := clGreen;
+   end;
+   ingangenDG[aIn] := oBit8In.AsByte;
+
+end;
+procedure TMDI_FFU.TrBar_tank4300Change(Sender: TObject);
+begin
+   Label_tank4300.Caption := 'Tank 4300 = '+ IntToStr(TrBar_tank4300.Position)+ '%';
+   PBar_tank4300.Position := TrBar_tank4300.Position;
+end;
+procedure TMDI_FFU.TrBar_tank6200Change(Sender: TObject);begin tank6200; end;
+procedure TMDI_FFU.tank6200;
+begin
+   Label_tank6200.Caption := 'Tank 6200 = '+ IntToStr(TrBar_tank6200.Position)+ '%';
+   PBar_tank6200.Position := TrBar_tank6200.Position;
+   aIn := 5;
+   oBit8In.AsByte := ingangenDG[aIn];
+   if (TrBar_tank6200.Position > 95) then begin
+     oBit8In.SetBit(3); nivo_tank6200_HH.Color := clRed;
+   end else begin
+     oBit8In.ClrBit(3); nivo_tank6200_HH.Color := clGreen;
+   end;
+   if TrBar_tank6200.Position < 5 then begin
+     oBit8In.SetBit(2); nivo_tank6200_LL.Color := clRed;
+   end else begin
+     oBit8In.ClrBit(2); nivo_tank6200_LL.Color := clGreen;
+   end;
+   ingangenDG[aIn] := oBit8In.AsByte;
+end;
+procedure TMDI_FFU.TrBar_tank6700Change(Sender: TObject); begin tank6700 end;
+procedure TMDI_FFU.tank6700;
+begin
+   Label_tank6700.Caption := 'Tank 6700 = '+ IntToStr(TrBar_tank6700.Position)+ '%';
+   PBar_tank6700.Position := TrBar_tank6700.Position;
+   aIn := 5;
+   oBit8In.AsByte := ingangenDG[aIn];
+   if (TrBar_tank6700.Position > 95) then begin
+     oBit8In.SetBit(6); nivo_tank6700_HH.Color := clRed;
+   end else begin
+     oBit8In.ClrBit(6); nivo_tank6700_HH.Color := clGreen;
+   end;
+   if TrBar_tank6700.Position < 5 then begin
+     oBit8In.SetBit(5); nivo_tank6700_LL.Color := clRed;
+   end else begin
+     oBit8In.ClrBit(5); nivo_tank6700_LL.Color := clGreen;
+   end;
+   ingangenDG[aIn] := oBit8In.AsByte;
+end;
+procedure TMDI_FFU.UpdateStroom;
+begin
+  Label_P1401.Caption := IntToStr(TrBar_P1401.Position)+'%';
+  Label_P1402.Caption := IntToStr(TrBar_P1402.Position)+'%';
+  Label_P1403.Caption := IntToStr(TrBar_P1403.Position)+'%';
+  Label_P2002.Caption := IntToStr(TrBar_P2002.Position)+'%';
+  Label_P2003.Caption := IntToStr(TrBar_P2003.Position)+'%';
+  Label_P3201.Caption := IntToStr(TrBar_P3201.Position)+'%';
+  Label_P3613.Caption := IntToStr(TrBar_P3613.Position)+'%';
+  Label_P3614.Caption := IntToStr(TrBar_P3614.Position)+'%';
+  Label_P3623.Caption := IntToStr(TrBar_P3623.Position)+'%';
+  Label_P3624.Caption := IntToStr(TrBar_P3624.Position)+'%';
+  Label_R3612.Caption := IntToStr(TrBar_R3612.Position)+'%';
+  Label_R3622.Caption := IntToStr(TrBar_R3622.Position)+'%';
+end;
+procedure TMDI_FFU.TrBar_P1401Change(Sender: TObject); begin  UpdateStroom; end;
+procedure TMDI_FFU.TrBar_P1402Change(Sender: TObject); begin  UpdateStroom; end;
+procedure TMDI_FFU.TrBar_P1403Change(Sender: TObject); begin  UpdateStroom; end;
+procedure TMDI_FFU.TrBar_P3613Change(Sender: TObject); begin  UpdateStroom; end;
+procedure TMDI_FFU.TrBar_P3614Change(Sender: TObject); begin  UpdateStroom; end;
+procedure TMDI_FFU.TrBar_P3623Change(Sender: TObject); begin  UpdateStroom; end;
+procedure TMDI_FFU.TrBar_P3624Change(Sender: TObject); begin  UpdateStroom; end;
+procedure TMDI_FFU.TrBar_R3612Change(Sender: TObject); begin  UpdateStroom; end;
+procedure TMDI_FFU.TrBar_R3622Change(Sender: TObject); begin  UpdateStroom; end;
+procedure TMDI_FFU.TrBar_P2002Change(Sender: TObject); begin  UpdateStroom; end;
+procedure TMDI_FFU.TrBar_P2003Change(Sender: TObject); begin  UpdateStroom; end;
+procedure TMDI_FFU.TrBar_P3201Change(Sender: TObject); begin  UpdateStroom; end;
+procedure TMDI_FFU.UpdateDebiet;
+begin
+   Label_flowFF1.Caption :=  'Flow '+IntToStr(TrBar_flowFF1.Position)+' %';
+   Label_flowFF2.Caption :=  'Flow '+IntToStr(TrBar_flowFF2.Position)+' %';
+   Label_flow38.Caption :=  'Flow '+IntToStr(TrBar_flow38.Position)+' %';
+   Label_Flow2000.Caption :=  'Flow '+IntToStr(TrBar_Flow2000.Position)+' %';
+end;
+procedure TMDI_FFU.TrBar_Flow2000Change(Sender: TObject); begin  UpdateDebiet; end;
+procedure TMDI_FFU.TrBar_flowFF1Change(Sender: TObject); begin  UpdateDebiet; end;
+procedure TMDI_FFU.TrBar_flowFF2Change(Sender: TObject); begin  UpdateDebiet; end;
+procedure TMDI_FFU.TrBar_flow38Change(Sender: TObject); begin  UpdateDebiet; end;
+procedure TMDI_FFU.UpdateOpnemers;
+begin
+   Label_Analyser751.Caption :=  'Analyser '+IntToStr(TrBar_Analyser751.Position)+' %';
+   Label_Analyser851.Caption :=  'Analyser '+IntToStr(TrBar_Analyser851.Position)+' %';
+   Label_Analyser951.Caption :=  'Analyser '+IntToStr(TrBar_Analyser951.Position)+' %';
+   Label_H2S_1001.Caption :=  'H2S '+IntToStr(TrBar_H2S_1001.Position)+' %';
+   Label_H2S_1002.Caption :=  'H2S '+IntToStr(TrBar_H2S_1002.Position)+' %';
+   Label_LEL1003.Caption :=  'LEL '+IntToStr(TrBar_LEL1003.Position)+' %';
+   Label_LEL1004.Caption :=  'LEL '+IntToStr(TrBar_LEL1004.Position)+' %';
+end;
+procedure TMDI_FFU.TrBar_Analyser751Change(Sender: TObject); begin UpdateOpnemers; end;
+procedure TMDI_FFU.TrBar_Analyser851Change(Sender: TObject); begin UpdateOpnemers; end;
+procedure TMDI_FFU.TrBar_Analyser951Change(Sender: TObject); begin UpdateOpnemers; end;
+procedure TMDI_FFU.TrBar_H2S_1001Change(Sender: TObject); begin UpdateOpnemers; end;
+procedure TMDI_FFU.TrBar_H2S_1002Change(Sender: TObject); begin UpdateOpnemers; end;
+procedure TMDI_FFU.TrBar_LEL1003Change(Sender: TObject); begin UpdateOpnemers; end;
+procedure TMDI_FFU.TrBar_LEL1004Change(Sender: TObject); begin UpdateOpnemers; end;
+procedure TMDI_FFU.CheckBoxDIgSimOIClick(Sender: TObject);
+begin
+  if(CheckBoxDIgSimOI.Checked) then
+    CheckBoxDIgSimOI.Caption := 'Simulatie DI schrijven naar MW 100..150'
+  else
+    CheckBoxDIgSimOI.Caption := 'Simulatie DI schrijven naar IN 0..50';
+end;
+procedure TMDI_FFU.CheckBoxAnaSimOIClick(Sender: TObject);
+begin
+  if(CheckBoxAnaSimOI.Checked) then
+    CheckBoxAnaSimOI.Caption := 'Simulatie AI schrijven naar MW 1400..1510'
+  else
+    CheckBoxAnaSimOI.Caption := 'Simulatie AI schrijven naar AI 400..510';
+end;
+procedure TMDI_FFU.TimerGrTimer(Sender: TObject);begin  DataNaarGrafiek End;
+procedure TMDI_FFU.Timer2Timer(Sender: TObject);
+begin
+  if not verbinding then
+    VulData;
+end;
+procedure TMDI_FFU.VulData;
+var
+  ip,j,tek   : integer;
+begin
+  j := 599;
+  For ip := 0 to j do
+  begin
+    SP1[ip]  := SP1[ip+1];
+    MW1[ip]  := MW1[ip+1];
+    UIT1[ip] := UIT1[ip+1];
+    MAX1[ip] := MAX1[ip+1];
+    MIN1[ip] := MIN1[ip+1];
+
+    SP2[ip]  := SP2[ip+1];
+    MW2[ip]  := MW2[ip+1];
+    UIT2[ip] := UIT2[ip+1];
+    MAX2[ip] := MAX2[ip+1];
+    MIN2[ip] := MIN2[ip+1];
+  end;
+  //76 - 0 Instelling 30-FC-111 S4
+  //78 - 1 Instelling 30-FC-111 S5
+  //80 - 2 Instelling 30-FC-111 setpoint
+  //82 - 3 Instelling 30-FC-111 Y-waarde
+  //84 - 4 Instelling 30-FC-211 D-actie
+  //86 - 5 Instelling 30-FC-211 I-actie
+  //88 - 6 Instelling 30-FC-211 P-actie
+  //90 - 7 Instelling 30-FC-211 S2
+  //92 - 8 Instelling 30-FC-211 S3
+  //94 - 9 Instelling 30-FC-211 S4
+  //96 - 10 Instelling 30-FC-211 S5
+  //98 - 11 Instelling 30-FC-211 setpoint
+  //100- 12 Instelling 30-FC-211 Y-waarde
+  tek:= 599;
+  if verbinding then
+  begin
+    SP1[tek]    := OmrekProcDouble(instellingenDB[2]);
+    MW1[tek]    := TrBar_flowFF1.Position/1.0;
+    UIT1[tek]   := uitgangenAO[0];
+    MAX1[tek]   := OmrekProcDouble(instellingenDB[0]);
+    MIN1[tek]   := OmrekProcDouble(instellingenDB[1]);
+
+    SP2[tek]    := OmrekProcDouble(instellingenDB[11]);
+    MW2[tek]    := TrBar_flowFF2.Position/1.0;
+    UIT2[tek]   := uitgangenAO[1];
+    MAX2[tek]   := OmrekProcDouble(instellingenDB[9]);
+    MIN2[tek]   := OmrekProcDouble(instellingenDB[10]);
+  end else
+  begin
+    SP1[tek]    := 0;
+    MW1[tek]    := TrBar_flowFF1.Position/1.0;
+    UIT1[tek]   := 0;
+    MAX1[tek]   := 0;
+    MIN1[tek]   := 0;
+
+    SP2[tek]    := 0;
+    MW2[tek]    := TrBar_flowFF2.Position/1.0;
+    UIT2[tek]   := 0;
+    MAX2[tek]   := 0;
+    MIN2[tek]   := 0;
+  end;
+end;
+procedure TMDI_FFU.DataNaarGrafiek;
+var
+  ip,j   : integer;
+begin
+  Chart1.Series[0].Clear;
+  Chart1.Series[1].Clear;
+  Chart1.Series[2].Clear;
+  Chart1.Series[3].Clear;
+  Chart1.Series[4].Clear;
+
+  j := 599;
+  For ip := 0 to j do
+  begin
+    if  CheckBox1.Checked then
+    begin
+      Chart1.SeriesList.Series[0].AddXY(ip,SP2[ip],'bla',clRed);
+      Chart1.SeriesList.Series[1].AddXY(ip,MW2[ip],'bla',clBlue);
+      Chart1.SeriesList.Series[2].AddXY(ip,UIT2[ip],'bla',clGreen);
+      Chart1.SeriesList.Series[3].AddXY(ip,MAX2[ip],'bla',clPurple);
+      Chart1.SeriesList.Series[4].AddXY(ip,MIN2[ip],'bla',clPurple);
+    end else
+    begin
+      Chart1.SeriesList.Series[0].AddXY(ip,SP1[ip],'bla',clRed);
+      Chart1.SeriesList.Series[1].AddXY(ip,MW1[ip],'bla',clBlue);
+      Chart1.SeriesList.Series[2].AddXY(ip,UIT1[ip],'bla',clGreen);
+      Chart1.SeriesList.Series[3].AddXY(ip,MAX1[ip],'bla',clPurple);
+      Chart1.SeriesList.Series[4].AddXY(ip,MIN1[ip],'bla',clPurple);
+    end;
+  end;
+end;
+procedure TMDI_FFU.CheckBox1Click(Sender: TObject);
+begin
+  Chart1.Title.Text.Clear;
+  if  CheckBox1.Checked then
+  begin
+    CheckBox1.Caption := 'Straat 2';
+    Chart1.Title.Text.Add('Flow regeling straat 2 (SP-red, MW-blue, OUT-green, S4=Purple, S5-Purple)');
+  end  else
+  begin
+    CheckBox1.Caption := 'Straat 1';
+    Chart1.Title.Text.Add('Flow regeling straat 1 (SP-red, MW-blue, OUT-green, S4=Purple, S5-Purple)');
+  end;
+end;
+
+procedure TMDI_FFU.Button_Start2000Click(Sender: TObject);
+begin //
+     button2000start := true;
+end;
+
+procedure TMDI_FFU.Button_Stop2000Click(Sender: TObject);
+begin  //
+     button2000stop := true;
+end;
+procedure TMDI_FFU.Area2000_Start;
+begin //
+    aIn:=10; bMel :=3;
+    oBit8In.AsByte := ingangenDG[aIn];
+    if button2000start then oBit8In.SetBit(bMel)else oBit8In.ClrBit(bMel);
+    ingangenDG[aIn] := oBit8In.AsByte;
+    button2000start := false;
+    aIn:=10; bMel :=4;
+    oBit8In.AsByte := ingangenDG[aIn];
+    if button2000stop then oBit8In.SetBit(bMel)else oBit8In.ClrBit(bMel);
+    ingangenDG[aIn] := oBit8In.AsByte;
+    button2000stop := false;
+
+end;
+
+procedure TMDI_FFU.Button_Start1600Click(Sender: TObject);
+begin //
+     button1600start := true;
+end;
+
+procedure TMDI_FFU.Button_Stop1600Click(Sender: TObject);
+begin //
+     button1600stop := true;
+end;
+procedure TMDI_FFU.Area1600_Start;
+begin //
+    aIn:=9; bMel :=6;
+    oBit8In.AsByte := ingangenDG[aIn];
+    if button1600start then oBit8In.SetBit(bMel)else oBit8In.ClrBit(bMel);
+    ingangenDG[aIn] := oBit8In.AsByte;
+    button1600start := false;
+    aIn:=9; bMel :=7;
+    oBit8In.AsByte := ingangenDG[aIn];
+    if button1600stop then oBit8In.SetBit(bMel)else oBit8In.ClrBit(bMel);
+    ingangenDG[aIn] := oBit8In.AsByte;
+    button1600stop := false;
+
+end;
+
+end.
+
+

@@ -1,0 +1,22 @@
+program Odfjell;
+
+uses
+  Forms,
+  Main in 'Main.pas' {pokerpirate},
+  FFU in 'FFU.PAS' {MDI_FFU},
+  about in 'about.pas' {AboutBox},
+  BGB in 'BGB.PAS' {MDI_BGB},
+  nodave in 'nodave.pas',
+  ConnInstel in 'ConnInstel.pas' {ConnForm},
+  MahBit32 in 'MahBit32.pas',
+  MahBit8 in 'MahBit8.pas';
+
+{$R *.RES}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(Tpokerpirate, pokerpirate);
+  Application.CreateForm(TAboutBox, AboutBox);
+  Application.CreateForm(TConnForm, ConnForm);
+  Application.Run;
+end.

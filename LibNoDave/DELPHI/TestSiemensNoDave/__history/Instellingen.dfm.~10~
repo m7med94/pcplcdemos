@@ -1,0 +1,580 @@
+object InstelForm: TInstelForm
+  Left = 554
+  Top = 133
+  Width = 737
+  Height = 645
+  Caption = 'Settings '
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  OnActivate = FormActivate
+  OnCreate = FormCreate
+  OnDeactivate = FormDeactivate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 729
+    Height = 618
+    Align = alClient
+    Color = 16774636
+    TabOrder = 0
+    object PageControl1: TPageControl
+      Left = 1
+      Top = 1
+      Width = 727
+      Height = 597
+      ActivePage = TabSheet1
+      Align = alClient
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      MultiLine = True
+      ParentFont = False
+      TabOrder = 0
+      object TabSheet1: TTabSheet
+        Caption = 'Initialisatie van Ingangen F800'
+        ImageIndex = 1
+        object Label12: TLabel
+          Left = 40
+          Top = 18
+          Width = 548
+          Height = 19
+          Caption = 
+            'Generator 1                                       1 en 2        ' +
+            '                    Generator 2'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -16
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+        end
+        object CheckBox0: TCheckBox
+          Left = 40
+          Top = 56
+          Width = 201
+          Height = 17
+          Caption = 'HIGH VOLTAGE SECTION 1'
+          TabOrder = 0
+          OnClick = CheckBox0Click
+        end
+        object CheckBox1: TCheckBox
+          Left = 40
+          Top = 72
+          Width = 201
+          Height = 17
+          Caption = 'LOW VOLTAGE SECTION 1'
+          TabOrder = 1
+          OnClick = CheckBox1Click
+        end
+        object CheckBox2: TCheckBox
+          Left = 40
+          Top = 88
+          Width = 201
+          Height = 17
+          Caption = 'LOW FREQUENCY SECTION 1'
+          TabOrder = 2
+          OnClick = CheckBox2Click
+        end
+        object CheckBox3: TCheckBox
+          Left = 40
+          Top = 104
+          Width = 201
+          Height = 17
+          Caption = 'NO VOLTAGE SECTION 1'
+          TabOrder = 3
+          OnClick = CheckBox3Click
+        end
+        object CheckBox4: TCheckBox
+          Left = 496
+          Top = 56
+          Width = 201
+          Height = 17
+          Caption = 'HIGH VOLTAGE SECTION 2'
+          TabOrder = 4
+          OnClick = CheckBox4Click
+        end
+        object CheckBox5: TCheckBox
+          Left = 496
+          Top = 72
+          Width = 201
+          Height = 17
+          Caption = 'LOW VOLTAGE SECTION 2'
+          TabOrder = 5
+          OnClick = CheckBox5Click
+        end
+        object CheckBox6: TCheckBox
+          Left = 496
+          Top = 88
+          Width = 201
+          Height = 17
+          Caption = 'LOW FREQUENCY SECTION 2'
+          TabOrder = 6
+          OnClick = CheckBox6Click
+        end
+        object CheckBox7: TCheckBox
+          Left = 496
+          Top = 104
+          Width = 201
+          Height = 17
+          Caption = 'NO VOLTAGE SECTION 2'
+          TabOrder = 7
+          OnClick = CheckBox7Click
+        end
+        object CheckBox8: TCheckBox
+          Left = 40
+          Top = 128
+          Width = 201
+          Height = 17
+          Caption = 'MG 1 ACB CLOSE'
+          TabOrder = 8
+          OnClick = CheckBox8Click
+        end
+        object CheckBox9: TCheckBox
+          Left = 40
+          Top = 144
+          Width = 201
+          Height = 17
+          Caption = 'SG 1 ACB CLOSE'
+          TabOrder = 9
+          OnClick = CheckBox9Click
+        end
+        object CheckBox11: TCheckBox
+          Left = 496
+          Top = 144
+          Width = 201
+          Height = 17
+          Caption = 'SG 2   ACB CLOSE'
+          TabOrder = 10
+          OnClick = CheckBox11Click
+        end
+        object CheckBox10: TCheckBox
+          Left = 496
+          Top = 128
+          Width = 201
+          Height = 17
+          Caption = 'MG 2   ACB CLOSE'
+          TabOrder = 11
+          OnClick = CheckBox10Click
+        end
+        object CheckBox13: TCheckBox
+          Left = 40
+          Top = 184
+          Width = 201
+          Height = 17
+          Caption = 'BOW TRUSTER 1 ACB CLOSE'
+          TabOrder = 12
+          OnClick = CheckBox13Click
+        end
+        object CheckBox12: TCheckBox
+          Left = 272
+          Top = 168
+          Width = 201
+          Height = 17
+          Caption = 'SECTION 1- 2 ACB CLOSE'
+          TabOrder = 13
+          OnClick = CheckBox12Click
+        end
+        object CheckBox14: TCheckBox
+          Left = 496
+          Top = 184
+          Width = 201
+          Height = 17
+          Caption = 'BOW TRUSTER 2 ACB CLOSE'
+          TabOrder = 14
+          OnClick = CheckBox14Click
+        end
+        object CheckBox15: TCheckBox
+          Left = 272
+          Top = 200
+          Width = 201
+          Height = 17
+          Caption = 'SHORE CONNECTION FUSE BREAKER ON'
+          TabOrder = 15
+          OnClick = CheckBox15Click
+        end
+        object CheckBox16: TCheckBox
+          Left = 40
+          Top = 376
+          Width = 201
+          Height = 17
+          Caption = 'AUX.  1 STANDBY FINISH'
+          TabOrder = 16
+        end
+        object CheckBox17: TCheckBox
+          Left = 40
+          Top = 392
+          Width = 201
+          Height = 17
+          Caption = 'MAIN 1 ACB CLOSE (SP)'
+          TabOrder = 17
+        end
+        object CheckBox18: TCheckBox
+          Left = 40
+          Top = 408
+          Width = 201
+          Height = 17
+          Caption = 'AUX. 1 STOP MANUELT'
+          TabOrder = 18
+        end
+        object CheckBox19: TCheckBox
+          Left = 40
+          Top = 424
+          Width = 201
+          Height = 17
+          Caption = 'AUX.  1 START FAIL'
+          TabOrder = 19
+        end
+        object CheckBox20: TCheckBox
+          Left = 40
+          Top = 440
+          Width = 201
+          Height = 17
+          Caption = 'AUX. 1 STOP (M - AUTO)'
+          TabOrder = 20
+        end
+        object CheckBox24: TCheckBox
+          Left = 504
+          Top = 376
+          Width = 201
+          Height = 17
+          Caption = 'AUX.  2 STANDBY FINISH'
+          TabOrder = 21
+        end
+        object CheckBox25: TCheckBox
+          Left = 504
+          Top = 392
+          Width = 201
+          Height = 17
+          Caption = 'MAIN 2 ACB CLOSE (SP)'
+          TabOrder = 22
+        end
+        object CheckBox26: TCheckBox
+          Left = 504
+          Top = 408
+          Width = 201
+          Height = 17
+          Caption = 'AUX.  2 STOP MANUELT'
+          TabOrder = 23
+        end
+        object CheckBox27: TCheckBox
+          Left = 504
+          Top = 424
+          Width = 201
+          Height = 17
+          Caption = 'AUX.  2 START FAIL'
+          TabOrder = 24
+        end
+        object CheckBox28: TCheckBox
+          Left = 504
+          Top = 440
+          Width = 201
+          Height = 17
+          Caption = 'AUX.  2 STOP (M - AUTO)'
+          TabOrder = 25
+        end
+        object CheckBox32: TCheckBox
+          Left = 40
+          Top = 224
+          Width = 201
+          Height = 17
+          Caption = 'MG 1 VOLTAGE BUILD UP'
+          TabOrder = 26
+          OnClick = CheckBox32Click
+        end
+        object CheckBox33: TCheckBox
+          Left = 40
+          Top = 240
+          Width = 201
+          Height = 17
+          Caption = 'SG 1 VOLTAGE BUILD UP'
+          TabOrder = 27
+          OnClick = CheckBox33Click
+        end
+        object CheckBox34: TCheckBox
+          Left = 496
+          Top = 224
+          Width = 201
+          Height = 17
+          Caption = 'MG 2 VOLTAGE BUILD '
+          TabOrder = 28
+        end
+        object CheckBox35: TCheckBox
+          Left = 496
+          Top = 240
+          Width = 201
+          Height = 17
+          Caption = 'SG 2 VOLTAGE BUILD'
+          TabOrder = 29
+        end
+        object CheckBox36: TCheckBox
+          Left = 40
+          Top = 256
+          Width = 201
+          Height = 17
+          Caption = 'MG 1 METER Ry HIGH '
+          TabOrder = 30
+        end
+        object CheckBox37: TCheckBox
+          Left = 496
+          Top = 256
+          Width = 201
+          Height = 17
+          Caption = 'MG 2 METER Ry HIGH '
+          TabOrder = 31
+        end
+        object CheckBox40: TCheckBox
+          Left = 40
+          Top = 288
+          Width = 201
+          Height = 17
+          Caption = 'MG 1 ACB TRIP SIGNAL'
+          TabOrder = 32
+        end
+        object CheckBox41: TCheckBox
+          Left = 40
+          Top = 304
+          Width = 201
+          Height = 17
+          Caption = 'SG 1 ACB TRIP SIGNAL'
+          TabOrder = 33
+        end
+        object CheckBox42: TCheckBox
+          Left = 496
+          Top = 288
+          Width = 201
+          Height = 17
+          Caption = 'MG 2 ACB TRIP SIGNAL'
+          TabOrder = 34
+        end
+        object CheckBox43: TCheckBox
+          Left = 496
+          Top = 304
+          Width = 201
+          Height = 17
+          Caption = 'SG 2 ACB TRIP SIGNAL'
+          TabOrder = 35
+        end
+        object CheckBox44: TCheckBox
+          Left = 272
+          Top = 320
+          Width = 201
+          Height = 17
+          Caption = 'SECTION 1 - 2 ACB TRIP SIGNAL'
+          TabOrder = 36
+        end
+        object CheckBox45: TCheckBox
+          Left = 272
+          Top = 336
+          Width = 201
+          Height = 17
+          Caption = 'AUTO SYNCHON FAILER'
+          TabOrder = 37
+        end
+        object CheckBox46: TCheckBox
+          Left = 272
+          Top = 352
+          Width = 201
+          Height = 17
+          Caption = 'LOAD LIMITER 1 OPERATE'
+          TabOrder = 38
+        end
+        object CheckBox48: TCheckBox
+          Left = 272
+          Top = 456
+          Width = 201
+          Height = 17
+          Caption = 'MS-A "AT SEA"'
+          TabOrder = 39
+        end
+        object CheckBox49: TCheckBox
+          Left = 272
+          Top = 472
+          Width = 201
+          Height = 17
+          Caption = 'MS-A "AT H/M"'
+          TabOrder = 40
+        end
+        object CheckBox50: TCheckBox
+          Left = 40
+          Top = 488
+          Width = 201
+          Height = 17
+          Caption = 'MS-B "SHAFT  1"'
+          TabOrder = 41
+        end
+        object CheckBox51: TCheckBox
+          Left = 504
+          Top = 488
+          Width = 201
+          Height = 17
+          Caption = 'MS-B "SHAFT 2"'
+          TabOrder = 42
+        end
+        object CheckBox52: TCheckBox
+          Left = 272
+          Top = 488
+          Width = 201
+          Height = 17
+          Caption = 'MS-B "SHAFT  1 - 2"'
+          TabOrder = 43
+        end
+        object CheckBox53: TCheckBox
+          Left = 272
+          Top = 504
+          Width = 201
+          Height = 17
+          Caption = 'DCS "OFF"'
+          TabOrder = 44
+        end
+        object CheckBox54: TCheckBox
+          Left = 40
+          Top = 528
+          Width = 201
+          Height = 17
+          Caption = 'DCS "MAIN  1"'
+          TabOrder = 45
+        end
+        object CheckBox55: TCheckBox
+          Left = 504
+          Top = 528
+          Width = 201
+          Height = 17
+          Caption = 'DCS "MAIN  2"'
+          TabOrder = 46
+        end
+        object CheckBox56: TCheckBox
+          Left = 272
+          Top = 528
+          Width = 201
+          Height = 17
+          Caption = 'COS "AUTO'
+          TabOrder = 47
+        end
+        object CheckBox38: TCheckBox
+          Left = 272
+          Top = 272
+          Width = 201
+          Height = 17
+          Caption = 'MG 1 - 2 METER Ry LOW SET'
+          TabOrder = 48
+        end
+      end
+      object TabSheet2: TTabSheet
+        Caption = 'PLC control'
+        ImageIndex = 7
+        object Label126: TLabel
+          Left = 224
+          Top = 4
+          Width = 132
+          Height = 25
+          Caption = 'PLC control'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlue
+          Font.Height = -21
+          Font.Name = 'Verdana'
+          Font.Style = [fsBold]
+          ParentFont = False
+          OnClick = Label126Click
+        end
+        object RadioGroup2: TRadioGroup
+          Left = 128
+          Top = 186
+          Width = 105
+          Height = 57
+          Caption = 'Restart:'
+          ItemIndex = 0
+          Items.Strings = (
+            'COLD'
+            'WARM')
+          TabOrder = 0
+        end
+        object RadioGroup1: TRadioGroup
+          Left = 360
+          Top = 83
+          Width = 105
+          Height = 121
+          Caption = 'Resorses:'
+          ItemIndex = 2
+          Items.Strings = (
+            'OUTPUTS'
+            'REGISTERS'
+            'FLAGS'
+            'TIMERS'
+            'HISTORY'
+            'ALL')
+          TabOrder = 1
+        end
+        object BtnClear: TButton
+          Left = 272
+          Top = 88
+          Width = 75
+          Height = 25
+          Caption = 'Clear PLC'
+          TabOrder = 2
+          OnClick = BtnClearClick
+        end
+        object BtnRestart: TButton
+          Left = 40
+          Top = 192
+          Width = 75
+          Height = 25
+          Caption = 'Restart PLC'
+          TabOrder = 3
+          OnClick = BtnRestartClick
+        end
+        object BtnStop: TButton
+          Left = 40
+          Top = 144
+          Width = 75
+          Height = 25
+          Caption = 'Stop PLC'
+          TabOrder = 4
+          OnClick = BtnStopClick
+        end
+        object BtnRun: TButton
+          Left = 40
+          Top = 96
+          Width = 73
+          Height = 25
+          Caption = 'Run PLC'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 5
+          OnClick = BtnRunClick
+        end
+        object BTNKlockPLC: TButton
+          Left = 504
+          Top = 88
+          Width = 75
+          Height = 25
+          Caption = 'Clock PLC'
+          TabOrder = 6
+          OnClick = BTNKlockPLCClick
+        end
+      end
+    end
+    object StatusBarInst: TStatusBar
+      Left = 1
+      Top = 598
+      Width = 727
+      Height = 19
+      Panels = <
+        item
+          Width = 50
+        end>
+    end
+  end
+end

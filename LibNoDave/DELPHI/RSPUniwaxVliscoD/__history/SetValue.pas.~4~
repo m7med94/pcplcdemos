@@ -1,0 +1,58 @@
+unit SetValue;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Spin;
+
+type
+  TFormSetValue = class(TForm)
+    Label1: TLabel;
+    SpinEdit1: TSpinEdit;
+    SpinEdit2: TSpinEdit;
+    Label2: TLabel;
+    Button1: TButton;
+    procedure Button1Click(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormSetValue: TFormSetValue;
+
+implementation
+
+{$R *.dfm}
+uses Main;
+
+procedure TFormSetValue.FormActivate(Sender: TObject);
+begin
+  SpinEdit2.Visible := MainForm.ValueTypeR;
+  Label1.Visible := MainForm.ValueTypeR;
+  SpinEdit1.Value := MainForm.Value1;
+  SpinEdit2.Value := MainForm.Value2;
+end;
+
+procedure TFormSetValue.Button1Click(Sender: TObject);
+var
+ varR : real;
+ varI : integer;
+ tmp : string;
+ Res:LongInt;
+begin
+  if MainForm.ValueTypeR then
+  begin
+    tmp := IntToStr(SpinEdit1.Value)+'.'+ IntToStr(SpinEdit2.Value);
+    label2.Caption :=  'Value = '+ tmp;
+    varR := StrToFloat(tmp);
+    res := daveWriteBytes(dc, daveDB, MainForm.ValueAdresDb, MainForm.ValueAdresNum, 4, @varR);
+  end;
+
+end;
+
+end.
+

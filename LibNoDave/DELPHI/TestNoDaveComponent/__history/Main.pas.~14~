@@ -1,0 +1,434 @@
+// Main.pas (Part of NoDaveDemo.dpr)
+
+unit Main;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, Dialogs, IniFiles,
+  StdCtrls, Mask, Grids, ValEdit, ExtCtrls, ComCtrls, Winsock, Spin, NoDaveComponent, Editor,
+  AppEvnts, Buttons, ToolWin, TeEngine, Series, TeeProcs, Chart, MahBit16;
+
+ const  aantal = 599;
+ const  DataAantal = 6;
+
+type
+  TMainForm = class(TForm)
+    NoDave: TNoDave;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    SBCon: TSpeedButton;
+    SBdiscon: TSpeedButton;
+    SBSim: TSpeedButton;
+    ToolButton2: TToolButton;
+    ComboBox3: TComboBox;
+    SBEditCon: TSpeedButton;
+    SBNewCon: TSpeedButton;
+    ToolButton4: TToolButton;
+    Panel5: TPanel;
+    ProgressBar1: TProgressBar;
+    ToolButton3: TToolButton;
+    SimulatieUit: TSpeedButton;
+    SimulatieAan: TSpeedButton;
+    StatusBar1: TStatusBar;
+    Chart1: TChart;
+    Series1: TLineSeries;
+    Series2: TLineSeries;
+    Series3: TLineSeries;
+    Series4: TLineSeries;
+    Series5: TLineSeries;
+    Panel2: TPanel;
+    Label1: TLabel;
+    Label00: TLabel;
+    Label01: TLabel;
+    Label02: TLabel;
+    Label03: TLabel;
+    Label07: TLabel;
+    Label06: TLabel;
+    Label05: TLabel;
+    Label04: TLabel;
+    Label13: TLabel;
+    Label12: TLabel;
+    Label11: TLabel;
+    Label10: TLabel;
+    Label17: TLabel;
+    Label16: TLabel;
+    Label15: TLabel;
+    Label14: TLabel;
+    ApplicationEvents1: TApplicationEvents;
+    TimerGr: TTimer;
+    procedure TimerGrTimer(Sender: TObject);
+    procedure SBSimClick(Sender: TObject);
+    procedure SBNewConClick(Sender: TObject);
+    procedure SBEditConClick(Sender: TObject);
+    procedure ComboBox3Change(Sender: TObject);
+    procedure SBdisconClick(Sender: TObject);
+    procedure SBConClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure NoDaveRead(Sender: TObject);
+    procedure NoDaveError(Sender: TObject; ErrorMsg: string);
+    procedure NoDaveConnect(Sender: TObject);
+    procedure NoDaveDisconnect(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure InitData;
+    procedure DataToGrafiek;
+    procedure VulData;
+    procedure DataToBinare;
+  private
+    DataType: Integer;
+    DataOffset: Integer;
+    DataCount: Integer;
+    DataSize: Integer;
+    MustRefresh: Boolean;
+    oBit16  : TBit16;
+
+    //tbv grafiek
+    S1   : array[0..aantal] of real;
+    S2   : array[0..aantal] of real;
+    S3   : array[0..aantal] of real;
+    S4   : array[0..aantal] of real;
+    S5   : array[0..aantal] of real;
+
+    DataVar  : array[0..DataAantal-1] of real;
+    DataBin  : word;
+
+  public
+    SimActief: boolean;
+    procedure Connect(ConnName: String);
+  end;
+
+var
+  MainForm: TMainForm;
+
+implementation
+
+{$R *.dfm}
+
+uses SZLView;
+
+const
+  AreaNames: Array[0..13] of String = ('SI%1:s%4u', 'SF%1:s%4u', 'I%1:s%4u', 'Q%1:s%4u', 'I%1:s%4u', 'Q%1:s%4u', 'M%1:s%4u', 'DB%u.%s%4u', 'DI%u.%s%4u', 'DL%u.%s%4u', '?%u.%s%4u', 'C%1:s%4u', 'T%1:s%4u', 'PE%1:s%4u');
+  TypeNames: Array[0..5] of String = ('B', 'W', 'Int', 'DW', 'DInt', 'Real');
+
+procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  NoDave.Active:=False;
+  oBit16.Free
+end;
+
+procedure TMainForm.FormShow(Sender: TObject);
+var
+  ConnList: TStringList;
+  Index: Integer;
+  ConnName: String;
+  ConnDesc: String;
+begin
+  ConnList:=TStringList.Create;
+  ConnectionEditor.IniFile.ReadSectionValues('Connections', ConnList);
+  ConnList.Sorted:=True;
+  Index:=0;
+  While Index < ConnList.Count do
+  begin
+    ConnName:=ConnList.Names[Index];
+    ComboBox3.Items.Append(ConnName);
+    Inc(Index);
+  end;
+  ConnList.Free;
+  ComboBox3.ItemIndex:=0;
+  Connect(ComboBox3.Text);
+end;
+
+procedure TMainForm.NoDaveError(Sender: TObject; ErrorMsg: string);
+begin
+  StatusBar1.Panels[1].Text:='Last cycle time: - ms';
+  StatusBar1.Panels[0].Text:='Error [' + IntToStr(NoDave.LastError) + ']: ' + ErrorMsg;
+end;
+
+
+procedure TMainForm.NoDaveConnect(Sender: TObject);
+begin
+  ProgressBar1.Position:=0;
+end;
+
+procedure TMainForm.NoDaveDisconnect(Sender: TObject);
+begin
+  ProgressBar1.Position:=0;
+end;
+
+procedure TMainForm.Connect(ConnName: String);
+begin
+  If ConnName <> '' then
+  begin
+    NoDave.Protocol:=TNoDaveProtocol(ConnectionEditor.IniFile.ReadInteger(ConnName, 'Protocol', 3));
+    NoDave.CPURack:=ConnectionEditor.IniFile.ReadInteger(ConnName, 'CPURack', 0);
+    NoDave.CPUSlot:=ConnectionEditor.IniFile.ReadInteger(ConnName, 'CPUSlot', 2);
+    NoDave.COMPort:=ConnectionEditor.IniFile.ReadString(ConnName, 'COMPort', 'COM1:');
+    NoDave.IPAddress:=ConnectionEditor.IniFile.ReadString(ConnName, 'IPAddress', '');
+    NoDave.IntfTimeout:=ConnectionEditor.IniFile.ReadInteger(ConnName, 'Timeout', 100000);
+    NoDave.Interval:=ConnectionEditor.IniFile.ReadInteger(ConnName, 'Interval', 1000);
+    NoDave.MPISpeed:=TNoDaveSpeed(ConnectionEditor.IniFile.ReadInteger(ConnName, 'MPISpeed', 2));
+    NoDave.MPILocal:=ConnectionEditor.IniFile.ReadInteger(ConnName, 'MPILocal', 1);
+    NoDave.MPIRemote:=ConnectionEditor.IniFile.ReadInteger(ConnName, 'MPIRemote', 2);
+//    Button1Click(Self);
+  end;
+end;
+
+procedure TMainForm.ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
+begin
+  if  NoDave.Active then
+  begin
+    SBcon.Visible    :=  false;
+    SBdiscon.Visible :=  true;
+  end else begin
+    SBdiscon.Visible :=  false;
+    SBcon.Visible    :=  true;
+    Label00.Color := clMoneyGreen;
+    Label01.Color := clMoneyGreen;
+    Label02.Color := clMoneyGreen;
+    Label03.Color := clMoneyGreen;
+    Label04.Color := clMoneyGreen;
+    Label05.Color := clMoneyGreen;
+    Label06.Color := clMoneyGreen;
+    Label07.Color := clMoneyGreen;
+    Label10.Color := clMoneyGreen;
+    Label11.Color := clMoneyGreen;
+    Label12.Color := clMoneyGreen;
+    Label13.Color := clMoneyGreen;
+    Label14.Color := clMoneyGreen;
+    Label15.Color := clMoneyGreen;
+    Label16.Color := clMoneyGreen;
+    Label17.Color := clMoneyGreen;
+  end;
+    SimulatieAan.Visible := not SimActief;
+    SimulatieUit.Visible := SimActief;
+ //   SBSim.Enabled := NoDave.Active;
+  if(SimActief) then
+  begin
+    StatusBar1.Panels[3].Text:='Sim AAN';
+  end else
+  begin
+    StatusBar1.Panels[3].Text:='Sim UIT';
+  end;
+end;
+
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
+  oBit16 := TBit16.Create;
+  SimActief := false;
+  StatusBar1.Panels[1].Text:='Not connected!';
+  InitData;
+  ProgressBar1.Position:=0;
+end;
+
+procedure TMainForm.SBConClick(Sender: TObject);
+begin
+  NoDave.Active := true;
+end;
+
+procedure TMainForm.SBdisconClick(Sender: TObject);
+begin
+  NoDave.Active := false;
+end;
+
+procedure TMainForm.ComboBox3Change(Sender: TObject);
+begin
+  Connect(ComboBox3.Text);
+end;
+
+procedure TMainForm.SBEditConClick(Sender: TObject);
+begin
+  If ComboBox3.ItemIndex >= 0 then
+  begin
+    ConnectionEditor.SetConnection(ComboBox3.Text);
+    If ConnectionEditor.ShowModal = mrOK then Connect(ComboBox3.Text);
+  end;
+end;
+
+procedure TMainForm.SBNewConClick(Sender: TObject);
+var
+  Index: Integer;
+begin
+  ConnectionEditor.SetConnection('');
+  If ConnectionEditor.ShowModal = mrOK then
+  begin
+    Index:=ComboBox3.Items.Add(ConnectionEditor.Connection.Text);
+    ComboBox3.ItemIndex:=Index;
+    Connect(ComboBox3.Text);
+  end;
+end;
+
+procedure TMainForm.SBSimClick(Sender: TObject);
+begin
+  InitData;
+end;
+procedure TMainForm.InitData;
+var
+  Active: Boolean;
+  Area: Integer;
+  Display: String;
+  DBNumber: Integer;
+  Index: Integer;
+begin
+{ Area:
+  0 - System-Info
+  1 - System-Flags
+  2 - analog Inputs (CPU 200)
+  3 - analog Outputs (CPU 200)
+  4 - Inputs
+  5 - Outputs
+  6 - Flags
+  7 - Datablock
+  8 - Instance Data
+  9 - Local Data
+ 10 - unknown Area
+ 11 - Counter
+ 12 - Timer
+ 13 - PEW/PAW
+---------------------
+ DataType:
+ 0 - Byte
+ 1 - Word
+ 2 - Int
+ 3 - DWord
+ 4 - DInt
+ 5 - Real
+
+}
+  Active:=NoDave.Active;
+  Area       := 6;    //Select the PLC-area from the list.
+  NoDave.Area:=TNoDaveArea(Area);
+  DBNumber   := 0;    //Set the number of the DB.
+  NoDave.DBNumber:=DBNumber; //Set the number of the DB.
+  DataCount  := DataAantal;    //Set the number of addresses to process.
+  DataType   := 1;    //Select the datatype from the list.
+  DataOffset := 200;  //Set the address-offset.
+  Case DataType of
+    0: DataSize:=1;
+    1: DataSize:=2;
+    2: DataSize:=2;
+    3: DataSize:=4;
+    4: DataSize:=4;
+    5: DataSize:=4;
+  end;
+  NoDave.BufLen  :=DataCount * DataSize;
+  NoDave.BufOffs :=DataOffset;
+  Index          :=DataOffset;
+  Display:=StringReplace(Format(AreaNames[Area], [DBNumber, TypeNames[DataType], Index]), ' ', '0', [rfReplaceAll]) + ' =         ?';
+  Label1.Caption :=  Display;
+  NoDave.Active:=Active;
+end;
+
+procedure TMainForm.NoDaveRead(Sender: TObject);
+var
+  Data: Array of Variant;
+  Index: Integer;
+  Count: Integer;
+begin
+  With ProgressBar1 do
+  begin
+    If Position = 10 then Position:=0 else Position:=Position + 1;
+  end;
+  SetLength(Data, DataCount);
+  Count:=0;
+  While Count < DataCount do
+  begin
+    Index:=(Count * DataSize) + DataOffset;
+    Case DataType of
+      0: Data[Count]:=NoDave.GetByte(Index);
+      1: Data[Count]:=NoDave.GetWord(Index);
+      2: Data[Count]:=NoDave.GetInt(Index);
+      3: Data[Count]:=NoDave.GetDWord(Index);
+      4: Data[Count]:=NoDave.GetDInt(Index);
+      5: Data[Count]:=NoDave.GetFloat(Index);
+    end;
+    Inc(Count);
+  end;
+  Index:=0;
+
+  //Label1.Caption :=  Format('%10s', [VarToStr(Data[Index])]);
+  DataVar[0] :=  Data[0]/10.0;
+  DataVar[1] :=  Data[1]/10.0;
+  DataVar[2] :=  Data[2]/10.0;
+  DataVar[3] :=  Data[3]/10.0;
+  DataVar[4] :=  Data[4]/10.0;
+  DataBin    :=  Data[5];           // binare 16 bit
+
+  StatusBar1.Panels[1].Text:='Last cycle time: ' + IntToStr(NoDave.CycleTime) + ' ms';
+  StatusBar1.Panels[0].Text:='';
+  VulData;
+  DataToBinare;
+end;
+
+procedure TMainForm.VulData;
+var
+  ip,j,tek   : integer;
+begin
+  j := 599;
+  For ip := 0 to j do
+  begin
+    S1[ip] := S1[ip+1];
+    S2[ip] := S2[ip+1];
+    S3[ip] := S3[ip+1];
+    S4[ip] := S4[ip+1];
+    S5[ip] := S5[ip+1];
+  end;
+  tek:= 599;
+    S1[tek]    := DataVar[0];
+    S2[tek]    := DataVar[1];
+    S3[tek]    := DataVar[2];
+    S4[tek]    := DataVar[3];
+    S5[tek]    := DataVar[4];
+end;
+procedure TMainForm.DataToGrafiek;
+var
+  ip,j   : integer;
+begin
+  Chart1.Series[0].Clear;
+  Chart1.Series[1].Clear;
+  Chart1.Series[2].Clear;
+  Chart1.Series[3].Clear;
+  Chart1.Series[4].Clear;
+
+  j := 599;
+  For ip := 0 to j do
+  begin
+      Chart1.SeriesList.Series[0].AddXY(ip,S1[ip],'bla',clRed);
+      Chart1.SeriesList.Series[1].AddXY(ip,S2[ip],'bla',clBlue);
+      Chart1.SeriesList.Series[2].AddXY(ip,S3[ip],'bla',clGreen);
+      Chart1.SeriesList.Series[3].AddXY(ip,S4[ip],'bla',clPurple);
+      Chart1.SeriesList.Series[4].AddXY(ip,S5[ip],'bla',clPurple);
+  end;
+end;
+procedure TMainForm.DataToBinare;
+begin
+    oBit16.AsWordO := DataBin;
+    if (oBit16.BitSet(0)) then Label00.Color := clYellow else Label00.Color := $000080FF;
+    if (oBit16.BitSet(1)) then Label01.Color := clYellow else Label01.Color := $000080FF;
+    if (oBit16.BitSet(2)) then Label02.Color := clYellow else Label02.Color := $000080FF;
+    if (oBit16.BitSet(3)) then Label03.Color := clYellow else Label03.Color := $000080FF;
+
+    if (oBit16.BitSet(4)) then Label04.Color := clYellow else Label04.Color := $000080FF;
+    if (oBit16.BitSet(5)) then Label05.Color := clYellow else Label05.Color := $000080FF;
+    if (oBit16.BitSet(6)) then Label06.Color := clYellow else Label06.Color := $000080FF;
+    if (oBit16.BitSet(7)) then Label07.Color := clYellow else Label07.Color := $000080FF;
+
+    if (oBit16.BitSet(8)) then Label10.Color := clYellow else Label10.Color := $000080FF;
+    if (oBit16.BitSet(9)) then Label11.Color := clYellow else Label11.Color := $000080FF;
+    if (oBit16.BitSet(10)) then Label12.Color := clYellow else Label12.Color := $000080FF;
+    if (oBit16.BitSet(11)) then Label13.Color := clYellow else Label13.Color := $000080FF;
+
+    if (oBit16.BitSet(12)) then Label14.Color := clYellow else Label14.Color := $000080FF;
+    if (oBit16.BitSet(13)) then Label15.Color := clYellow else Label15.Color := $000080FF;
+    if (oBit16.BitSet(14)) then Label16.Color := clYellow else Label16.Color := $000080FF;
+    if (oBit16.BitSet(15)) then Label17.Color := clYellow else Label17.Color := $000080FF;
+end;
+
+procedure TMainForm.TimerGrTimer(Sender: TObject);
+begin
+  DataToGrafiek;
+end;
+
+end.
+

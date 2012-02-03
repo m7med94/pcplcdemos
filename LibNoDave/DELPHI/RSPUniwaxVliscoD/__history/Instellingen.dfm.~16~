@@ -1,0 +1,25 @@
+object InstelForm: TInstelForm
+  Left = 554
+  Top = 133
+  Width = 721
+  Height = 395
+  Caption = 'Settings '
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 705
+    Height = 357
+    Align = alClient
+    Color = clMoneyGreen
+    TabOrder = 0
+  end
+end

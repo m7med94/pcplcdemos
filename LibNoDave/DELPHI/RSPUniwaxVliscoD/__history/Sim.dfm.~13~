@@ -1,0 +1,700 @@
+object SimForm: TSimForm
+  Left = 0
+  Top = 0
+  Width = 631
+  Height = 469
+  Caption = 'Simulatie '
+  Color = 16774636
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnActivate = FormActivate
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel2: TPanel
+    Left = 0
+    Top = 0
+    Width = 623
+    Height = 177
+    Align = alTop
+    Color = 16774636
+    TabOrder = 0
+    object LabelWT: TLabel
+      Left = 160
+      Top = 24
+      Width = 81
+      Height = 13
+      Caption = 'Water tank nivo:'
+    end
+    object LabelBH2O2: TLabel
+      Left = 320
+      Top = 72
+      Width = 111
+      Height = 13
+      Caption = 'Buffer H2O2 tank nivo:'
+    end
+    object LabelBFA: TLabel
+      Left = 320
+      Top = 120
+      Width = 97
+      Height = 13
+      Caption = 'Buffer FA tank nivo:'
+    end
+    object LabelR: TLabel
+      Left = 320
+      Top = 24
+      Width = 65
+      Height = 13
+      Caption = 'Reactor nivo:'
+    end
+    object LabelSFA: TLabel
+      Left = 152
+      Top = 120
+      Width = 106
+      Height = 13
+      Caption = 'Storage FA tank druk:'
+    end
+    object LabelSH2O2: TLabel
+      Left = 152
+      Top = 72
+      Width = 120
+      Height = 13
+      Caption = 'Storage H2O2 tank druk:'
+    end
+    object Label1: TLabel
+      Left = 208
+      Top = 8
+      Width = 164
+      Height = 13
+      Caption = 'Simulatie Kaart 2 (96-103 en 119) '
+    end
+    object Label2: TLabel
+      Left = 504
+      Top = 8
+      Width = 86
+      Height = 13
+      Caption = 'Kaart 3 (112-118)'
+    end
+    object Label3: TLabel
+      Left = 24
+      Top = 8
+      Width = 74
+      Height = 13
+      Caption = 'Kaart 1 (80-87)'
+    end
+    object TrackBarWT: TTrackBar
+      Left = 152
+      Top = 40
+      Width = 161
+      Height = 33
+      Hint = 'R620'
+      Max = 100
+      ParentShowHint = False
+      Frequency = 10
+      Position = 50
+      SelEnd = 90
+      SelStart = 10
+      ShowHint = True
+      TabOrder = 0
+      TickMarks = tmTopLeft
+      OnChange = TrackBarWTChange
+    end
+    object TrackBarBH2O2: TTrackBar
+      Left = 312
+      Top = 88
+      Width = 161
+      Height = 33
+      Hint = 'R621'
+      Max = 100
+      ParentShowHint = False
+      Frequency = 10
+      Position = 50
+      SelEnd = 90
+      SelStart = 10
+      ShowHint = True
+      TabOrder = 1
+      TickMarks = tmTopLeft
+      OnChange = TrackBarWTChange
+    end
+    object TrackBarBFA: TTrackBar
+      Left = 312
+      Top = 136
+      Width = 161
+      Height = 33
+      Hint = 'R622'
+      Max = 100
+      ParentShowHint = False
+      Frequency = 10
+      Position = 50
+      SelEnd = 90
+      SelStart = 10
+      ShowHint = True
+      TabOrder = 2
+      TickMarks = tmTopLeft
+      OnChange = TrackBarWTChange
+    end
+    object TrackBarR: TTrackBar
+      Left = 312
+      Top = 40
+      Width = 161
+      Height = 33
+      Hint = 'R623'
+      Max = 100
+      ParentShowHint = False
+      Frequency = 10
+      Position = 50
+      SelEnd = 90
+      SelStart = 10
+      ShowHint = True
+      TabOrder = 3
+      TickMarks = tmTopLeft
+      OnChange = TrackBarWTChange
+    end
+    object TrackBarSFA: TTrackBar
+      Left = 152
+      Top = 136
+      Width = 161
+      Height = 33
+      Hint = 'R605'
+      Max = 1000
+      ParentShowHint = False
+      Frequency = 100
+      Position = 500
+      SelEnd = 900
+      SelStart = 100
+      ShowHint = True
+      TabOrder = 4
+      TickMarks = tmTopLeft
+      OnChange = TrackBarBH2O2Change
+    end
+    object TrackBarSH2O2: TTrackBar
+      Left = 152
+      Top = 88
+      Width = 161
+      Height = 33
+      Hint = 'R604'
+      Max = 1000
+      ParentShowHint = False
+      Frequency = 100
+      Position = 500
+      SelEnd = 900
+      SelStart = 100
+      ShowHint = True
+      TabOrder = 5
+      TickMarks = tmTopLeft
+      OnChange = TrackBarBH2O2Change
+    end
+    object P630: TPanel
+      Left = 480
+      Top = 32
+      Width = 129
+      Height = 16
+      Hint = 'O112 - F630'
+      Caption = 'Conductivity'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 6
+      OnClick = P630Click
+    end
+    object P631: TPanel
+      Left = 480
+      Top = 48
+      Width = 129
+      Height = 16
+      Hint = 'O113 - F631'
+      Caption = 'H2O2 counter'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 7
+      OnClick = P631Click
+    end
+    object P632: TPanel
+      Left = 480
+      Top = 64
+      Width = 129
+      Height = 16
+      Hint = 'O114 - F632'
+      Caption = 'FA counter'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 8
+      OnClick = P632Click
+    end
+    object P633: TPanel
+      Left = 480
+      Top = 80
+      Width = 129
+      Height = 16
+      Hint = 'O115 - F633'
+      Caption = 'Thermisch'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 9
+      OnClick = P633Click
+    end
+    object P634: TPanel
+      Left = 480
+      Top = 104
+      Width = 129
+      Height = 16
+      Hint = 'O116 - F634'
+      Caption = 'Power fail'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 10
+      OnClick = P634Click
+    end
+    object P635: TPanel
+      Left = 480
+      Top = 120
+      Width = 129
+      Height = 16
+      Hint = 'O117 - F635'
+      Caption = 'Water druk'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 11
+      OnClick = P635Click
+    end
+    object P636: TPanel
+      Left = 480
+      Top = 136
+      Width = 129
+      Height = 16
+      Hint = 'O118 - F636'
+      Caption = 'Doors'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 12
+      OnClick = P636Click
+    end
+    object P610: TPanel
+      Left = 16
+      Top = 32
+      Width = 129
+      Height = 16
+      Hint = 'O80 - F610'
+      Caption = 'Start/stop proces'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 13
+      OnClick = P610Click
+    end
+    object P611: TPanel
+      Left = 16
+      Top = 48
+      Width = 129
+      Height = 16
+      Hint = 'O81 - F611'
+      Caption = 'Transfer P AAN-UIT'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 14
+      OnClick = P611Click
+    end
+    object P612: TPanel
+      Left = 16
+      Top = 64
+      Width = 129
+      Height = 16
+      Hint = 'O82 - F612'
+      Caption = 'Dosing pomp manual'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 15
+      OnClick = P612Click
+    end
+    object P613: TPanel
+      Left = 16
+      Top = 80
+      Width = 129
+      Height = 16
+      Hint = 'O83- F613'
+      Caption = 'Dosing pomp AUTO'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 16
+      OnClick = P613Click
+    end
+    object P616: TPanel
+      Left = 16
+      Top = 136
+      Width = 129
+      Height = 16
+      Hint = 'O86 - F616'
+      Caption = 'RESET COUNTER'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 17
+      OnClick = P616Click
+    end
+    object P615: TPanel
+      Left = 16
+      Top = 120
+      Width = 129
+      Height = 16
+      Hint = 'O85 - F615'
+      Caption = ' RESET ALARM'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 18
+      OnClick = P615Click
+    end
+    object P614: TPanel
+      Left = 16
+      Top = 104
+      Width = 129
+      Height = 16
+      Hint = 'O84 - F614'
+      Caption = 'Switch rinse water'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 19
+      OnClick = P614Click
+    end
+    object P617: TPanel
+      Left = 16
+      Top = 152
+      Width = 129
+      Height = 16
+      Hint = 'O87 - F617'
+      Caption = 'NOODSTOP'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 20
+      OnClick = P617Click
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 177
+    Width = 623
+    Height = 265
+    Align = alClient
+    Caption = 'Panel1'
+    TabOrder = 1
+    object Panel3: TPanel
+      Left = 1
+      Top = 1
+      Width = 176
+      Height = 263
+      Align = alLeft
+      Color = 16774636
+      TabOrder = 0
+      object LabelTempFA: TLabel
+        Left = 14
+        Top = 152
+        Width = 74
+        Height = 13
+        Caption = 'Temp. FA tank:'
+      end
+      object LabelTempH2O2: TLabel
+        Left = 16
+        Top = 104
+        Width = 88
+        Height = 13
+        Caption = 'Temp. H2O2 tank:'
+      end
+      object LabelTempRT: TLabel
+        Left = 17
+        Top = 56
+        Width = 103
+        Height = 13
+        Caption = 'Temp. Reaction tank:'
+      end
+      object LabelWPS: TLabel
+        Left = 15
+        Top = 8
+        Width = 91
+        Height = 13
+        Caption = 'Water druk leiding:'
+      end
+      object Label4: TLabel
+        Left = 9
+        Top = 224
+        Width = 87
+        Height = 13
+        Caption = 'Select graphic:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object SpeedButtonSelect: TSpeedButton
+        Left = 111
+        Top = 214
+        Width = 33
+        Height = 33
+        Flat = True
+        Glyph.Data = {
+          76060000424D7606000000000000360400002800000018000000180000000100
+          0800000000004002000000000000000000000001000000010000DF8E4600E190
+          4800DF8C4300DD893F00DC873D00DB853B00DA833800D8813600D77F3400D67E
+          3200D67C3000D47A2F00D2792E00D2772C00D2752900D0722400CF6E1F00CD6C
+          1D00CD691A00CA671800C8641600C7631400C7621200C7611100C6601000C760
+          0F00C75F0E00C85F0D00C85F0B00C85F0A00C8610700C9640400C9660100C967
+          0000C9670000C9660000C9660100C9630100C8600200C75A0200C6560300C554
+          0300C5520200C6510100C6500100C6500100C54F0000C54F0000C44E0000C34E
+          0000C24E0000C04D0000BE4C0000BC4B0000BC4B0000BC4B0000BC4B0000BC4B
+          0000BB4B0000BB4B0000BB4A0000BA4A0000B74A0200B1490500AD480500AA47
+          0600A8450600A6440600A4440700A2430700A04207009E4108009B400800993E
+          0800963D0800943C0800923B0900903A09008E3909008B37090087350B008434
+          0B0083320B00812F0A00802C0800802706007F2404008021020080200100801F
+          0100801F0100801E0000801E0000801E00007F1F01007D200300792206007324
+          0B006F270F006B281300692A16006A2D1A006B3422006B3E30006B4A3F006A55
+          4E00695E5B006A6260006B6766006D6D6D006E6E6E006F6F6F00707070007171
+          7100727272007373730074747400757575007676760077777700787878007979
+          79007A7A7A007B7B7B007C7C7C007D7D7D007E7E7E007F7F7F00808080008181
+          8100828282008383830084848400858585008686860087878700888888008989
+          89008A8A8A008B8B8B008C8C8C008D8D8D008E8E8E008F8F8F00909090009191
+          9100929292009393930094949400959595009696960097979700989898009999
+          99009A9A9A00A09E9C00A6A39F00B3ACA400C2B5A700D4BEA800DFC3A800E7C6
+          A700EBC8A500EEC8A300EFC7A100F0C7A000F1C79F00F2C89E00F2C89F00F3C9
+          A000F3CAA200F4CBA300F5CCA400F6CDA500F7CEA700F7CFA800F7D0A900F7D1
+          AC00F6D2AE00F6D3B000F6D4B400F5D6B600F5D8BC00F6DBC000F6DDC400F7E0
+          C900F8E3CE00F9E6D300F9E8D600F9EADA00FAECDD00FAEDE000FBEFE400FBF2
+          E800FCF5EE00FCF7F200FDFAF700FDFBFA00FDFCFB00FDFDFC00FDFDFD00FDFD
+          FD00FDFDFD00FDFDFD00FEFCFD00FEF9FD00FEF2FE00FEE0FE00FEAFFE00FE68
+          FE00FE2EFE00FE0FFE00FE03FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00
+          FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00
+          FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00
+          FE00FE00FE00FE02FD00FD10F300FA25E400F83BD500F551C700F367B600F17E
+          A600F08D9A00EF9B8E00EEA58400EEAA7F00ECAC7A00EBAC7600E9AB7400EAAC
+          7600EDB07800EDB27C00EEB47E00EEB58000EEB78200EEB78300E0E0E0E0E0E0
+          E0E05C5C5C5C5C5C5C5CE0E0E0E0E0E0E0E0E0E0E0E0E0E05C5C64514B49494A
+          51645C5CE0E0E0E0E0E0E0E0E0E05C5C6345302D2F2F302F2D3042625C5CE0E0
+          E0E0E0E0E05C644B2B2F353C3D35353535352F2B4A5C5CE0E0E0E0E05C64492B
+          333B353535353535353535372B495C5CE0E0E0E05C482D353535353535353535
+          353535353C2B4A5CE0E0E05C4F30343535373518111111111C35353535352D62
+          5CE0E05C402F3333293433A4CBCBCBCBCBBE0035353B30435CE0224D29281D1C
+          1B281CFBB6B6B6B6BCCBCBFF3535352F645C22441D161413121613161B1D2934
+          350FC0CB0C35352D515C223F121111100F11101112161C29343500CBFF35352F
+          4B5C221809070D0B0A0A0C0ECB12161C293710CBA2353C30495C221501010404
+          030305CBCB0E12151D3301CBFB353C30495C2214F8FB01010101CBCBCB070F12
+          1B03C2C51135352F4B5C2218F8A7FA01ADCBCBCBCBCBCBCBCBCBCBF83535352D
+          515C222201ACB0FAB3CBCBCBCBCBCBCBC6B6073735353530645CE02209A7BAB0
+          FEFACBCBCB010A0F121B2A37353B2F435CE0E02222FAB7BDB1FCFACBCB020A0F
+          121B2A3735352D635CE0E0E0220EA7BBBFB1FF01CB040B10131C2A35342B4E5C
+          E0E0E0E022220BA7BABFB8A7F802070E101216282B4D645CE0E0E0E0E022220D
+          FCB3BBBBB6A4FFF8F8010E1D4D645CE0E0E0E0E0E0E022222204F7A7ACACA6FD
+          010B3F515C5CE0E0E0E0E0E0E0E0E0E0222222130D090D134551635CE0E0E0E0
+          E0E0E0E0E0E0E0E0E0E02222222222222222E0E0E0E0E0E0E0E0}
+        OnClick = SpeedButtonSelectClick
+      end
+      object TrackBarTempFA: TTrackBar
+        Left = 7
+        Top = 168
+        Width = 161
+        Height = 33
+        Hint = 'R602'
+        Max = 1000
+        ParentShowHint = False
+        Frequency = 100
+        Position = 345
+        SelEnd = 100
+        SelStart = 200
+        ShowHint = True
+        TabOrder = 0
+        TickMarks = tmTopLeft
+        OnChange = TrackBarBH2O2Change
+      end
+      object TrackBarTempH2O2: TTrackBar
+        Left = 7
+        Top = 120
+        Width = 161
+        Height = 33
+        Hint = 'R601'
+        Max = 1000
+        ParentShowHint = False
+        Frequency = 100
+        Position = 240
+        SelEnd = 100
+        SelStart = 200
+        ShowHint = True
+        TabOrder = 1
+        TickMarks = tmTopLeft
+        OnChange = TrackBarBH2O2Change
+      end
+      object TrackBarTempRT: TTrackBar
+        Left = 7
+        Top = 72
+        Width = 161
+        Height = 33
+        Hint = 'R600'
+        Max = 1000
+        ParentShowHint = False
+        Frequency = 100
+        Position = 280
+        SelEnd = 100
+        SelStart = 200
+        ShowHint = True
+        TabOrder = 2
+        TickMarks = tmTopLeft
+        OnChange = TrackBarBH2O2Change
+      end
+      object TrackBarWPS: TTrackBar
+        Left = 7
+        Top = 24
+        Width = 161
+        Height = 33
+        Hint = 'R603'
+        Max = 100
+        ParentShowHint = False
+        Frequency = 10
+        Position = 24
+        SelEnd = 10
+        SelStart = 90
+        ShowHint = True
+        TabOrder = 3
+        TickMarks = tmTopLeft
+        OnChange = TrackBarBH2O2Change
+      end
+    end
+    object Panel4: TPanel
+      Left = 177
+      Top = 1
+      Width = 445
+      Height = 263
+      Align = alClient
+      Caption = 'Panel4'
+      TabOrder = 1
+      object Chart1: TChart
+        Left = 1
+        Top = 1
+        Width = 443
+        Height = 261
+        BackWall.Brush.Color = clWhite
+        BackWall.Brush.Style = bsClear
+        Title.Text.Strings = (
+          'Temperature tanks: Reaction(red), H2O2(blue), FA(green)')
+        BottomAxis.Automatic = False
+        BottomAxis.AutomaticMaximum = False
+        BottomAxis.AutomaticMinimum = False
+        BottomAxis.AxisValuesFormat = '#,##0,'
+        BottomAxis.ExactDateTime = False
+        BottomAxis.Increment = 1.000000000000000000
+        BottomAxis.LabelStyle = talValue
+        BottomAxis.Maximum = 99.000000000000000000
+        BottomAxis.Title.Caption = 'Hour of day'
+        DepthAxis.Automatic = False
+        DepthAxis.AutomaticMaximum = False
+        DepthAxis.AutomaticMinimum = False
+        DepthAxis.AxisValuesFormat = '#,##0,'
+        DepthAxis.LabelStyle = talValue
+        DepthAxis.Maximum = -0.500000000000000000
+        DepthAxis.Minimum = -0.500000000000000000
+        LeftAxis.Automatic = False
+        LeftAxis.AutomaticMaximum = False
+        LeftAxis.AutomaticMinimum = False
+        LeftAxis.AxisValuesFormat = '#,##0,'
+        LeftAxis.LabelStyle = talValue
+        LeftAxis.Maximum = 100.000000000000000000
+        LeftAxis.MinorTickCount = 4
+        LeftAxis.Title.Caption = 'Degree C'
+        Legend.Visible = False
+        RightAxis.Automatic = False
+        RightAxis.AutomaticMaximum = False
+        RightAxis.AutomaticMinimum = False
+        RightAxis.AxisValuesFormat = '#,##0,'
+        RightAxis.ExactDateTime = False
+        RightAxis.LabelStyle = talValue
+        RightAxis.Maximum = 1024.000000000000000000
+        RightAxis.Minimum = 924.000000000000000000
+        RightAxis.MinorTickCount = 4
+        RightAxis.Title.Angle = 90
+        RightAxis.Title.Caption = 'Content tanks (%)'
+        RightAxis.Visible = False
+        ScaleLastPage = False
+        TopAxis.Automatic = False
+        TopAxis.AutomaticMaximum = False
+        TopAxis.AutomaticMinimum = False
+        TopAxis.AxisValuesFormat = '#,##0,'
+        TopAxis.LabelStyle = talValue
+        TopAxis.Visible = False
+        View3D = False
+        Align = alClient
+        Color = clWindow
+        TabOrder = 0
+        object Series1: TLineSeries
+          Marks.ArrowLength = 8
+          Marks.Visible = False
+          PercentFormat = '##0,## %'
+          SeriesColor = clRed
+          ValueFormat = '#,##0,###'
+          Pointer.InflateMargins = True
+          Pointer.Style = psRectangle
+          Pointer.Visible = False
+          XValues.DateTime = False
+          XValues.Name = 'X'
+          XValues.Multiplier = 1.000000000000000000
+          XValues.Order = loAscending
+          YValues.DateTime = False
+          YValues.Name = 'Y'
+          YValues.Multiplier = 1.000000000000000000
+          YValues.Order = loNone
+        end
+        object Series2: TLineSeries
+          Marks.ArrowLength = 8
+          Marks.Visible = False
+          PercentFormat = '##0,## %'
+          SeriesColor = clBlue
+          ValueFormat = '#,##0,###'
+          Pointer.InflateMargins = True
+          Pointer.Style = psRectangle
+          Pointer.Visible = False
+          XValues.DateTime = False
+          XValues.Name = 'X'
+          XValues.Multiplier = 1.000000000000000000
+          XValues.Order = loAscending
+          YValues.DateTime = False
+          YValues.Name = 'Y'
+          YValues.Multiplier = 1.000000000000000000
+          YValues.Order = loNone
+        end
+        object Series3: TLineSeries
+          Marks.ArrowLength = 8
+          Marks.Visible = False
+          SeriesColor = clGreen
+          Pointer.InflateMargins = True
+          Pointer.Style = psRectangle
+          Pointer.Visible = False
+          XValues.DateTime = False
+          XValues.Name = 'X'
+          XValues.Multiplier = 1.000000000000000000
+          XValues.Order = loAscending
+          YValues.DateTime = False
+          YValues.Name = 'Y'
+          YValues.Multiplier = 1.000000000000000000
+          YValues.Order = loNone
+        end
+        object Series4: TLineSeries
+          Marks.ArrowLength = 8
+          Marks.Visible = False
+          SeriesColor = 16711808
+          Pointer.InflateMargins = True
+          Pointer.Style = psRectangle
+          Pointer.Visible = False
+          XValues.DateTime = False
+          XValues.Name = 'X'
+          XValues.Multiplier = 1.000000000000000000
+          XValues.Order = loAscending
+          YValues.DateTime = False
+          YValues.Name = 'Y'
+          YValues.Multiplier = 1.000000000000000000
+          YValues.Order = loNone
+        end
+      end
+    end
+  end
+  object Timer1: TTimer
+    OnTimer = Timer1Timer
+    Left = 584
+    Top = 8
+  end
+end

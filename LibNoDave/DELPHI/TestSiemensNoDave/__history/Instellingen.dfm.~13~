@@ -1,0 +1,58 @@
+object InstelForm: TInstelForm
+  Left = 554
+  Top = 133
+  Width = 737
+  Height = 645
+  Caption = 'Settings '
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 729
+    Height = 611
+    Align = alClient
+    Color = 16774636
+    TabOrder = 0
+    object PageControl1: TPageControl
+      Left = 1
+      Top = 1
+      Width = 727
+      Height = 590
+      ActivePage = TabSheet2
+      Align = alClient
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      MultiLine = True
+      ParentFont = False
+      TabOrder = 0
+      object TabSheet1: TTabSheet
+        Caption = 'TabSheet1'
+      end
+      object TabSheet2: TTabSheet
+        Caption = 'TabSheet2'
+        ImageIndex = 1
+      end
+    end
+    object StatusBarInst: TStatusBar
+      Left = 1
+      Top = 591
+      Width = 727
+      Height = 19
+      Panels = <
+        item
+          Width = 50
+        end>
+    end
+  end
+end

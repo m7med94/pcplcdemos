@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Connections>
+  <Settings name="Default">
+    <Protocol>122</Protocol>
+    <IP>192.168.1.100</IP>
+    <ComPort>COM1</ComPort>
+    <Speed>2</Speed>
+    <Rack>0</Rack>
+    <Slot>2</Slot>
+    <Active>conn2</Active>
+  </Settings>
+  <Settings name="conn1">
+    <Protocol>122</Protocol>
+    <IP>192.168.1.100</IP>
+    <ComPort>COM1</ComPort>
+    <Speed>2</Speed>
+    <Rack>0</Rack>
+    <Slot>2</Slot>
+  </Settings>
+  <Settings name="conn2">
+    <Protocol>122</Protocol>
+    <IP>192.168.1.100</IP>
+    <ComPort>COM1</ComPort>
+    <Speed>2</Speed>
+    <Rack>0</Rack>
+    <Slot>3</Slot>
+  </Settings>
+</Connections>

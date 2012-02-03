@@ -1,0 +1,157 @@
+     //display
+      res := daveReadBytes(dc, daveDB, 110, 0, 12, NIL);
+      For i := 0 to 2 do
+        display110[i] := daveGetFloat(dc);
+      res := daveReadBytes(dc, daveDB, 110, 20, 4, NIL);
+      display110[3] := daveGetFloat(dc);
+      res := daveReadBytes(dc, daveDB, 110, 24, 1, NIL);
+      display110b := daveGetU8(dc);
+      res := daveReadBytes(dc, daveDB, 100, 108, 2, NIL);
+      motorD := daveGetS16(dc);
+
+      //instellingen
+      res := daveReadBytes(dc, daveDB, 100, 0, 12, NIL);
+      For i := 0 to 2 do
+        distance[i] := daveGetU32(dc);
+
+      res := daveReadBytes(dc, daveDB, 100, 16, 4, NIL);
+      bi := daveGetFloat(dc);;
+
+      res := daveReadBytes(dc, daveDB, 100, 24, 40, NIL);
+      For i := 0 to 9 do
+        mp[i] := daveGetFloat(dc);
+
+      res := daveReadBytes(dc, daveDB, 100, 68, 4, NIL);
+      vasc := daveGetFloat(dc);
+
+      res := daveReadBytes(dc, daveDB, 100, 72, 4, NIL);
+      mioc := daveGetU32(dc);
+
+      res := daveReadBytes(dc, daveDB, 100, 120, 4, NIL);
+      lb := daveGetFloat(dc);
+
+      res := daveReadBytes(dc, daveDB, 100, 76, 4, NIL);
+      smrc := daveGetU32(dc);
+
+      res := daveReadBytes(dc, daveDB, 100, 184, 2, NIL);
+      xyra := daveGetU16(dc);
+
+      res := daveReadBytes(dc, daveFlags, 0, 24, 1, NIL);
+      fitback := daveGetU8(dc);
+
+  end;
+    DisplayDisplay;
+end;
+
+procedure TMainForm.DisplayDisplay;
+begin
+  //display
+  if CB_DisplayActiveren.Checked  and verbinding then
+  begin
+    Case MotorD of
+      0 : begin
+            PanelMotor1.Color := clRed;
+            PanelMotor2.Color := clRed;
+            PanelMotor3.Color := clRed;
+            PanelMotor4.Color := clRed;
+          end;
+      1 : begin
+            PanelMotor1.Color := clLime;
+            PanelMotor2.Color := clRed;
+            PanelMotor3.Color := clRed;
+            PanelMotor4.Color := clRed;
+          end;
+      2 : begin
+            PanelMotor1.Color := clLime;
+            PanelMotor2.Color := clLime;
+            PanelMotor3.Color := clRed;
+            PanelMotor4.Color := clRed;
+          end;
+      3 : begin
+            PanelMotor1.Color := clLime;
+            PanelMotor2.Color := clLime;
+            PanelMotor3.Color := clLime;
+            PanelMotor4.Color := clRed;
+          end;
+      4 : begin
+            PanelMotor1.Color := clLime;
+            PanelMotor2.Color := clLime;
+            PanelMotor3.Color := clLime;
+            PanelMotor4.Color := clLime;
+          end;
+      else  begin
+            PanelMotor1.Color := clRed;
+            PanelMotor2.Color := clRed;
+            PanelMotor3.Color := clRed;
+            PanelMotor4.Color := clBlue;
+            end;
+    end;
+
+    LabelD1.Caption := Format('%f', [display110[0]]  );
+    LabelD2.Caption := Format('%f', [display110[1]]  );
+    LabelD3.Caption := Format('%f', [display110[2]]  );
+    LabelD4.Caption := Format('%f', [display110[3]]  );
+    oBit8.AsbyteO := display110b;
+    if oBit8.BitSet(0) then LabelD5.Caption := 'Automatique' else LabelD5.Caption := 'Manuel';
+
+    LabelB1.Caption := IntToStr(distance[0]);
+    LabelB2.Caption := IntToStr(distance[1]);
+    LabelB3.Caption := IntToStr(distance[2]);
+
+    LabelB4.Caption := Format('%f', [bi]  );
+    LabelB5.Caption := Format('%f', [mp[0]]  );
+    LabelB6.Caption := Format('%f', [mp[1]]  );
+    LabelB7.Caption := Format('%f', [mp[2]]  );
+
+    LabelC1.Caption := Format('%f', [mp[3]]  );
+    LabelC2.Caption := Format('%f', [mp[4]]  );
+    LabelC3.Caption := Format('%f', [mp[5]]  );
+    LabelC4.Caption := Format('%f', [mp[6]]  );
+    LabelC5.Caption := Format('%f', [mp[7]]  );
+    LabelC6.Caption := Format('%f', [mp[8]]  );
+    LabelC7.Caption := Format('%f', [mp[9]]  );
+
+    LabelE1.Caption := Format('%f', [vasc]  );
+    LabelE2.Caption := IntToStr(mioc);
+    LabelE3.Caption := Format('%f', [lb]  );
+    LabelE4.Caption := IntToStr(smrc);
+    LabelE5.Caption := IntToStr(xyra);
+    oBit8.AsbyteO := fitback;
+    if oBit8.BitSet(4) then  PanelFB.Color := clLime else PanelFB.Color := clWhite;
+
+  end  else begin
+    PanelMotor1.Color := clMoneyGreen;
+    PanelMotor2.Color := clMoneyGreen;
+    PanelMotor3.Color := clMoneyGreen;
+    PanelMotor4.Color := clMoneyGreen;
+
+    LabelD1.Caption := '****';
+    LabelD2.Caption := '****';
+    LabelD3.Caption := '****';
+    LabelD4.Caption := '****';
+    LabelD5.Caption := '****';
+
+    LabelB1.Caption := '****';
+    LabelB2.Caption := '****';
+    LabelB3.Caption := '****';
+    LabelB4.Caption := '****';
+    LabelB5.Caption := '****';
+    LabelB6.Caption := '****';
+    LabelB7.Caption := '****';
+
+    LabelC1.Caption := '****';
+    LabelC2.Caption := '****';
+    LabelC3.Caption := '****';
+    LabelC4.Caption := '****';
+    LabelC5.Caption := '****';
+    LabelC6.Caption := '****';
+    LabelC7.Caption := '****';
+
+    LabelE1.Caption := '****';
+    LabelE2.Caption := '****';
+    LabelE3.Caption := '****';
+    LabelE4.Caption := '****';
+    LabelE5.Caption := '****';
+
+    PanelFB.Color := clMoneyGreen
+  end;

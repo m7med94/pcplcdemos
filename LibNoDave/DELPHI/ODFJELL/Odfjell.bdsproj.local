@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2010-10-09 20:18:45.647.pas,C:\Users\ALEX\Documents\Borland Studio Projects\ODFJELL\ChildWin.pas=C:\Users\ALEX\Documents\Borland Studio Projects\ODFJELL\FFU.pas</Transaction>
+    <Transaction>2010-10-09 20:18:45.647.dfm,C:\Users\ALEX\Documents\Borland Studio Projects\ODFJELL\ChildWin.dfm=C:\Users\ALEX\Documents\Borland Studio Projects\ODFJELL\FFU.dfm</Transaction>
+    <Transaction>2010-10-09 20:35:03.747.PAS,C:\Users\ALEX\Documents\Borland Studio Projects\ODFJELL\BGB.PAS=</Transaction>
+    <Transaction>2010-10-09 20:35:03.747.dfm,C:\Users\ALEX\Documents\Borland Studio Projects\ODFJELL\BGB.dfm=</Transaction>
+    <Transaction>2010-10-11 01:20:09.077.pas,C:\Users\ALEX\Documents\Borland Studio Projects\ODFJELL\Unit1.pas=C:\Users\ALEX\Documents\Borland Studio Projects\ODFJELL\MahBit32.pas</Transaction>
+    <Transaction>2010-11-03 18:09:22.711.pas,C:\Users\ALEX\Documents\Borland Studio Projects\ODFJELL\Unit1.pas=C:\Users\ALEX\Documents\Borland Studio Projects\ODFJELL\HelpFlow.pas</Transaction>
+    <Transaction>2010-11-03 18:09:22.711.dfm,C:\Users\ALEX\Documents\Borland Studio Projects\ODFJELL\Unit1.dfm=C:\Users\ALEX\Documents\Borland Studio Projects\ODFJELL\HelpFlow.dfm</Transaction>
+    <Transaction>2010-12-03 13:09:15.382.pas,C:\Users\ALEX\Documents\Borland Studio Projects\ODFJELL2\HelpFlow.pas=</Transaction>
+    <Transaction>2010-12-03 13:09:15.382.dfm,C:\Users\ALEX\Documents\Borland Studio Projects\ODFJELL2\HelpFlow.dfm=</Transaction>
+  </Transactions>
+</BorlandProject>

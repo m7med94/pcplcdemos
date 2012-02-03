@@ -1,0 +1,27 @@
+unit HelpFlow;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, ComCtrls;
+
+type
+  THelpFlowForm = class(TForm)
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    ProgramIcon: TImage;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  HelpFlowForm: THelpFlowForm;
+
+implementation
+
+{$R *.dfm}
+
+end.

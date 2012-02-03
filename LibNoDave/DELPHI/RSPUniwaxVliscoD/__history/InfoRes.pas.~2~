@@ -1,0 +1,56 @@
+unit InfoRes;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls;
+
+type
+  TInfoResForm = class(TForm)
+    ListBoxInfo: TListBox;
+    Label1: TLabel;
+    procedure FormActivate(Sender: TObject);
+    procedure SetInfo;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  InfoResForm: TInfoResForm;
+
+implementation
+
+{$R *.dfm}
+
+
+procedure TInfoResForm.FormActivate(Sender: TObject);
+begin
+  SetInfo;
+end;
+
+procedure TInfoResForm.SetInfo;
+begin
+  ListBoxInfo.Items.Add('---------------------------------------------------');
+  ListBoxInfo.Items.Add('Flags statussen');
+  ListBoxInfo.Items.Add('---------------------------------------------------');
+  ListBoxInfo.Items.Add('F 100   ');
+  ListBoxInfo.Items.Add('F 101   ');
+  ListBoxInfo.Items.Add('F 102   ');
+  ListBoxInfo.Items.Add('F 103   ');
+  ListBoxInfo.Items.Add('F 104   ');
+  ListBoxInfo.Items.Add('F 105   ');
+  ListBoxInfo.Items.Add('---------------------------------------------------');
+  ListBoxInfo.Items.Add('Flags alarmen');
+  ListBoxInfo.Items.Add('---------------------------------------------------');
+  ListBoxInfo.Items.Add('F 100   ');
+  ListBoxInfo.Items.Add('F 101   ');
+  ListBoxInfo.Items.Add('F 102   ');
+  ListBoxInfo.Items.Add('F 103   ');
+  ListBoxInfo.Items.Add('F 104   ');
+  ListBoxInfo.Items.Add('F 105   ');
+end;
+
+end.

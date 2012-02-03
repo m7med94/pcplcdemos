@@ -1,0 +1,61 @@
+unit SetValue;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Spin;
+
+type
+  TFormSetValue = class(TForm)
+    Label2: TLabel;
+    Button1: TButton;
+    Edit1: TEdit;
+    procedure Button1Click(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    function StrIsReal(AString: string): Boolean;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormSetValue: TFormSetValue;
+
+implementation
+
+{$R *.dfm}
+uses Main;
+
+procedure TFormSetValue.FormActivate(Sender: TObject);
+begin
+  Edit1.Text := MainForm.Value;
+  Edit1.SetFocus;
+end;
+
+procedure TFormSetValue.Button1Click(Sender: TObject);
+begin
+  if MainForm.ValueTypeR then
+  begin
+    if StrIsReal(Edit1.Text) then
+      //MainForm.WriteDouble(StrToFloat(Edit1.Text))
+      ShowMessage('Valid float number!')
+    else
+      ShowMessage('NOT valid float number!');
+  end else begin
+    MainForm.WriteInt(strToInt(Edit1.Text));
+  end;
+  Close;
+end;
+function TFormSetValue.StrIsReal(AString: string): Boolean;
+var
+  I: Extended;
+  Code: Integer;
+begin
+  Val(AString, I, Code);
+  Result := Code = 0;
+end;
+
+end.
+

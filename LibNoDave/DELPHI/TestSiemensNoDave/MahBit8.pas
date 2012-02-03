@@ -1,0 +1,311 @@
+unit MahBit8;
+
+interface
+
+// ========================================================================
+// 8 Bit Manipulation/Conversion Class
+//
+// This class allows conversion and bit manipulation of a 8 bit integer.
+// Values may be set and retrieved as INT,HEX or BINARY.
+// Individual bits may be SET,TOGGLED,ROTATED and CLEARED,
+// Checked for ON-OFF status.
+// Bit numbers are 0..7 from right to left.
+// ie. 7,6,5,4,3,2,1,0
+//
+// Properties
+// ----------
+// AsByte         - Get or Set value as an bait
+// AsHex          - Get or Set value as a Hex String
+// AsBinary       - Get or Set value as a Binary String
+//
+// Methods (Functions)
+// --------------------
+// BitSet()       - Return if bit number is set.
+// BitsSet()      - Return if a an array of bit numbers are all set
+//
+// Methods (Procedures)
+// --------------------
+// SetBit()       - Sets a single bit number to 1
+// SetBits()      - Sets an array of bit numbers to 1
+// ClrBit()       - Clears a single bit number to 0
+// ClrBits()      - Clears an array of bit numbers to 0
+// ToggleBit()    - Toggle a single bit number 0=1 1=0
+// ToggleBits()   - Toggles an array of bit numbers to 0=1 1=0
+// RotateLeft     - Shifts the value left by 1 with lost bit in bit 0
+// RotateRight    - Shits the value right by 1 with lost bit in bit 31
+//
+// ========================================================================
+//    Examples
+
+//    var oBit8 : TBit8;
+
+//    ....
+//    oBit8 := TBit8.Create;
+//    oBit8.AsByte := 12;
+
+//    ShowMessage(oBit8,AsBinary);
+//    // '11010010'
+
+//    ShowMessage(oBit8.AsHex)
+//    // '0000D2 '
+
+//    oBit32.AsBinary := '110110';
+//    // and so forth
+
+//    oBit8.SetBit(5);
+//    oBit8.RotateLeft;
+
+//    if oBit8.BitsSet([2,4,6]) then ....
+
+//    oBit8.Free;
+// ========================================================================
+
+uses SysUtils;
+
+type
+     {TBIT8 CLASS}
+     TBit8 = class(TObject)
+     private
+       FValue1  : byte;
+       FValue2  : byte;
+       function GetFAsHex : string;
+       procedure SetFAsHex(const AValue : string);
+       function GetFAsBinary : string;
+       procedure SetF1AsBinary(const AValue : string);
+       procedure SetF2AsBinary(const AValue : string);
+     protected
+       // Internal Methods
+       procedure _CheckBitNumber(ABitNumber : byte);
+       function _CalcMask(ABitNumArray : array of byte) : longword;
+     public
+       // Methods (Functions)
+       function BitSet(ABitNumber : byte) : boolean;
+       function BitsSet(ABitNumArray : array of byte) : boolean;
+
+       // Methods (Procedures)
+       procedure SetBit(ABitNumber : byte);
+       procedure SetBits(ABitNumArray : array of byte);
+       procedure ClrBit(ABitNumber : byte);
+       procedure ClrBits(ABitNumArray : array of byte);
+       procedure ToggleBit(ABitNumber : byte);
+       procedure ToggleBits(ABitNumArray : array of byte);
+
+       // Properties
+       property AsByteO : byte read FValue1 write FValue1;
+       property AsByteI : byte read FValue2 write FValue2;
+       property AsHex : string read GetFAsHex write SetFAsHex;
+       property AsBinary1 : string read GetFAsBinary write SetF1AsBinary;
+       property AsBinary2 : string read GetFAsBinary write SetF2AsBinary;
+     end;
+
+// ------------------------------------------------------------------------
+implementation
+
+const C_BITVALARR : array [0..7] of longword =
+                    ($00000001,$00000002,$00000004,$00000008,$00000010,
+                     $00000020,$00000040,$00000080);
+
+// =============================================
+// Internal routine to validate bit number 0..7
+// Will raise EConvertError Exception if fails
+// =============================================
+
+procedure TBit8._CheckBitNumber(ABitNumber : byte);
+begin
+  if not (ABitNumber in [0..7]) then
+      raise EConvertError.Create(IntToStr(ABitNumber) +
+                                 ' is not a valid bit number (0..7)');
+end;
+
+
+// ============================================================
+// Internal routine to return a binaray mask from an array of
+// bit numbers
+// ============================================================
+
+function TBit8._CalcMask(ABitNumArray : array of byte) : longword;
+var i : integer;
+    iResult : longword;
+begin
+  iResult := 0;
+
+  for i := low(ABitNumArray) to high(ABitNumArray) do begin
+    _CheckBitNumber(ABitNumArray[i]);
+    iResult := iResult or C_BITVALARR[ABitNumArray[i]];
+  end;
+
+  Result := iResult;
+end;
+
+
+// ==============================================
+// Get/Set Property Methods
+// ==============================================
+
+function TBit8.GetFAsHex : string;
+begin
+  Result := IntToHex(FValue1,8);
+end;
+
+
+procedure TBit8.SetFAsHex(const AValue : string);
+begin
+  try
+    FValue1 := StrToInt('$' + AValue);
+  except
+    raise EConvertError.Create(QuotedStr(AValue) +
+                               ' is not a valid hex value');
+  end;
+end;
+
+
+function TBit8.GetFAsBinary : string;
+var sResult : string;
+    iValue : integer;
+begin
+  sResult := '';
+  iValue := FValue2;
+
+  while iValue <> 0 do begin
+    sResult := char(48 + (iValue and 1)) + sResult;
+    iValue := iValue shr 1;
+  end;
+  Result := StringOfChar('0',8 - length(sResult)) + sResult;
+end;
+
+procedure TBit8.SetF1AsBinary(const AValue : string);
+var i : integer;
+    sValue : string;
+begin
+  // Validate is a valid binary string
+  for i := 1 to length(AValue)  do begin
+    if not (AValue[i] in ['0','1']) then begin
+      raise EConvertError.Create(QuotedStr(AValue) +
+                                 ' is not a valid binary value');
+      break
+    end;
+  end;
+
+  // Convert to binary string
+  sValue := StringOfChar('0',8 - length(AValue)) + AValue;
+  FValue1 := 0;
+  for i := 1 to length(sValue) do
+    FValue1 := (FValue1 shl 1) + (byte(sValue[i]) and 1) ;
+end;
+
+procedure TBit8.SetF2AsBinary(const AValue : string);
+var i : integer;
+    sValue : string;
+begin
+  // Validate is a valid binary string
+  for i := 1 to length(AValue)  do begin
+    if not (AValue[i] in ['0','1']) then begin
+      raise EConvertError.Create(QuotedStr(AValue) +
+                                 ' is not a valid binary value');
+      break
+    end;
+  end;
+
+  // Convert to binary string
+  sValue := StringOfChar('0',8 - length(AValue)) + AValue;
+  FValue1 := 0;
+  for i := 1 to length(sValue) do
+    FValue2 := (FValue2 shl 1) + (byte(sValue[i]) and 1) ;
+end;
+
+// ============================================
+// Return true if bit number of Value is set
+// ============================================
+
+function TBit8.BitSet(ABitNumber : byte) : boolean;
+begin
+  _CheckBitNumber(ABitNumber);
+  Result := FValue1 and C_BITVALARR[ABitNumber] = C_BITVALARR[ABitNumber];
+end;
+
+
+// ============================================
+// Return true if bit numbers of Value are set
+// Bit numbers are passed in array parameter
+// eg. if MyBit8.BitsSet([3,7]) then ...
+// ============================================
+
+function TBit8.BitsSet(ABitNumArray : array of byte) : boolean;
+var iMask : longword;
+begin
+  iMask := _CalcMask(ABitNumArray);
+  Result := FValue1 and iMask = iMask;
+end;
+
+// ===============================================
+// Set a bit (bit = 1) by bit number 0..7
+// ===============================================
+
+procedure TBit8.SetBit(ABitNumber : byte);
+begin
+  _CheckBitNumber(ABitNumber);
+   FValue2 := longword(FValue2) or C_BITVALARR[ABitNumber];
+end;
+
+
+// ===============================================
+// Set bits (bit = 1) by bit number array
+// eg. MyBit8.SetBits([1,3,5]);
+// ===============================================
+
+procedure TBit8.SetBits(ABitNumArray : array of byte);
+var iMask : longword;
+begin
+  iMask := _CalcMask(ABitNumArray);
+  FValue2 := longword(FValue2) or iMask;
+end;
+
+
+// ===============================================
+// Clear a bit (bit = 0) by bit number 0..7
+// ===============================================
+
+procedure TBit8.ClrBit(ABitNumber : byte);
+begin
+  _CheckBitNumber(ABitNumber);
+   FValue2 := (longword(FValue2) or C_BITVALARR[ABitNumber]) xor
+             C_BITVALARR[ABitNumber];
+end;
+
+// ===============================================
+// Clear bits (bit = 0) by bit number array
+// eg. MyBit8.ClrBits([1,3,6]);
+// ===============================================
+
+procedure TBit8.ClrBits(ABitNumArray : array of byte);
+var iMask : longword;
+begin
+  iMask := _CalcMask(ABitNumArray);
+  FValue2 := (longword(FValue2) or iMask) xor iMask;
+end;
+
+
+// ===============================================
+// Toggle a bit (0=1 1=0) by bit number 0..7
+// ===============================================
+
+procedure TBit8.ToggleBit(ABitNumber : byte);
+begin
+  _CheckBitNumber(ABitNumber);
+   FValue2 := longword(FValue2) xor C_BITVALARR[ABitNumber];
+end;
+
+// ===============================================
+// Toggle bits (0=1 1=0) by bit number array
+// eg. MyBit8.ToggleBits([1,3,5]);
+// ===============================================
+
+procedure TBit8.ToggleBits(ABitNumArray : array of byte);
+var iMask : longword;
+begin
+  iMask := _CalcMask(ABitNumArray);
+  FValue2 := longword(FValue2) xor iMask;
+end;
+
+
+end.
