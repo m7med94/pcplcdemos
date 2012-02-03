@@ -17,14 +17,11 @@ public class DataIsoTCP {
 
     public static boolean Connection = false;
     public static int i, j;
-    public static long a, b, c;
-    public static float d, e, f;
-    public static char buf[];
-    public static byte buf1[];
+    public static long a;
     public static PLCinterface di;
     public static TCPConnection dc;
     public static Socket sock;
-    public static int slot;
+    public static int slot = 2;
     public static byte[] by;
     public static String IP;
 
@@ -32,8 +29,6 @@ public class DataIsoTCP {
     DataIsoTCP(String host) {
         IP = host;
         //Nodave.Debug=Nodave.DEBUG_ALL;
-        buf = new char[Nodave.OrderCodeSize];
-        buf1 = new byte[Nodave.PartnerListSize];
         try {
             sock = new Socket(host, 102);
         } catch (IOException e) {
@@ -45,8 +40,7 @@ public class DataIsoTCP {
         Connection = false;
         OutputStream oStream = null;
         InputStream iStream = null;
-        slot = 2;
-
+ 
         if (sock != null) {
             try {
                 oStream = sock.getOutputStream();
@@ -65,20 +59,6 @@ public class DataIsoTCP {
                     0,
                     Nodave.PROTOCOL_ISOTCP);
 
-            for (int i = 0; i < 3; i++) {
-                if (0 == di.initAdapter()) {
-                    //a = di.listReachablePartners(buf1);
-                    System.out.println("Success initAdapter " + a);
-                    if (a > 0) {
-                        for (j = 0; j < a; j++) {
-                            if (buf1[j] == Nodave.MPIReachable) {
-                                System.out.println("PLC at " + j);
-                            }
-                        }
-                    }
-                    break;
-                }
-            }
             dc = new TCPConnection(di, 0, slot);
             int res = dc.connectPLC();
             if (0 == res) {
