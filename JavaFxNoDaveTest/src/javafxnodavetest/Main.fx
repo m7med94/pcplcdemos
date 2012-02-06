@@ -533,7 +533,7 @@ def connButtonP = Button {
             }
         };
 def disconnButtonP = Button {
-            text: "Disconect" action: function() {
+            text: "Disconnect" action: function() {
                 DataIsoTCP.StopConnection();
             }
         };

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jnlp spec="1.0+" codebase="http://localhost:8082/servlet/org.netbeans.modules.javafx.project.JnlpDownloadServlet/C%3A/Users/Public/Documents/NetBeans_1_3_Projects/JavaFxNoDaveTest/dist/" href="JavaFxNoDaveTest.jnlp">
+<jnlp spec="1.0+" codebase="http://localhost:8082/servlet/org.netbeans.modules.javafx.project.JnlpDownloadServlet/C%3A/Users/Alex/Documents/WORDPRESS/WP-LibNoDave+JavaFx/JavaFxNoDaveTest/dist/" href="JavaFxNoDaveTest.jnlp">
     <information>
         <title>JavaFxNoDaveTest</title>
         <vendor>${application.vendor}</vendor>
-        <homepage href="http://localhost:8082/servlet/org.netbeans.modules.javafx.project.JnlpDownloadServlet/C%3A/Users/Public/Documents/NetBeans_1_3_Projects/JavaFxNoDaveTest/dist/"/>
+        <homepage href="http://localhost:8082/servlet/org.netbeans.modules.javafx.project.JnlpDownloadServlet/C%3A/Users/Alex/Documents/WORDPRESS/WP-LibNoDave+JavaFx/JavaFxNoDaveTest/dist/"/>
         <description>JavaFxNoDaveTest</description>
         <icon kind="splash" href="http://dl.javafx.com/1.3/splash.png"/>
         <offline-allowed/>
