@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Connection>
-     <Settings>
-          <add key="Protocol" value="122" />
-          <add key="IP" value="192.168.1.100" />
-     </Settings>
-</Connection>
