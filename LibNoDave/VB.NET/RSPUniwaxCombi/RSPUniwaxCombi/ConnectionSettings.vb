@@ -196,7 +196,7 @@ Public Class ConnectionSettings
             "<ComPort>COM1</ComPort>" + _
             "<Speed>2</Speed>" + _
             "<Rack>0</Rack>" + _
-            "<Slot>0</Slot>" + _
+            "<Slot>2</Slot>" + _
             "<Active>Default</Active>" + _
             "</Settings>" & _
             "</Connections>")
