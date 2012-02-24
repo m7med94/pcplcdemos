@@ -2,7 +2,7 @@
 <jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="JavaFx2NoDaveExample.jnlp">
   <information>
     <title>JavaFx2NoDaveExample</title>
-    <vendor>Alex</vendor>
+    <vendor>javafx.com</vendor>
     <description>Sample JavaFX 2.0 application.</description>
     <offline-allowed/>
   </information>
