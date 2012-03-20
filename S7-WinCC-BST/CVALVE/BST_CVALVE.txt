@@ -281,7 +281,7 @@ BEGIN
         fVal_SIM := ACT_POS;
     END_IF;
     
-    IF QERR_EXT THEN
+    IF QERR_EXT OR QERR_HIGHRANGE OR QERR_LOWRANGE OR QERR_OVERRUN OR QERR_WIRE THEN
         QERR := TRUE;
     END_IF;
 
@@ -328,9 +328,9 @@ BEGIN
 // Alarm_8P =====================================================================
     A8P(
         EN_R  := 1,
-        SIG_1 :=0,          // not inizialized
+        SIG_1 :=0,          
         SIG_2 :=0,          
-        SIG_3 :=0,          // Parameters on CVALVE changed
+        SIG_3 :=0,          
         SIG_4 :=0,
         SIG_5 :=QLOCK,          // Interlock Error
         SIG_6 :=0,
