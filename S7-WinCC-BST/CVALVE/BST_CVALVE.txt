@@ -1,0 +1,418 @@
+FUNCTION_BLOCK BST_CVALVE_400
+NAME:BSTCVAL
+FAMILY:BST
+AUTHOR:SAM
+//VERSION:'1.0'
+//FB1003
+// Typical-Attribute
+{
+  S7_tasklist:='OB100,OB101';
+  S7_m_c:='true';
+  S7_blockview:='big';
+  S7_alarm_ui:='0'
+}
+
+// Parameterattribute
+// S7_visible       visible/unvisible   (default='true')
+// S7_m_c           WinCC - Tag         (default='false')
+// S7_dynamic       Test mode           (default='false')
+// S7_link          Connector linkable  (default='true')
+VAR_INPUT               
+    LOCK        {S7_dynamic:='true'} : BOOL := FALSE; // Interlock
+    ERR_EXTERN  {S7_dynamic:='true'} : BOOL := FALSE; // External Error
+    LIOP_SEL    {S7_dynamic:='true'} : BOOL := FALSE; // 0=Operator 1=Linking
+    L_AUT       {S7_dynamic:='true'} : BOOL := FALSE; // 0=Manual 1=Automatic
+    L_REMOTE    {S7_dynamic:='true'} : BOOL := FALSE; // 0=Local 1=Remote
+    L_SIM       {S7_dynamic:='true'} : BOOL := FALSE; // 0=Normal 1=Simulation
+    L_RESET     {S7_dynamic:='true'} : BOOL := FALSE; // 1=Reset Error Peripherie (edge)
+
+    AUT_ON      {S7_dynamic:='true'} : BOOL := FALSE; // 1=CMD ON Automatic
+    MAN_ON      {S7_dynamic:='true'} : BOOL := FALSE; // 1=CMD ON Manual
+    SIM_ON      {S7_dynamic:='true'} : BOOL := FALSE; // 1=CMD ON Simulation
+
+    SP          {S7_dynamic:='true'} : REAL := 0.0;   // Setpoint Value 
+    SP_SIM      {S7_dynamic:='true'} : REAL := 0.0;   // Setpoint for Simulation
+    SP_FAILSAFE {S7_dynamic:='true'} : REAL := 0.0;   // Setpoint for failsafe position
+    
+    iMode       {S7_dynamic:='true'} : BOOL := FALSE;         // 0=S7 analog value; 1=real value
+    wVal        {S7_dynamic:='true'; S7_m_c:='true'} : WORD := 16#0; // // Position Value
+    iVal AT wVal : INT;  //Interpretation INT
+    fVal        {S7_dynamic:='true'; S7_m_c:='true'} : REAL := 0.0;   //
+    fVal_SIM    {S7_dynamic:='true'; S7_m_c:='true'} : REAL  :=0.0;    // Simulation value   
+
+    fHR   {S7_dynamic:='true'; S7_m_c:='true'} : REAL := 100.0; //high range
+    fLR   {S7_dynamic:='true'; S7_m_c:='true'} : REAL := 0.0;   //low range
+
+    SAMPLE_T    {S7_sampletime:='true'} : REAL := 1.0; // Sample Time
+
+   // Message blocks
+    MSG1_EVID { S7_visible  :='false';
+                S7_link     :='false';
+                S7_param    :='false';
+                S7_server   :='alarm_archiv';
+                S7_a_type   :='alarm_8p'}: DWORD :=0;
+    MSG2_EVID { S7_visible  :='false';
+                S7_link     :='false';
+                S7_param    :='false';
+                S7_server   :='alarm_archiv';
+                S7_a_type   :='notify_8p'}: DWORD :=0;
+  
+END_VAR
+
+
+VAR_IN_OUT
+    OP_dwCmd    {S7_m_c:='true'} : DWORD :=16#0;  // control word HMI
+    SP_HMI      {S7_m_c:='true'; S7_visible:='false'} : REAL := 0.0;   // Setpoint HMI 
+END_VAR
+
+
+VAR_OUTPUT
+    QdwState   {S7_m_c:='true'} : DWORD:=16#0;    // State HMI
+    QabyStateHMI AT QdwState : ARRAY [0..3] OF BYTE;    // look at state byte-wise    
+    
+// Value of Position diskrete ====================================================    
+    QCLOSED : BOOL;         // 1=VALVE is closed            
+    QOPENED : BOOL;         // 1=VALVE is opened            
+    QHALFWAY: BOOL;         // 1=VALVE in intermediate pos  
+ 
+    QMAN_AUT   {S7_dynamic:='true'} : BOOL := FALSE;     // 0=Hand 1=Automatic
+    QREMOTE    {S7_dynamic:='true'} : BOOL := FALSE;     // 0=Local 1=Remote
+    QSIM       {S7_dynamic:='true'} : BOOL := FALSE;     // 1=Simulation is active
+    QLOCK      {S7_dynamic:='true'} : BOOL := FALSE;     // 1=Lock is active
+    QERR       {S7_dynamic:='true'} : BOOL := FALSE;     // 1=ERROR
+    QERR_EXT   {S7_dynamic:='true'} : BOOL := FALSE;     // 1=External ERROR
+
+    ACT_POS    {S7_dynamic:='true'; S7_m_c:='true'; S7_archive:='shortterm'; S7_unit:='unit'} :REAL :=0.0; //measuring value
+    QfVal_per  {S7_dynamic:='true'; S7_m_c:='true'} : WORD := 16#0; //measuring value word
+    QfHR       {S7_dynamic:='true'} : REAL :=100.0;  //high range
+    QfLR       {S7_dynamic:='true'} : REAL :=0.0;    //low range
+
+    QERR_WIRE     {S7_dynamic:='true'} : BOOL := FALSE;  // 1=Wire break
+    QERR_OVERRUN  {S7_dynamic:='true'} : BOOL := FALSE;  // 1=Overrun
+    QERR_LOWRANGE {S7_dynamic:='true'} : BOOL := FALSE;  // 1=value < low range
+    QERR_HIGHRANGE{S7_dynamic:='true'} : BOOL := FALSE;  // 1=value > high range
+
+//Alarm State ===========================================================
+    MSG1_bDone  {S7_visible:='false'} : BOOL;   // A8P
+    MSG1_bError {S7_visible:='false'} : BOOL;   // A8P
+    MSG1_wState {S7_visible:='false'} : WORD;   // A8P
+    MSG1_wAck   {S7_visible:='false'} : WORD;   // A8P
+    MSG2_bDone  {S7_visible:='false'} : BOOL;   // N8P
+    MSG2_bError {S7_visible:='false'} : BOOL;   // N8P
+    MSG2_wState {S7_visible:='false'} : WORD;   // N8P
+    
+
+END_VAR
+
+
+VAR
+
+    OPdwCmdHMI : DWORD := 16#0;                       // Operator Commands in HMI format
+    OPabyCmdHMI AT OPdwCmdHMI : ARRAY [0..3] OF BYTE; // look at HMI command byte-wise
+    
+    OPdwCmdPLC : DWORD := 16#0;                       // Operator Commands in PLC format
+    OPabyCmdPLC AT OPdwCmdPLC : ARRAY [0..3] OF BYTE; // look at plc command byte-wise
+    OPabCmdPLC AT OPdwCmdPLC : ARRAY [0..31] OF BOOL; // look at plc command bit-wise
+    
+    QdwStatePLC : DWORD := 16#0;                        // State word in PLC format
+    QabyStatePLC AT QdwStatePLC : ARRAY [0..3] OF BYTE; // look at state byte-wise
+    QabStatePLC AT QdwStatePLC : ARRAY [0..31] OF BOOL; // look at state bit-wise
+
+// Internal Tags ===================================================================
+    DIS_BUTTON  : BOOL := false;        // Disable Buttons in HMI
+    L_RESET_OLD : BOOL := false;        // Edge detecting reset input
+    OP_RESET    : BOOL := false;        // Reset operation
+    SP_INT      : REAL := 0.0;          // Setpoint for internal calculation
+    
+// Tags for Alarm Messaging ========================================================
+    A8P   : ALARM_8P;
+    N8P   : NOTIFY_8P;
+//Time stamp structure for alarm_t call ============================================
+    STRUCT_TS : STRUCT     
+        wFormat : WORD ; //time format
+        aDT : ARRAY [1..8] OF DATE_AND_TIME;         //array date and time
+    END_STRUCT ;
+
+END_VAR
+
+
+VAR_TEMP
+// Tags for startup handling ==================================================
+    TOP_SI: STRUCT
+          EV_CLASS  : BYTE;
+          EV_NUM    : BYTE;
+          PRIORITY  : BYTE;
+          NUM       : BYTE;
+          TYP2_3    : BYTE;
+          TYP1      : BYTE;
+          ZI1       : WORD;
+          ZI2_3     : DWORD;
+    END_STRUCT;
+    START_UP_SI: STRUCT
+          EV_CLASS  : BYTE;
+          EV_NUM    : BYTE;
+          PRIORITY  : BYTE;
+          NUM       : BYTE;
+          TYP2_3    : BYTE;
+          TYP1      : BYTE;
+          ZI1       : WORD;
+          ZI2_3     : DWORD;
+    END_STRUCT;
+    iRet          : INT;
+
+END_VAR
+
+
+BEGIN
+// START UP =====================================================================
+    iRet := SFC6 (TOP_SI:= TOP_SI, START_UP_SI:= START_UP_SI);
+    IF (TOP_SI.NUM = 100 OR TOP_SI.NUM = 101) THEN
+        // add code for different startup handling here ....
+
+        iRet := 0;
+    END_IF;
+// END STARTUP ==================================================================
+
+// Change lowbyte to highbyte of HMI command word ===============================
+    OPdwCmdHMI := OP_dwCmd;
+    OPabyCmdPLC[0] := OPabyCmdHMI[3];
+    OPabyCmdPLC[1] := OPabyCmdHMI[2];
+    OPabyCmdPLC[2] := OPabyCmdHMI[1];
+    OPabyCmdPLC[3] := OPabyCmdHMI[0]; 
+    
+// Begin: Operation functions ***************************************************
+// ******************************************************************************
+// MANUAL / AUTOMATIC Operation =======================================
+    IF (LIOP_SEL AND NOT L_AUT) OR (OPabCmdPLC[16] AND NOT LIOP_SEL) THEN 
+        QMAN_AUT := FALSE;
+    ELSIF (LIOP_SEL AND L_AUT) OR (OPabCmdPLC[17] AND NOT LIOP_SEL) THEN 
+        QMAN_AUT := TRUE;
+    END_IF;
+       
+// SIMULATION ON / OFF ==========================================================
+    
+    IF (LIOP_SEL AND NOT L_SIM) OR (OPabCmdPLC[20] AND NOT LIOP_SEL) THEN
+        QSIM := FALSE;
+    ELSIF (LIOP_SEL AND L_SIM) OR (OPabCmdPLC[21] AND NOT LIOP_SEL) THEN
+        QSIM := TRUE;
+    END_IF;
+    
+// LOCAL / REMOTE Operation =====================================================
+    IF QSIM THEN 
+        IF (LIOP_SEL AND NOT L_REMOTE) OR (OPabCmdPLC[18] AND NOT LIOP_SEL) THEN
+            QREMOTE := FALSE;
+        ELSIF (LIOP_SEL AND L_REMOTE) OR (OPabCmdPLC[19] AND NOT LIOP_SEL) THEN
+            QREMOTE := TRUE;                       
+        END_IF;
+    ELSE
+        IF (LIOP_SEL AND NOT L_REMOTE) OR (OPabCmdPLC[18] AND NOT LIOP_SEL) THEN
+            QREMOTE := FALSE;       // External operation is always local
+        ELSIF (LIOP_SEL AND L_REMOTE) OR ((OPabCmdPLC[19] AND NOT LIOP_SEL)) THEN
+            QREMOTE := TRUE;                       
+        END_IF;
+    END_IF;
+    
+// RESET Operation ==============================================================
+    IF (LIOP_SEL AND L_RESET AND NOT L_RESET_OLD) OR (OPabCmdPLC[24] AND NOT LIOP_SEL) THEN
+        OP_RESET := TRUE;
+    ELSE
+        OP_RESET := FALSE;
+    END_IF;
+// END: Operation functions *****************************************************
+// ******************************************************************************
+
+// Check Errors ========================================================
+    QERR_EXT := ERR_EXTERN;
+    QLOCK    := LOCK;
+    
+    IF QSIM THEN
+        IF QREMOTE THEN
+            ACT_POS := SP_HMI;
+        ELSE
+            ACT_POS := fVal_SIM;
+            SP_HMI := fVal_SIM;       // Bumpless switch to remote mode
+        END_IF;
+        QERR_HIGHRANGE := FALSE;
+        QERR_LOWRANGE  := FALSE;
+        QERR_OVERRUN   := FALSE;
+        QERR_WIRE      := FALSE;
+    ELSE
+        IF QREMOTE THEN
+            ACT_POS := SP_HMI;
+        ELSIF NOT iMode THEN       // Standard S7 Analog value (4..20mA)
+            IF (iVal >= 0) AND (iVal <= 27648) THEN                 // nominal range (0% to 100%)
+                QERR_HIGHRANGE := FALSE;                            // -> 4mA - 20mA
+                QERR_LOWRANGE  := FALSE;                            // value 0000 - 6C00
+                QERR_OVERRUN   := FALSE;
+                QERR_WIRE      := FALSE;
+                //scale 4..20mA signal to real value
+                ACT_POS := ((DINT_TO_REAL(WORD_TO_DINT(wVal))/27648) * (fHR - fLR)) + fLR;
+            ELSIF (iVal > 27648) AND (iVal <= 32511) THEN           // highrange (100% to 117.6%)
+                QERR_HIGHRANGE := TRUE;                             // -> 20mA - 22.81mA
+                QERR_LOWRANGE  := FALSE;                            // value 6C01 - 7EFF
+                QERR_OVERRUN   := FALSE;
+                QERR_WIRE      := FALSE;
+                ACT_POS := fHR;
+            ELSIF (iVal > 32511) AND (iVal <= 32767) THEN           // overrun (>117.6%)
+                QERR_OVERRUN   := TRUE;                             // -> >22.81mA
+                QERR_HIGHRANGE := FALSE;                            // value 7F00 - 7FFF
+                QERR_LOWRANGE  := FALSE;
+                QERR_WIRE      := FALSE;
+            ELSIF (iVal < 0) AND (iVal > -4864) THEN                // lowrange (-17.6% to 0%)
+                QERR_LOWRANGE  := TRUE;                             // -> 1.185mA - 4mA
+                QERR_HIGHRANGE := FALSE;                            // value ED01 - FFFF
+                QERR_OVERRUN   := FALSE;
+                QERR_WIRE      := FALSE;
+                ACT_POS := fLR;
+            ELSIF (iVal <= -4864) AND (iVal >= -32768) THEN         // wire break (<-17.6%)
+                QERR_WIRE      := TRUE;                             // -> <1.185mA
+                QERR_HIGHRANGE := FALSE;                            // value 8000 - ED00
+                QERR_OVERRUN   := FALSE;
+                QERR_LOWRANGE  := FALSE;
+            END_IF;
+
+        ELSE                    // real value
+            ACT_POS := fVal;
+            QERR_HIGHRANGE := FALSE;
+            QERR_LOWRANGE  := FALSE;
+            QERR_OVERRUN   := FALSE;
+            QERR_WIRE      := FALSE;
+        END_IF;
+        fVal_SIM := ACT_POS;
+    END_IF;
+    
+    IF QERR_EXT THEN
+        QERR := TRUE;
+    END_IF;
+
+// Set output Setpoint for valve (0%..100%, Failsafe position) =================
+// Setpoint State for STATE is always "16#80" ===================================
+    IF NOT (QLOCK OR QERR) AND NOT QSIM AND NOT QREMOTE THEN
+        SP_INT := SP;
+        SP_HMI := SP;
+    ELSIF NOT (QLOCK OR QERR) AND NOT QSIM AND QREMOTE THEN
+        SP_INT := SP_HMI;
+    ELSIF NOT (QLOCK OR QERR) AND NOT QSIM AND QREMOTE THEN
+        SP_HMI := ACT_POS;
+        SP_INT := SP_HMI;
+    ELSE
+        SP_INT := SP_FAILSAFE;
+    END_IF;
+
+// check CVALVE state and set output values =============================================       
+    IF (ACT_POS <= 1) THEN
+            QCLOSED := 1;           // 1=Valve is closed
+            QOPENED := 0;
+            QHALFWAY := 0;
+    ELSIF (ACT_POS >= 99) THEN 
+            QOPENED := 1;           // 1=Valve is opened
+            QCLOSED := 0;
+            QHALFWAY := 0;
+    ELSE
+            QOPENED := 0;
+            QCLOSED := 0;
+            QHALFWAY := 1;
+    END_IF;
+    
+    //scale real value to 4..20mA signal
+    QfVal_per := DWORD_TO_WORD(REAL_TO_DWORD(ACT_POS /100 * 27648));    
+ 
+// Internal Functions ===========================================================
+    DIS_BUTTON := LIOP_SEL;
+    
+// RESET Errors =================================================================
+    IF OP_RESET THEN
+        QERR   := FALSE;
+    END_IF;
+
+// Alarm_8P =====================================================================
+    A8P(
+        EN_R  := 1,
+        SIG_1 :=0,          // not inizialized
+        SIG_2 :=0,          
+        SIG_3 :=0,          // Parameters on CVALVE changed
+        SIG_4 :=0,
+        SIG_5 :=QLOCK,          // Interlock Error
+        SIG_6 :=0,
+        SIG_7 :=QERR_EXT,       // External Error
+        SIG_8 :=QERR,           // General Error
+        ID := w#16#eeee,
+        EV_ID := MSG1_EVID,
+        SEVERITY := w#16#40
+    );
+    MSG1_bDone := A8P.DONE;
+    MSG1_bError := A8P.ERROR;
+    MSG1_wState := A8P.STATUS;
+    MSG1_wAck := A8P.ACK_STATE;
+
+// Notify_8P ====================================================================
+    N8P(
+        SIG_1 :=QCLOSED,        // Valve closed
+        SIG_2 :=QOPENED,        // Valve opened
+        SIG_3 :=QHALFWAY,       // Valve in half position
+        SIG_4 :=0,
+        SIG_5 :=LOCK,           // Interlock
+        SIG_6 :=QREMOTE,        // Remote
+        SIG_7 :=0,              // Automatik
+        SIG_8 :=QSIM,           // Simulation
+        ID := w#16#eeee,
+        EV_ID := MSG2_EVID,
+        SEVERITY := w#16#40 
+    );
+    MSG2_bDone := N8P.DONE;
+    MSG2_bError := N8P.ERROR;
+    MSG2_wState := N8P.STATUS;
+    
+// Set State for HMI ============================================================
+    QabStatePLC[0]  := 0;     
+    QabStatePLC[1]  := QCLOSED;     // 1=Valve closed
+    QabStatePLC[2]  := QOPENED;     // 1=Valve opened
+    QabStatePLC[3]  := QHALFWAY;    // 1=Valve in intermediate pos.
+    QabStatePLC[4]  := 0;           // 1=Operatin timeout
+    QabStatePLC[5]  := 0;
+    QabStatePLC[6]  := 0;
+    QabStatePLC[7]  := 0;
+    QabStatePLC[8]  := 0;           
+    QabStatePLC[9]  := 0;           
+    QabStatePLC[10] := 0;           
+    QabStatePLC[11] := 0;           
+    QabStatePLC[12] := QERR_LOWRANGE;   // 1=Lowrange error
+    QabStatePLC[13] := QERR_HIGHRANGE;  // 1=Highrange error
+    QabStatePLC[14] := QERR_OVERRUN;    // 1=Overrun error
+    QabStatePLC[15] := QERR_WIRE;       // 1=Wire break
+    QabStatePLC[16] := QMAN_AUT;    // 0=Manual 1=Automatic    
+    QabStatePLC[17] := QREMOTE;     // 0=Local 1=Remote
+    QabStatePLC[18] := QSIM;        // 0=Process 1=Simulation
+    QabStatePLC[19] := 0;           
+    QabStatePLC[20] := 0;           
+    QabStatePLC[21] := 0;
+    QabStatePLC[22] := 0;           
+    QabStatePLC[23] := 0;           
+    QabStatePLC[24] := QERR;        // 1=Error
+    QabStatePLC[25] := QERR_EXT;    // 1=External Error
+    QabStatePLC[26] := QLOCK;       // 1=Block Locked
+    QabStatePLC[27] := LOCK;        // 1=INTERLOCK
+    QabStatePLC[28] := DIS_BUTTON;  // 1=Disable Buttons in HMI
+    QabStatePLC[29] := 0;  
+    QabStatePLC[30] := 0;
+    QabStatePLC[31] := 0;
+    
+// Change highbyte to lowbyte of HMI state word ===============================
+    QabyStateHMI[0] :=QabyStatePLC[3];
+    QabyStateHMI[1] :=QabyStatePLC[2];
+    QabyStateHMI[2] :=QabyStatePLC[1];
+    QabyStateHMI[3] :=QabyStatePLC[0];
+
+
+// Set Tags for edge detect =====================================
+    L_RESET_OLD := L_RESET;
+    
+//reset commands ================================================
+    OP_dwCmd := 16#0;
+    
+
+ 
+   
+END_FUNCTION_BLOCK
+
+
