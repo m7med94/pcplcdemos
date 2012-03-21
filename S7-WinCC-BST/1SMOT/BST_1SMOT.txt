@@ -1,0 +1,536 @@
+FUNCTION_BLOCK BST_1SMOT_400
+NAME:BST1SMOT
+FAMILY:BST
+AUTHOR:SAM
+//VERSION:'1.0'
+//FB1005
+
+// Typical-Attribute
+{
+  S7_tasklist:='OB100,OB101';
+  S7_m_c:='true';
+  S7_blockview:='big'
+}
+
+// Parameterattribute
+// S7_visible       visible/unvisible   (default='true')
+// S7_m_c           WinCC - Tag         (default='false')
+// S7_dynamic       testmode            (default='false')
+VAR_INPUT
+    LOCK        {S7_dynamic:='true'} : BOOL := FALSE; // Interlock
+    ERR_EXTERN  {S7_dynamic:='true'} : BOOL := FALSE; // External Error
+    LIOP_SEL    {S7_dynamic:='true'} : BOOL := FALSE; // 0=Operator 1=Linking
+    L_AUT       {S7_dynamic:='true'} : BOOL := FALSE; // 0=Manual 1=Automatic
+    L_REMOTE    {S7_dynamic:='true'} : BOOL := FALSE; // 0=Lokal 1=Remote
+    L_SIM       {S7_dynamic:='true'} : BOOL := FALSE; // 0=Normal 1=Simulation
+    L_RESET     {S7_dynamic:='true'} : BOOL := FALSE; // 1=Reset Error Peripherie
+    AUT_ON      {S7_dynamic:='true'} : BOOL := FALSE; // 1=CMD ON Automatic
+    MAN_ON      {S7_dynamic:='true'} : BOOL := FALSE; // 1=CMD ON Manual
+    SIM_ON      {S7_dynamic:='true'} : BOOL := FALSE; // 1=CMD ON Simulation
+    FB_ON       {S7_dynamic:='true'} : BOOL := FALSE; // Feedback Motor 
+    L_MON       {S7_dynamic:='true'} : BOOL := TRUE;  // 1=Monitoring Feedback ON
+    MON_T       {S7_dynamic:='true'; S7_m_c := 'true'} : REAL := 10.0; // Monitoring Time
+    MPS         {S7_dynamic:='true'} : BOOL := FALSE; // 1=Motor Protecting Switch ON
+    L_FLOW_MON  {S7_dynamic:='true'} : BOOL := FALSE; // 1=Monitoring Flow
+    FLOW        {S7_dynamic:='true'} : REAL := 0.0;   // Current Flow
+    FLOW_LL     {S7_dynamic:='true'} : REAL := 5.0;   // Low Level Flow
+    FLOW_MT     {S7_dynamic:='true'; S7_m_c := 'true'} : REAL := 10.0;   // Monitoring Time Flow
+    
+    CURR        {S7_dynamic:='true'; S7_m_c:='true'} : WORD := 16#0; // 
+    iCURR AT CURR : INT;  //Interpretation INT
+    CURR_HR     {S7_dynamic:='true'} : REAL := 0.0;   // Low Level Current
+    CURR_LR     {S7_dynamic:='true'; S7_m_c := 'true'} : REAL := 100.0;   // Monitoring Time Flow
+
+
+    SAMPLE_T    {S7_sampletime:='true'} : REAL := 0.0; // Sample Time
+   
+    // Message blocks
+    MSG1_EVID { S7_visible  :='false';
+                S7_link     :='false';
+                S7_param    :='false';
+                S7_server   :='alarm_archiv';
+                S7_a_type   :='alarm_8p'}: DWORD :=0;
+    MSG2_EVID { S7_visible  :='false';
+                S7_link     :='false';
+                S7_param    :='false';
+                S7_server   :='alarm_archiv';
+                S7_a_type   :='notify_8p'}: DWORD :=0;
+END_VAR
+
+VAR_IN_OUT
+    OP_dwCmd    {S7_dynamic := 'true'; S7_m_c := 'true'} : DWORD :=0;   // control word wincc
+END_VAR
+
+VAR_OUTPUT
+    QdwState    {S7_dynamic:='true'; S7_m_c:='true'}: DWORD:=0;     // status wincc
+    QabyState AT QdwState : ARRAY [0..3] OF BYTE;                   // look at state byte-wise
+    
+    QwState     {S7_dynamic:='true'}: WORD:= 0; //0=off, 1=starting, 2=on, 3=stopping
+    
+    QSTOPPING   {S7_dynamic:='true'} : BOOL := FALSE;     // 1=Stopping
+    QSTOP       {S7_dynamic:='true'} : BOOL := FALSE;     // 1=Stop
+    QSTARTING   {S7_dynamic:='true'} : BOOL := FALSE;     // 1=Starting
+    QRUN        {S7_dynamic:='true'} : BOOL := FALSE;     // 1=Run
+    
+    QCMD_ON     {S7_dynamic:='true'} : BOOL := FALSE;     // 0=Stop 1=Start
+   
+    QMON        {S7_dynamic:='true'} : BOOL := FALSE;     // 1=Monitoring Feedback
+    QMON_ERR    {S7_dynamic:='true'} : BOOL := FALSE;     // 1=Monitoring Error
+    QMON_T      {S7_dynamic:='true'; S7_m_c := 'true'} : REAL := 0.0; // Current Monitoring Time Feedback
+    QFLOW_MON   {S7_dynamic:='true'} : BOOL := FALSE;     // 1=Monitoring Flow
+    QFLOW_MT    {S7_dynamic:='true'; S7_m_c := 'true'} : REAL := 0.0; // Current Monitoring Time Flow
+    QFLOW_ERR   {S7_dynamic:='true'} : BOOL := FALSE;     // 1=Error Flow
+    QCURR       {S7_dynamic:='true'; S7_m_c:='true'; S7_archive:='shortterm'} : REAL :=0.0; //measuring value
+    QCURR_ERR   {S7_dynamic:='true'} : BOOL := FALSE;     // 1=Error Current
+    
+    QMPS        {S7_dynamic:='true'} : BOOL := FALSE;     // 1=Motor Protecting Switch
+
+    QMAN_AUT   {S7_dynamic:='true'} : BOOL := FALSE;     // 0=Hand 1=Automatic
+    QREMOTE    {S7_dynamic:='true'} : BOOL := FALSE;     // 0=Local 1=Remote
+    QSIM       {S7_dynamic:='true'} : BOOL := FALSE;     // Simulaition is active
+    QLOCK      {S7_dynamic:='true'} : BOOL := FALSE;     // Interlock is active
+    QERR        {S7_dynamic:='true'} : BOOL := FALSE;    // 1=ERROR
+    QERR_EXT   {S7_dynamic:='true'} : BOOL := FALSE;     // External ERROR
+
+    QERR_WIRE     {S7_dynamic:='true'} : BOOL := FALSE;  // 1=Wire break
+    
+    //Alarm
+    MSG1_bDone  {S7_visible:='false'} : BOOL; // A8P
+    MSG1_bError {S7_visible:='false'} : BOOL; // A8P
+    MSG1_wState {S7_visible:='false'} : WORD; // A8P
+    MSG1_wAck   {S7_visible:='false'} : WORD; // A8P
+    MSG2_bDone  {S7_visible:='false'} : BOOL; // N8P
+    MSG2_bError {S7_visible:='false'} : BOOL; // N8P
+    MSG2_wState {S7_visible:='false'} : WORD; // N8P
+END_VAR
+
+VAR
+    OPdwCmdHMI : DWORD := 16#0;                       // Operator Commands in HMI format
+    OPabyCmdHMI AT OPdwCmdHMI : ARRAY [0..3] OF BYTE; // look at HMI command byte-wise
+    OPdwCmdPLC : DWORD := 16#0;                       // Operator Commands in PLC format
+    OPabyCmdPLC AT OPdwCmdPLC : ARRAY [0..3] OF BYTE; // look at plc command byte-wise
+    OPabCmdPLC AT OPdwCmdPLC : ARRAY [0..31] OF BOOL; // look at plc command bit-wise
+    
+    QdwStatePLC : DWORD := 16#0;                        // State word in PLC format
+    QabyStatePLC AT QdwStatePLC : ARRAY [0..3] OF BYTE; // look at state byte-wise
+    QabStatePLC AT QdwStatePLC : ARRAY [0..31] OF BOOL; // look at state bit-wise
+        
+
+    A8P   : ALARM_8P;
+    N8P   : NOTIFY_8P;
+    //---time stamp structure for alarm_t call
+    STRUCT_TS : STRUCT     
+        wFormat : WORD ; //time format
+        aDT : ARRAY [1..8] OF DATE_AND_TIME;         //array date and time
+    END_STRUCT ;  
+    
+    // TAGS for Simulation
+    FB_SIM   : BOOL := FALSE;
+    SIM_T    : REAL := 5.0;
+    QCMD_SIM : BOOL := FALSE;
+    
+    // TAGS for Operation
+    OP_RESET : BOOL := FALSE;
+
+    // TAGS for Edge detect
+    L_RESET_OLD : BOOL := FALSE;
+    AUT_ON_OLD : BOOL := FALSE;
+    MAN_ON_OLD : BOOL := FALSE;
+    QSTARTING_OLD : BOOL := FALSE;
+    QSTOPPING_OLD : BOOL := FALSE;
+    
+END_VAR
+
+VAR_TEMP
+TOP_SI: STRUCT
+      EV_CLASS  : BYTE;
+      EV_NUM    : BYTE;
+      PRIORITY  : BYTE;
+      NUM       : BYTE;
+      TYP2_3    : BYTE;
+      TYP1      : BYTE;
+      ZI1       : WORD;
+      ZI2_3     : DWORD;
+END_STRUCT;
+
+START_UP_SI: STRUCT
+      EV_CLASS  : BYTE;
+      EV_NUM    : BYTE;
+      PRIORITY  : BYTE;
+      NUM       : BYTE;
+      TYP2_3    : BYTE;
+      TYP1      : BYTE;
+      ZI1       : WORD;
+      ZI2_3     : DWORD;
+END_STRUCT;
+iRet     : INT;
+
+END_VAR
+
+
+BEGIN
+
+// START UP =====================================================================
+    iRet := SFC6 (TOP_SI:= TOP_SI, START_UP_SI:= START_UP_SI);
+    IF (TOP_SI.NUM = 100 OR TOP_SI.NUM = 101) THEN
+        
+        QCMD_ON   := FALSE;
+        QSTOP     := TRUE;
+        QSTARTING := FALSE;
+        QRUN      := FALSE;
+        QSTOPPING := FALSE;
+        QwState := 0;
+        
+        iRet := 0;
+    END_IF;
+// END STARTUP ==================================================================
+
+// Change lowbyte to highbyte for HMI command word =====================
+    OPdwCmdHMI := OP_dwCmd;
+    OPabyCmdPLC[0] := OPabyCmdHMI[3];
+    OPabyCmdPLC[1] := OPabyCmdHMI[2];
+    OPabyCmdPLC[2] := OPabyCmdHMI[1];
+    OPabyCmdPLC[3] := OPabyCmdHMI[0]; 
+
+// ******************************************************************************
+// Begin: Operation functions ***************************************************
+    
+// MANUAL / AUTOMATIC Operation =======================================
+    IF (LIOP_SEL AND NOT L_AUT) OR (OPabCmdPLC[16] AND NOT LIOP_SEL) THEN 
+        QMAN_AUT := FALSE;
+    ELSIF (LIOP_SEL AND L_AUT) OR (OPabCmdPLC[17] AND NOT LIOP_SEL) THEN 
+        QMAN_AUT := TRUE;
+    END_IF;
+    
+// LOCAL / REMOTE Operation =========================================
+    IF (LIOP_SEL AND NOT L_REMOTE) OR (OPabCmdPLC[18] AND NOT LIOP_SEL) THEN
+        QREMOTE := FALSE;
+    ELSIF (LIOP_SEL AND L_REMOTE) OR (OPabCmdPLC[19] AND NOT LIOP_SEL) THEN
+        QREMOTE := TRUE;
+    END_IF;
+    
+// SIMULATION ON / OFF ==============================================
+    IF (LIOP_SEL AND NOT L_SIM) OR (OPabCmdPLC[20] AND NOT LIOP_SEL) THEN
+        QSIM := FALSE;
+    ELSIF (LIOP_SEL AND L_SIM) OR (OPabCmdPLC[21] AND NOT LIOP_SEL) THEN
+        QSIM := TRUE;
+        QCMD_ON := FALSE;
+    END_IF;
+    
+// RESET Operation ==================================================
+    IF (LIOP_SEL AND L_RESET AND NOT L_RESET_OLD) OR (OPabCmdPLC[24] AND NOT LIOP_SEL) THEN
+        OP_RESET := TRUE;
+    ELSE
+        OP_RESET := FALSE;
+    END_IF;
+    
+// MONITORING FEEDBACK ON / OFF =====================================
+    IF (LIOP_SEL AND L_MON) OR (OPabCmdPLC[8] AND NOT LIOP_SEL) THEN
+        QMON := TRUE;
+    ELSIF (LIOP_SEL AND NOT L_MON) OR (OPabCmdPLC[9] AND NOT LIOP_SEL) THEN
+        QMON := FALSE;
+    END_IF;
+    
+// MONITORING FLOW ON / OFF =========================================
+    IF (LIOP_SEL AND L_FLOW_MON) OR (OPabCmdPLC[10] AND NOT LIOP_SEL) THEN
+        QFLOW_MON := TRUE;
+    ELSIF (LIOP_SEL AND NOT L_FLOW_MON) OR (OPabCmdPLC[11] AND NOT LIOP_SEL) THEN
+        QFLOW_MON := FALSE;
+    END_IF;
+
+// START / STOP Motor (AUTOMATIC)====================================
+    IF (QMAN_AUT AND AUT_ON AND NOT QSIM AND NOT AUT_ON_OLD) THEN
+        QCMD_ON := TRUE;
+    ELSIF (QMAN_AUT AND NOT AUT_ON AND NOT QSIM) THEN
+        QCMD_ON := FALSE;
+    END_IF;
+    
+// START / STOP Motor (MANUAL)=======================================
+    IF (NOT QMAN_AUT AND NOT QREMOTE AND MAN_ON AND NOT QSIM AND NOT MAN_ON_OLD) OR (OPabCmdPLC[1] AND NOT QMAN_AUT AND QREMOTE AND NOT QSIM)  THEN
+        QCMD_ON := TRUE;
+    ELSIF (NOT QMAN_AUT AND NOT QREMOTE AND NOT MAN_ON AND NOT QSIM) OR (OPabCmdPLC[0] AND NOT QMAN_AUT AND QREMOTE AND NOT QSIM) THEN
+        QCMD_ON := FALSE;
+    END_IF;
+
+// START / STOP Motor (SIMULATION)===================================
+    IF (QSIM AND NOT QREMOTE AND SIM_ON) OR (OPabCmdPLC[1] AND QREMOTE AND QSIM) THEN
+        QCMD_SIM := TRUE;
+    ELSIF (QSIM AND NOT QREMOTE AND NOT SIM_ON) OR (OPabCmdPLC[0] AND QREMOTE AND QSIM) THEN
+        QCMD_SIM := FALSE;
+    END_IF;
+    
+// END: Operation functions *****************************************************
+// ******************************************************************************    
+
+
+//=================================
+//            QwState
+//0 = Stop
+//1 = Starting
+//2 = Run
+//3 = Stopping
+//=================================
+
+//--------------------------
+//QwState = 0; Stop
+//--------------------------
+    IF NOT QSIM THEN    // *** Process Mode ***
+        IF 
+            (NOT QCMD_ON AND QwState=3 AND NOT QMON_ERR AND NOT FB_ON) OR
+            (NOT QCMD_ON AND QwState=3 AND NOT QMON)
+        THEN
+            QSTOP     := TRUE;
+            QSTARTING := FALSE;
+            QRUN      := FALSE;
+            QSTOPPING := FALSE;
+            QwState := 0;
+        END_IF;
+    ELSE                // *** Simulation Mode ***
+        IF 
+            (NOT QCMD_SIM AND QwState=3 AND NOT FB_SIM) OR
+            (NOT QCMD_SIM AND QwState=3 AND NOT QMON)
+        THEN
+            QSTOP     := TRUE;
+            QSTARTING := FALSE;
+            QRUN      := FALSE;
+            QSTOPPING := FALSE;
+            QwState := 0;
+        END_IF;
+    END_IF;
+        
+//--------------------------
+//QwState = 1; Starting
+//--------------------------
+    IF NOT QSIM THEN    // *** Process Mode ***
+        IF (QCMD_ON AND QwState = 0) THEN 
+            QSTOP     := FALSE;
+            QSTARTING := TRUE;
+            QRUN      := FALSE;
+            QSTOPPING := FALSE;
+            QwState := 1;
+        END_IF;
+    ELSE                // *** Simulation Mode ***
+        IF (QCMD_SIM AND QwState = 0) THEN 
+            QSTOP     := FALSE;
+            QSTARTING := TRUE;
+            QRUN      := FALSE;
+            QSTOPPING := FALSE;
+            QwState := 1;
+        END_IF;
+    END_IF;
+    
+    
+//--------------------------
+//QwState = 2; RUN
+//--------------------------
+    IF NOT QSIM THEN        // *** Process Mode ***
+        IF 
+            (QCMD_ON AND QwState=1 AND NOT QMON_ERR AND FB_ON) OR
+            (QCMD_ON AND QwState=1 AND NOT QMON)
+        THEN
+            QSTOP     := FALSE;
+            QSTARTING := FALSE;
+            QRUN      := TRUE;
+            QSTOPPING := FALSE;
+            QwState := 2;
+        END_IF;
+    ELSE                    // *** Simulation Mode ***
+        IF  
+            (QCMD_SIM AND QwState=1 AND FB_SIM) OR
+            (QCMD_SIM AND QwState=1 AND NOT QMON)
+        THEN
+            QSTOP     := FALSE;
+            QSTARTING := FALSE;
+            QRUN      := TRUE;
+            QSTOPPING := FALSE;
+            QwState := 2;
+        END_IF;
+    END_IF;
+        
+//--------------------------
+//QwState = 3; Stopping
+//--------------------------
+    IF NOT QSIM THEN        // *** Process Mode ***
+        IF (NOT QCMD_ON AND (QwState = 1 OR QwState = 2)) THEN
+            QSTOP     := FALSE;
+            QSTARTING := FALSE;
+            QRUN      := FALSE;
+            QSTOPPING := TRUE;
+            QwState := 3;
+        END_IF;
+    ELSE                    // *** Simulation Mode ***
+        IF (NOT QCMD_SIM AND (QwState = 1 OR QwState = 2)) THEN
+            QSTOP     := FALSE;
+            QSTARTING := FALSE;
+            QRUN      := FALSE;
+            QSTOPPING := TRUE;
+            QwState := 3;
+        END_IF;
+    END_IF;
+    
+    
+        
+// Feedback Monitoring =================================================
+    IF QMON THEN
+        IF (QSTARTING AND NOT QSTARTING_OLD) OR (QSTOPPING AND NOT QSTOPPING_OLD) THEN
+            QMON_T := 0.0;
+        END_IF;
+        
+        IF NOT QSIM THEN    // *** Process Mode ****
+            IF (QSTARTING OR QSTOPPING) THEN
+                QMON_T := QMON_T + SAMPLE_T;
+                IF (QMON_T >= MON_T) THEN
+                    QMON_ERR := TRUE;
+                END_IF;
+            ELSE
+                QMON_T := 0.0;
+            END_IF;
+            IF (QRUN AND NOT FB_ON) OR (QSTOP AND FB_ON) THEN
+                QMON_ERR := TRUE;
+            END_IF;  
+        ELSE               // *** Simulation Mode ***
+            IF (QSTARTING) THEN
+                QMON_T := QMON_T + SAMPLE_T;
+                IF (QMON_T >= SIM_T) THEN
+                    FB_SIM := TRUE;
+                END_IF;
+            ELSIF (QSTOPPING) THEN
+                QMON_T := QMON_T + SAMPLE_T;
+                IF (QMON_T >= SIM_T) THEN
+                    FB_SIM := FALSE;
+                END_IF;
+            ELSE
+                QMON_T := 0.0;
+            END_IF;
+        END_IF;
+    END_IF;
+// END Monitoring ======================================================
+// Current Errors ========================================================
+    IF (iCURR >= 0) AND (iCURR <= 27648) THEN                 // nominal range (0% to 100%)
+         QERR_WIRE      := FALSE;
+         //scale 0..20mA signal to real value
+         QCURR := ((DINT_TO_REAL(WORD_TO_DINT(CURR))/27648) * ( CURR_HR -  CURR_LR)) + CURR_LR;
+   ELSIF (iCURR <= -4864) AND (iCURR >= -32768) THEN         // wire break (<-17.6%)
+         QERR_WIRE      := TRUE;                             // -> <1.185mA
+   END_IF;
+
+
+// Check Errors ========================================================
+    QERR_EXT := ERR_EXTERN;
+    IF LOCK AND (QSTARTING OR QRUN) THEN
+        QLOCK := TRUE;
+    END_IF;
+    IF MPS THEN
+        QMPS := TRUE;
+    END_IF;
+    QERR := QERR_EXT OR QMON_ERR OR QFLOW_ERR OR QLOCK OR QMPS OR QERR_WIRE;
+    
+// RESET Errors ========================================================
+    IF OP_RESET THEN
+        QMON_ERR  := FALSE;
+        QFLOW_ERR := FALSE;
+        QMPS      := FALSE;
+        QLOCK     := FALSE;
+        QERR_WIRE := FALSE;
+    END_IF;
+
+// If Error then Stop ==================================================        
+    IF QERR THEN
+        QSTOP     := TRUE;
+        QSTARTING := FALSE;
+        QRUN      := FALSE;
+        QSTOPPING := FALSE;
+        QCMD_ON   := FALSE;
+        QCMD_SIM  := FALSE;
+        QwState   := 0;
+        QMON_T    := 0.0;
+    END_IF;
+
+// Set State for HMI ===================================================
+    QabStatePLC[0]  := QSTOP;       // 1=Stop
+    QabStatePLC[1]  := QSTARTING;   // 1=Starting
+    QabStatePLC[2]  := QRUN;        // 1=Run
+    QabStatePLC[3]  := QSTOPPING;   // 1=Stopping
+    QabStatePLC[4]  := 0;
+    QabStatePLC[5]  := 0;
+    QabStatePLC[6]  := 0;
+    QabStatePLC[7]  := 0;   
+    QabStatePLC[8]  := QMON;        // 1=Feedback Monitoring ON
+    QabStatePLC[9]  := QMON_ERR;    // 1=Error Feedback Monitoring
+    QabStatePLC[10] := QFLOW_MON;   // 1=Flow Monitoring ON
+    QabStatePLC[11] := QFLOW_ERR;   // 1=Error Flow Monitoring
+    QabStatePLC[12] := QMPS;        // 1=Motor Protecting Switch
+    QabStatePLC[13] := 0;
+    QabStatePLC[14] := 0;
+    QabStatePLC[15] := QERR_WIRE;   // 1=Wire break
+    QabStatePLC[16] := QMAN_AUT;    // 0=Manual 1=Automatic
+    QabStatePLC[17] := QREMOTE;     // 0=Local 1=Remote
+    QabStatePLC[18] := QSIM;        // 0=Process 1=Simulation 
+    QabStatePLC[19] := 0;
+    QabStatePLC[20] := 0;
+    QabStatePLC[21] := 0;
+    QabStatePLC[22] := 0;
+    QabStatePLC[23] := 0;
+    QabStatePLC[24] := QERR;        // 1=Error
+    QabStatePLC[25] := QERR_EXT;    // 1=External Error
+    QabStatePLC[26] := QLOCK;       // 1=Motor Locked;
+    QabStatePLC[27] := LOCK;        // 1=INTERLOCK
+    QabStatePLC[28] := 0;  
+    QabStatePLC[29] := 0;  
+    QabStatePLC[30] := 0;
+    QabStatePLC[31] := 0;
+    
+    QabyState[0] :=QabyStatePLC[3];
+    QabyState[1] :=QabyStatePLC[2];
+    QabyState[2] :=QabyStatePLC[1];
+    QabyState[3] :=QabyStatePLC[0];
+    
+    // Alarm_8P ==============================================
+    A8P(            
+        EN_R := 1,
+        SIG_1 :=QMON_ERR,   // Feedback Error
+        SIG_2 :=QFLOW_ERR,  // Flowing Error
+        SIG_3 :=QMPS,       // Motor Protecting Switch
+        SIG_4 :=QERR_WIRE,  // Current wire break
+        SIG_5 :=QLOCK,      // Interlock Error
+        SIG_6 :=0,
+        SIG_7 :=QERR_EXT,   // External Error       
+        SIG_8 :=QERR,       // General Error
+        ID := w#16#eeee,
+        EV_ID := MSG1_EVID,
+        SEVERITY := w#16#40
+    );
+    MSG1_bDone := A8P.DONE;
+    MSG1_bError := A8P.ERROR;
+    MSG1_wState := A8P.STATUS;
+    MSG1_wAck := A8P.ACK_STATE;
+
+    // Notify_8P ==============================================
+    N8P(
+        SIG_1 :=QSTOP,      // Stop
+        SIG_2 :=QSTARTING,  // Starting
+        SIG_3 :=QRUN,       // Run
+        SIG_4 :=QSTOPPING,  // Stopping
+        SIG_5 :=LOCK,       // Interlock
+        SIG_6 :=QREMOTE,    // Remote
+        SIG_7 :=QMAN_AUT,   // Automatic
+        SIG_8 :=QSIM,       // Simulation
+        ID := w#16#eeee,
+        EV_ID := MSG2_EVID,
+        SEVERITY := w#16#40 
+    );
+    MSG2_bDone := N8P.DONE;
+    MSG2_bError := N8P.ERROR;
+    MSG2_wState := N8P.STATUS;
+    
+    // Set Tags for edge detect =====================================
+    L_RESET_OLD := L_RESET;
+    AUT_ON_OLD := AUT_ON;
+    MAN_ON_OLD := MAN_ON;
+    QSTARTING_OLD:= QSTARTING;
+    QSTOPPING_OLD:= QSTOPPING;
+
+    //reset commands ================================================
+    OP_dwCmd := 16#0;
+END_FUNCTION_BLOCK
+
