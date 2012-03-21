@@ -409,7 +409,7 @@ BEGIN
     IF (iCURR >= 0) AND (iCURR <= 27648) THEN                 // nominal range (0% to 100%)
          QERR_WIRE      := FALSE;
          //scale 0..20mA signal to real value
-         QCURR := ((DINT_TO_REAL(WORD_TO_DINT(CURR))/27648) * ( CURR_HR -  CURR_LR)) + CURR_LR;
+         QCURR := DINT_TO_REAL(WORD_TO_DINT(CURR)) * ( CURR_HR -  CURR_LR) / 27648;
    ELSIF (iCURR <= -4864) AND (iCURR >= -32768) THEN         // wire break (<-17.6%)
          QERR_WIRE      := TRUE;                             // -> <1.185mA
    END_IF;
