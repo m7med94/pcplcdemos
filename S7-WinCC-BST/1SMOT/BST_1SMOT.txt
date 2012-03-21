@@ -38,9 +38,8 @@ VAR_INPUT
     
     CURR        {S7_dynamic:='true'; S7_m_c:='true'} : WORD := 16#0; // 
     iCURR AT CURR : INT;  //Interpretation INT
-    CURR_HR     {S7_dynamic:='true'} : REAL := 100.0; // Low Level Current
-    CURR_LR     {S7_dynamic:='true'} : REAL := 0.0;   // High Level Current
-
+    CURR_HR     {S7_dynamic:='true'} : REAL := 100.0;  // High Level Current
+    CURR_LR     {S7_dynamic:='true'} : REAL := 0.0;    // low Level Current
 
     SAMPLE_T    {S7_sampletime:='true'} : REAL := 0.0; // Sample Time
    
