@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="JavaFx2NoDaveExample.jnlp">
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="http://pcplcdemos.googlecode.com/hg/JavaFx2NoDaveExample/dist/JavaFx2NoDaveExample.jnlp">
   <information>
     <title>JavaFx2NoDaveExample</title>
     <vendor>javafx.com</vendor>
