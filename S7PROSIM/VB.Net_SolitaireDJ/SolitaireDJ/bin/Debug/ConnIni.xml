@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Connections>
+  <Settings name="Default">
+    <Protocol>122</Protocol>
+    <IP>192.168.1.100</IP>
+    <ComPort>COM1</ComPort>
+    <Speed>2</Speed>
+    <Rack>0</Rack>
+    <Slot>2</Slot>
+    <Active>Default</Active>
+  </Settings>
+</Connections>

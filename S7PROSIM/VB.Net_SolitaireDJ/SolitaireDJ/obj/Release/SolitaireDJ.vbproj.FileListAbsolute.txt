@@ -1,0 +1,17 @@
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\SolitaireDJ\SolitaireDJ\bin\Release\SolitaireDJ.exe
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\SolitaireDJ\SolitaireDJ\bin\Release\SolitaireDJ.pdb
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\SolitaireDJ\SolitaireDJ\bin\Release\SolitaireDJ.xml
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\SolitaireDJ\SolitaireDJ\bin\Release\libnodave.net.dll
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\SolitaireDJ\SolitaireDJ\bin\Release\Interop.S7PROSIMLib.dll
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\SolitaireDJ\SolitaireDJ\obj\Release\ResolveAssemblyReference.cache
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\SolitaireDJ\SolitaireDJ\obj\Release\Interop.S7PROSIMLib.dll
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\SolitaireDJ\SolitaireDJ\obj\Release\SolitaireDJ.vbproj.ResolveComReference.cache
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\SolitaireDJ\SolitaireDJ\obj\Release\SolitaireDJ.ConnectionSettings.resources
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\SolitaireDJ\SolitaireDJ\obj\Release\SolitaireDJ.Console.resources
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\SolitaireDJ\SolitaireDJ\obj\Release\SolitaireDJ.Form1.resources
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\SolitaireDJ\SolitaireDJ\obj\Release\SolitaireDJ.Resources.resources
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\SolitaireDJ\SolitaireDJ\obj\Release\SolitaireDJ.vbproj.GenerateResource.Cache
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\SolitaireDJ\SolitaireDJ\obj\Release\SolitaireDJ.exe.licenses
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\SolitaireDJ\SolitaireDJ\obj\Release\SolitaireDJ.exe
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\SolitaireDJ\SolitaireDJ\obj\Release\SolitaireDJ.xml
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\SolitaireDJ\SolitaireDJ\obj\Release\SolitaireDJ.pdb

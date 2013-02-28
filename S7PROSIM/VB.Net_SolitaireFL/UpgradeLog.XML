@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="SolitaireFL">
+</Property><Property Name="Solution File" Value="C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\SolitaireFL.sln">
+</Property><Property Name="User Options File" Value="C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\SolitaireFL.suo">
+</Property><Property Name="Date" Value="zaterdag 18 augustus 2012">
+</Property><Property Name="Time" Value="16:34">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="SolitaireFL.sln" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL.sln">
+</Event><Event ErrorLevel="0" Project="" Source="SolitaireFL.suo" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL.suo">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\SolitaireFL.vbproj" Description="Project file successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\SolitaireFL.vbproj">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\SolitaireFL.vbproj.user" Description="Project user file successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\SolitaireFL.vbproj.user">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\Form1.vb" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\Form1.vb">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\Form1.Designer.vb" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\Form1.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\ModuleBin.vb" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\ModuleBin.vb">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\My Project\AssemblyInfo.vb" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\My Project\AssemblyInfo.vb">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\My Project\Application.Designer.vb" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\My Project\Application.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\My Project\Resources.Designer.vb" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\My Project\Resources.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\My Project\Settings.Designer.vb" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\My Project\Settings.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\Variables.vb" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\Variables.vb">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\My Project\Application.myapp" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\My Project\Application.myapp">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\My Project\Settings.settings" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\My Project\Settings.settings">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\Resources\sch_R.bmp" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\Resources\sch_R.bmp">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\Resources\sch_L.bmp" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\Resources\sch_L.bmp">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\Resources\sch_C.bmp" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\Resources\sch_C.bmp">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\Resources\joi_U.bmp" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\Resources\joi_U.bmp">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\Resources\joi_R.bmp" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\Resources\joi_R.bmp">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\Resources\joi_D.bmp" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\Resources\joi_D.bmp">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\Resources\joi_L.bmp" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\Resources\joi_L.bmp">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\Resources\joi_C.bmp" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\Resources\joi_C.bmp">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\Resources\ledG_off.bmp" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\Resources\ledG_off.bmp">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\Resources\ledR_off.bmp" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\Resources\ledR_off.bmp">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\Resources\ledG_on.bmp" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\Resources\ledG_on.bmp">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\Resources\ledR_on.bmp" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\Resources\ledR_on.bmp">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\Sol.ICO" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\Sol.ICO">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\Form1.resx" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\Form1.resx">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\My Project\Resources.resx" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitaireFL\Backup\SolitaireFL\My Project\Resources.resx">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\SolitaireFL.vbproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="SolitaireFL" Source="SolitaireFL\SolitaireFL.vbproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="SolitaireFL.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="SolitaireFL.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="SolitaireFL" Source="SolitaireFL\SolitaireFL.vbproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

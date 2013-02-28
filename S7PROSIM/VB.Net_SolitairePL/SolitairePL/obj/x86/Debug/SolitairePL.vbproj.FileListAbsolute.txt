@@ -1,0 +1,13 @@
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitairePL\SolitairePL\bin\Debug\SolitairePL.exe
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitairePL\SolitairePL\bin\Debug\SolitairePL.pdb
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitairePL\SolitairePL\bin\Debug\SolitairePL.xml
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitairePL\SolitairePL\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitairePL\SolitairePL\obj\x86\Debug\SolitairePL.Form1.resources
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitairePL\SolitairePL\obj\x86\Debug\SolitairePL.Resources.resources
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitairePL\SolitairePL\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitairePL\SolitairePL\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitairePL\SolitairePL\obj\x86\Debug\SolitairePL.exe
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitairePL\SolitairePL\obj\x86\Debug\SolitairePL.xml
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitairePL\SolitairePL\obj\x86\Debug\SolitairePL.pdb
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitairePL\SolitairePL\obj\x86\Debug\Interop.S7PROSIMLib.dll
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\SolitairePL\SolitairePL\obj\x86\Debug\SolitairePL.vbproj.ResolveComReference.cache

@@ -1,0 +1,29 @@
+C:\Users\Alex\AppData\Local\Temporary Projects\Solitarie\bin\Debug\Solitarie.exe
+C:\Users\Alex\AppData\Local\Temporary Projects\Solitarie\bin\Debug\Solitarie.pdb
+C:\Users\Alex\AppData\Local\Temporary Projects\Solitarie\bin\Debug\Solitarie.xml
+C:\Users\Alex\AppData\Local\Temporary Projects\Solitarie\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Alex\AppData\Local\Temporary Projects\Solitarie\obj\Debug\Solitarie.Form1.resources
+C:\Users\Alex\AppData\Local\Temporary Projects\Solitarie\obj\Debug\Solitarie.Resources.resources
+C:\Users\Alex\AppData\Local\Temporary Projects\Solitarie\obj\Debug\Solitarie.vbproj.GenerateResource.Cache
+C:\Users\Alex\AppData\Local\Temporary Projects\Solitarie\obj\Debug\Solitarie.exe
+C:\Users\Alex\AppData\Local\Temporary Projects\Solitarie\obj\Debug\Solitarie.xml
+C:\Users\Alex\AppData\Local\Temporary Projects\Solitarie\obj\Debug\Solitarie.pdb
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\obj\Debug\Solitarie.exe
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\obj\Debug\Solitarie.xml
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\obj\Debug\Solitarie.pdb
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\bin\Debug\Solitarie.exe
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\bin\Debug\Solitarie.pdb
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\bin\Debug\Solitarie.xml
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\obj\Debug\Solitarie.Form1.resources
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\obj\Debug\Solitarie.Resources.resources
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\obj\Debug\Solitarie.vbproj.GenerateResource.Cache
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\bin\Debug\libnodave.net.dll
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\obj\Debug\Solitarie.ConnectionSettings.resources
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\obj\Debug\Solitarie.exe.licenses
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\bin\Debug\Interop.S7PROSIMLib.dll
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\obj\Debug\Interop.S7PROSIMLib.dll
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\obj\Debug\Solitarie.vbproj.ResolveComReference.cache
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\obj\Debug\Solitarie.Console.resources
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\obj\Debug\Solitarie.Form2.resources
+C:\Users\Alex\Documents\Visual Studio 2008\Projects\Solitarie\Solitarie\obj\Debug\Solitarie.Form3.resources
