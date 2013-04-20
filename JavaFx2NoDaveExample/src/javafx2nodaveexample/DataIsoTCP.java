@@ -18,22 +18,23 @@ public class DataIsoTCP {
     public static boolean Connection = false;
     private static int i, j;
     public static byte b, b1, b2, b3;
-    private static long a, c;
-    private static float d, e, f;
+    //private static long a, c;
+    //private static float d, e, f;
     private static char buf[];
+    public static byte buf1[];
     public static PLCinterface di;
     public static TCPConnection dc;
     public static Socket sock;
     private static int slot;
     public static byte[] by;
     public static String IP;
-    static private int res;
 
     //IP 192.168.1.101
     DataIsoTCP(String host) {
         IP = host;
         //Nodave.Debug=Nodave.DEBUG_ALL;
         buf = new char[Nodave.OrderCodeSize];
+        buf1 = new byte[Nodave.PartnerListSize];
         try {
             sock = new Socket(host, 102);
         } catch (IOException e) {
@@ -41,7 +42,7 @@ public class DataIsoTCP {
         }
     }
 
-    private static void StartConnection() {
+    public static void StartConnection() {
         Connection = false;
         OutputStream oStream = null;
         InputStream iStream = null;
@@ -51,10 +52,12 @@ public class DataIsoTCP {
             try {
                 oStream = sock.getOutputStream();
             } catch (IOException e) {
+                System.out.println(e);
             }
             try {
                 iStream = sock.getInputStream();
             } catch (IOException e) {
+                System.out.println(e);
             }
             di = new PLCinterface(
                     oStream,
@@ -81,7 +84,6 @@ public class DataIsoTCP {
             di.disconnectAdapter();
         }
     }
-    //read data
 
     public static void ReadData(int area, int db, int address, int bytes) {
         i = 0;
@@ -95,7 +97,7 @@ public class DataIsoTCP {
     }
 
     public static int ReadOutputs(int address, int bytes) {
-        res = dc.readBytes(Nodave.OUTPUTS, 0, address, bytes, null);
+        int res = dc.readBytes(Nodave.OUTPUTS, 0, address, bytes, null);
         if (res == 0) {
             b1 = (byte) dc.getBYTE();
             b2 = (byte) dc.getBYTE();
@@ -143,7 +145,7 @@ public class DataIsoTCP {
 
     public static void WriteBitInput(int area, int address, int bit, boolean value) {
         i = 0;
-        res = dc.readBytes(Nodave.INPUTS, 0, address, 1, null);
+        int res = dc.readBytes(Nodave.INPUTS, 0, address, 1, null);
         if (res == 0) {
             j = dc.getS8(i);
             b = (byte) j;
@@ -157,9 +159,10 @@ public class DataIsoTCP {
         }
     }
 
-    public static void ConnectIsoTcp(String adres) {
-        Nodave.Debug = Nodave.DEBUG_ALL ^ (Nodave.DEBUG_IFACE | Nodave.DEBUG_SPECIALCHARS);
+    public static void Start(String adres) {
+        Nodave.Debug=Nodave.DEBUG_ALL^(Nodave.DEBUG_IFACE|Nodave.DEBUG_SPECIALCHARS);
+
         DataIsoTCP tp = new DataIsoTCP(adres);
-        tp.StartConnection();
+        DataIsoTCP.StartConnection();
     }
 }

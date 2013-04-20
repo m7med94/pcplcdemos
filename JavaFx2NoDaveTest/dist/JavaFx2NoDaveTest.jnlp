@@ -2,7 +2,7 @@
 <jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="JavaFx2NoDaveTest.jnlp">
   <information>
     <title>JavaFx2NoDaveTest</title>
-    <vendor>Alex</vendor>
+    <vendor>javafx.com</vendor>
     <description>Sample JavaFX 2.0 application.</description>
     <offline-allowed/>
   </information>
@@ -11,7 +11,7 @@
   </resources>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="JavaFx2NoDaveTest.jar" size="43429" download="eager" />
+    <jar href="JavaFx2NoDaveTest.jar" size="43458" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="JavaFx2NoDaveTest" />
   <jfx:javafx-desc  width="800" height="600" main-class="javafx2nodavetest.JavaFx2NoDaveTest"  name="JavaFx2NoDaveTest" />

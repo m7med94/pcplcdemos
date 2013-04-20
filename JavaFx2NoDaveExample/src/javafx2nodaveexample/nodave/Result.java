@@ -16,7 +16,7 @@
  You should have received a copy of the GNU Library General Public License
  along with this; see the file COPYING.  If not, write to
  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
-*/
+ */
 package javafx2nodaveexample.nodave;
 
 /**
@@ -26,7 +26,8 @@ package javafx2nodaveexample.nodave;
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class Result {
-public int error;
-public	int length;
-public	int bufferStart;
+
+    public int error;
+    public int length;
+    public int bufferStart;
 }

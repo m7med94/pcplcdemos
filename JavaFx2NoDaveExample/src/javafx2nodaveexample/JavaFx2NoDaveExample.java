@@ -291,7 +291,7 @@ public class JavaFx2NoDaveExample extends Application {
             polygon.setFill(colorOff);
             timeline.setCycleCount(Timeline.INDEFINITE);
             KeyFrame keyFrame = new KeyFrame(Duration.millis(47), new EventHandler<ActionEvent>() {
-
+                @Override
                 public void handle(ActionEvent event) {
                     tick();
                 }
@@ -357,30 +357,30 @@ public class JavaFx2NoDaveExample extends Application {
             Shape shape2 = Shape.union(shape1, elipseB2);
 
             shape2.setFill(new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, new Stop[]{
-                        new Stop(0, Color.GRAY),
-                        new Stop(0.5, Color.WHITE),
-                        new Stop(1, Color.BLACK)}));
+                new Stop(0, Color.GRAY),
+                new Stop(0.5, Color.WHITE),
+                new Stop(1, Color.BLACK)}));
             rect3.setLayoutX(0);
             rect3.setLayoutY(7);
             rect3.setFill(Color.SILVER);
             rect3.setFill(new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, new Stop[]{
-                        new Stop(0, Color.GRAY),
-                        new Stop(0.5, Color.WHITE),
-                        new Stop(1, Color.BLACK)}));
+                new Stop(0, Color.GRAY),
+                new Stop(0.5, Color.WHITE),
+                new Stop(1, Color.BLACK)}));
             rect4.setLayoutX(2);
             rect4.setLayoutY(8);
             rect4.setFill(Color.SILVER);
             rect4.setFill(new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, new Stop[]{
-                        new Stop(0, Color.GRAY),
-                        new Stop(0.5, Color.WHITE),
-                        new Stop(1, Color.BLACK)}));
+                new Stop(0, Color.GRAY),
+                new Stop(0.5, Color.WHITE),
+                new Stop(1, Color.BLACK)}));
             rect5.setLayoutX(12);
             rect5.setLayoutY(7);
             rect5.setFill(Color.SILVER);
             rect5.setFill(new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, new Stop[]{
-                        new Stop(0, Color.GRAY),
-                        new Stop(0.5, Color.WHITE),
-                        new Stop(1, Color.BLACK)}));
+                new Stop(0, Color.GRAY),
+                new Stop(0.5, Color.WHITE),
+                new Stop(1, Color.BLACK)}));
 
             line1.setStroke(Color.RED);
             line2.setStroke(Color.RED);
@@ -470,9 +470,9 @@ public class JavaFx2NoDaveExample extends Application {
 
             shapeV2.setFill(new LinearGradient(0, 0, 1, 0, true,
                     CycleMethod.NO_CYCLE, new Stop[]{
-                        new Stop(0, Color.TRANSPARENT),
-                        new Stop(0.5, Color.WHITE),
-                        new Stop(1, Color.BLACK)}));
+                new Stop(0, Color.TRANSPARENT),
+                new Stop(0.5, Color.WHITE),
+                new Stop(1, Color.BLACK)}));
 
             getChildren().addAll(rectangleVisual, label, labelV, shapeV2, elipseV1);
         }
@@ -493,7 +493,7 @@ public class JavaFx2NoDaveExample extends Application {
         int res;
         res = DataIsoTCP.ReadOutputs(0, 3);
         if (res == 0) {
-            if ((DataIsoTCP.b1 & (1 << 0)) != 0) {
+            if ((DataIsoTCP.b1 & (1)) != 0) {
                 led1.ledOn();
             } else {
                 led1.ledOff();
@@ -533,7 +533,7 @@ public class JavaFx2NoDaveExample extends Application {
             } else {
                 led8.ledOff();
             }
-            if ((DataIsoTCP.b2 & (1 << 0)) != 0) {
+            if ((DataIsoTCP.b2 & (1)) != 0) {
                 alarm1.alarmOn();
             } else {
                 alarm1.alarmOff();
@@ -573,7 +573,7 @@ public class JavaFx2NoDaveExample extends Application {
             } else {
                 pump4.pumpOff();
             }
-            if ((DataIsoTCP.b3 & (1 << 0)) != 0) {
+            if ((DataIsoTCP.b3 & (1)) != 0) {
                 valve1.Open();
             } else {
                 valve1.Close();
@@ -600,7 +600,7 @@ public class JavaFx2NoDaveExample extends Application {
     private void configureListeners() {
 
         Slider1.valueProperty().addListener(new ChangeListener<Number>() {
-
+            @Override
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
                 labelB1.setText(String.format("%.0f", new_val));
@@ -612,7 +612,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         Slider2.valueProperty().addListener(new ChangeListener<Number>() {
-
+            @Override
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
                 labelB2.setText(String.format("%.0f", new_val));
@@ -625,7 +625,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         cb1.selectedProperty().addListener(new ChangeListener<Boolean>() {
-
+            @Override
             public void changed(ObservableValue ov,
                     Boolean old_val, Boolean new_val) {
                 if (DataIsoTCP.Connection == true) {
@@ -634,7 +634,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         cb2.selectedProperty().addListener(new ChangeListener<Boolean>() {
-
+            @Override
             public void changed(ObservableValue ov,
                     Boolean old_val, Boolean new_val) {
                 if (DataIsoTCP.Connection == true) {
@@ -643,7 +643,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         cb3.selectedProperty().addListener(new ChangeListener<Boolean>() {
-
+            @Override
             public void changed(ObservableValue ov,
                     Boolean old_val, Boolean new_val) {
                 if (DataIsoTCP.Connection == true) {
@@ -652,7 +652,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         cb4.selectedProperty().addListener(new ChangeListener<Boolean>() {
-
+            @Override
             public void changed(ObservableValue ov,
                     Boolean old_val, Boolean new_val) {
                 if (DataIsoTCP.Connection == true) {
@@ -661,7 +661,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         cb5.selectedProperty().addListener(new ChangeListener<Boolean>() {
-
+            @Override
             public void changed(ObservableValue ov,
                     Boolean old_val, Boolean new_val) {
                 if (DataIsoTCP.Connection == true) {
@@ -670,7 +670,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         cb6.selectedProperty().addListener(new ChangeListener<Boolean>() {
-
+            @Override
             public void changed(ObservableValue ov,
                     Boolean old_val, Boolean new_val) {
                 if (DataIsoTCP.Connection == true) {
@@ -679,7 +679,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         cb7.selectedProperty().addListener(new ChangeListener<Boolean>() {
-
+            @Override
             public void changed(ObservableValue ov,
                     Boolean old_val, Boolean new_val) {
                 if (DataIsoTCP.Connection == true) {
@@ -688,7 +688,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         cb8.selectedProperty().addListener(new ChangeListener<Boolean>() {
-
+            @Override
             public void changed(ObservableValue ov,
                     Boolean old_val, Boolean new_val) {
                 if (DataIsoTCP.Connection == true) {
@@ -698,9 +698,10 @@ public class JavaFx2NoDaveExample extends Application {
         });
 
         bnConn.setOnMousePressed(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
-                DataIsoTCP.ConnectIsoTcp("192.168.1.100");
+
+                DataIsoTCP.Start("192.168.1.100");
                 if (DataIsoTCP.Connection == true) {
                     labelCon.setText("Connected PLC at: 192.168.1.100");
                     timer.start();
@@ -709,7 +710,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         bnDiscon.setOnMousePressed(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
                 DataIsoTCP.StopConnection();
                 labelCon.setText("Disconnected.");
@@ -720,7 +721,7 @@ public class JavaFx2NoDaveExample extends Application {
         });
 
         bnStart.setOnMousePressed(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
                 if (DataIsoTCP.Connection == true) {
                     DataIsoTCP.WriteBitInput(1, 2, 0, true);
@@ -730,7 +731,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         bnStop.setOnMousePressed(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
                 if (DataIsoTCP.Connection == true) {
                     DataIsoTCP.WriteBitInput(1, 2, 1, true);
@@ -741,26 +742,26 @@ public class JavaFx2NoDaveExample extends Application {
         });
         switch1.labelP.setOnMousePressed(
                 new EventHandler<MouseEvent>() {
-
-                    public void handle(MouseEvent me) {
-                        switch1.moveLeft();
-                        if (DataIsoTCP.Connection == true) {
-                            DataIsoTCP.WriteBitInput(1, 1, 0, true);
-                        } else {
-                            pump1.pumpOn();
-                            pump3.pumpOn();
-                            led1.ledOn();
-                            led3.ledOn();
-                            valve1.Open();
-                            valve3.Open();
-                            alarm1.alarmOn();
-                            alarm3.alarmOn();
-                        }
-                        me.consume();
-                    }
-                });
+            @Override
+            public void handle(MouseEvent me) {
+                switch1.moveLeft();
+                if (DataIsoTCP.Connection == true) {
+                    DataIsoTCP.WriteBitInput(1, 1, 0, true);
+                } else {
+                    pump1.pumpOn();
+                    pump3.pumpOn();
+                    led1.ledOn();
+                    led3.ledOn();
+                    valve1.Open();
+                    valve3.Open();
+                    alarm1.alarmOn();
+                    alarm3.alarmOn();
+                }
+                me.consume();
+            }
+        });
         switch1.labelP.setOnMouseReleased(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
                 switch1.moveRight();
                 if (DataIsoTCP.Connection == true) {
@@ -770,7 +771,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         switch1.labelM.setOnMousePressed(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
                 switch1.moveRight();
                 if (DataIsoTCP.Connection == true) {
@@ -789,7 +790,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         switch1.labelM.setOnMouseReleased(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
                 switch1.moveLeft();
                 if (DataIsoTCP.Connection == true) {
@@ -799,7 +800,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         switch2.labelP.setOnMousePressed(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
                 switch2.moveLeft();
                 if (DataIsoTCP.Connection == true) {
@@ -818,7 +819,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         switch2.labelP.setOnMouseReleased(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
                 switch2.moveRight();
                 if (DataIsoTCP.Connection == true) {
@@ -828,7 +829,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         switch2.labelM.setOnMousePressed(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
                 switch2.moveRight();
                 if (DataIsoTCP.Connection == true) {
@@ -847,7 +848,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         switch2.labelM.setOnMouseReleased(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
                 switch2.moveLeft();
                 if (DataIsoTCP.Connection == true) {
@@ -857,7 +858,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         switch3.labelP.setOnMousePressed(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
                 switch3.moveLeft();
                 if (DataIsoTCP.Connection == true) {
@@ -876,7 +877,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         switch3.labelP.setOnMouseReleased(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
                 switch3.moveRight();
                 if (DataIsoTCP.Connection == true) {
@@ -886,7 +887,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         switch3.labelM.setOnMousePressed(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
                 switch3.moveRight();
                 if (DataIsoTCP.Connection == true) {
@@ -905,7 +906,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         switch3.labelM.setOnMouseReleased(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
                 switch3.moveLeft();
                 if (DataIsoTCP.Connection == true) {
@@ -915,7 +916,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         switch4.labelP.setOnMousePressed(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
                 switch4.moveLeft();
                 if (DataIsoTCP.Connection == true) {
@@ -934,7 +935,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         switch4.labelP.setOnMouseReleased(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
                 switch4.moveRight();
                 if (DataIsoTCP.Connection == true) {
@@ -944,7 +945,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         switch4.labelM.setOnMousePressed(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
                 switch4.moveRight();
                 if (DataIsoTCP.Connection == true) {
@@ -963,7 +964,7 @@ public class JavaFx2NoDaveExample extends Application {
             }
         });
         switch4.labelM.setOnMouseReleased(new EventHandler<MouseEvent>() {
-
+            @Override
             public void handle(MouseEvent me) {
                 switch4.moveLeft();
                 if (DataIsoTCP.Connection == true) {
@@ -1217,12 +1218,11 @@ public class JavaFx2NoDaveExample extends Application {
         animation = new Timeline();
         animation.getKeyFrames().add(new KeyFrame(Duration.millis(1000 / 100),
                 new EventHandler<ActionEvent>() {
-
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        plotTime();
-                    }
-                }));
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                plotTime();
+            }
+        }));
         animation.setCycleCount(Animation.INDEFINITE);
 
 
@@ -1235,7 +1235,6 @@ public class JavaFx2NoDaveExample extends Application {
 
         configureListeners();
         timer = new AnimationTimer() {
-
             @Override
             public void handle(long l) {
                 if (ii == 20) {

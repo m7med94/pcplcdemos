@@ -4,7 +4,6 @@
  */
 package javafx2nodavetest;
 
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -76,7 +75,6 @@ public class JavaFx2NoDaveTest extends Application {
         Button btn1 = new Button();
         btn1.setGraphic(new ImageView(imageConnect));
         btn1.setOnAction(new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent event) {
                 if (DataIsoTCP.Connection == false) {
@@ -92,7 +90,6 @@ public class JavaFx2NoDaveTest extends Application {
         Button btn2 = new Button();
         btn2.setGraphic(new ImageView(imageDisconnect));
         btn2.setOnAction(new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent event) {
                 label1.setText("Disconnect");
@@ -103,7 +100,6 @@ public class JavaFx2NoDaveTest extends Application {
         });
         Button btn3 = new Button("Read");
         btn3.setOnAction(new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent event) {
                 if (DataIsoTCP.Connection == true) {
@@ -114,9 +110,9 @@ public class JavaFx2NoDaveTest extends Application {
 
             }
         });
-        
-        valueSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
+        valueSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
                 label3.setText(String.format("%.0f", new_val));
@@ -125,12 +121,11 @@ public class JavaFx2NoDaveTest extends Application {
 
         Button btn4 = new Button("Write");
         btn4.setOnAction(new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent event) {
                 if (DataIsoTCP.Connection == true) {
-                    DataIsoTCP.WriteData( Long.valueOf(label3.getText()));
-                 }
+                    DataIsoTCP.WriteData(Long.valueOf(label3.getText()));
+                }
             }
         });
         hbox1.getChildren().add(btn1);
