@@ -77,25 +77,66 @@ public class DataIsoTCP {
             di.disconnectAdapter();
         }
     }
-    //read 4 bytes from MD 100
 
-    public static long ReadData() {
-        dc.readBytes(Nodave.FLAGS, 0, 100, 4, null);
-        a = dc.getU32();
-        return (long) a;
+    //write bytes 
+    public static void WriteData(int area, int DBNum, int number, int bytes, long a) {
+        switch (bytes) {
+            case 1: {
+                by = Nodave.bswap_8((byte) a);
+            }
+            case 2: {
+                by = Nodave.bswap_16((int) a);
+            }
+            case 4: {
+                by = Nodave.bswap_32(a);
+            }
+        }
+        dc.writeBytes(area, DBNum, number, bytes, by);
     }
-    //write 4 bytes to MD 100
 
-    public static void WriteData(long a) {
-        by = Nodave.bswap_32(a);
-        dc.writeBytes(Nodave.FLAGS, 0, 100, 4, by);
+    //read bytes 
+    public static String ReadData(int area, int DBNum, int number, int bytes, int repr) {
+        String tmp;
+        if (Connection) {
+            dc.readBytes(area, DBNum, number, bytes, null);
+            switch (bytes) {
+                case 1: {
+                    if (repr == 1) {
+                        tmp = Integer.toBinaryString(dc.getBYTE());
+                        for (int i = tmp.length(); i < 9; i++) {
+                            tmp = "0" + tmp;
+                        }
+                        return "2#" + tmp;
+                    } else if (repr == 2) {
+                        return "B#16#" + Integer.toHexString(dc.getBYTE());
+                    } else if (repr == 3) {
+                        return Integer.toString(dc.getBYTE());
+                    } else if (repr == 4) {
+                        return Integer.toString(dc.getBYTE());
+                    } else {
+                        return Integer.toString(dc.getBYTE());
+                    }
+                }
+                case 2: {
+                    return Integer.toString(dc.getINT());
+                }
+                case 4: {
+                    return Long.toString(dc.getU32());
+                }
+                default: {
+                    return "unknown";
+                }
+            }
+        } else {
+            return "off-line";
+        }
     }
 
     public static void Start(String adres) {
 
-        Nodave.Debug=Nodave.DEBUG_ALL^(Nodave.DEBUG_IFACE|Nodave.DEBUG_SPECIALCHARS);
+        Nodave.Debug = Nodave.DEBUG_ALL ^ (Nodave.DEBUG_IFACE | Nodave.DEBUG_SPECIALCHARS);
 
         DataIsoTCP tp = new DataIsoTCP(adres);
-        DataIsoTCP.StartConnection();
+        tp.StartConnection();
     }
 }
