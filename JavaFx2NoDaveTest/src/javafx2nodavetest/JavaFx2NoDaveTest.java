@@ -35,6 +35,10 @@ public class JavaFx2NoDaveTest extends Application {
      */
     private static final Color color = Color.web("#464646");
     Label label1 = new Label();
+    Label label311 = new Label();
+    Label label321 = new Label();
+    Label label322 = new Label();
+    Label label323 = new Label();
     Label label411 = new Label();
     Label label412 = new Label();
     Label label421 = new Label();
@@ -63,7 +67,7 @@ public class JavaFx2NoDaveTest extends Application {
         Scene scene = new Scene(new Group());
         stage.setTitle("Hello Siemens S7 PLC!");
         stage.setWidth(400);
-        stage.setHeight(500);
+        stage.setHeight(600);
 
         final Slider byteSlider = new Slider(0, 1, 1);
         byteSlider.setMin(0);
@@ -85,12 +89,48 @@ public class JavaFx2NoDaveTest extends Application {
         label412.setFont(Font.font("Times New Roman", 12));
         label412.setTextFill(color);
         label412.setText("****");
+
+        label311.setFont(Font.font("Times New Roman", 12));
+        label311.setTextFill(color);
+        label311.setText("BIT: adr:10.4");
+        label321.setFont(Font.font("Times New Roman", 12));
+        label321.setTextFill(color);
+        label321.setText("I");
+        label322.setFont(Font.font("Times New Roman", 12));
+        label322.setTextFill(color);
+        label322.setText("Q");
+        label323.setFont(Font.font("Times New Roman", 12));
+        label323.setTextFill(color);
+        label323.setText("M");
+
+        label421.setFont(Font.font("Times New Roman", 12));
+        label421.setTextFill(color);
+        label421.setText("IB");
+        label422.setFont(Font.font("Times New Roman", 12));
+        label422.setTextFill(color);
+        label422.setText("QB");
+        label423.setFont(Font.font("Times New Roman", 12));
+        label423.setTextFill(color);
+        label423.setText("MB");
+
         label511.setFont(Font.font("Times New Roman", 12));
         label511.setTextFill(color);
         label511.setText("WORD: adr: 30");
         label512.setFont(Font.font("Times New Roman", 12));
         label512.setTextFill(color);
         label512.setText("****");
+
+        label521.setFont(Font.font("Times New Roman", 12));
+        label521.setTextFill(color);
+        label521.setText("IW");
+        label522.setFont(Font.font("Times New Roman", 12));
+        label522.setTextFill(color);
+        label522.setText("QW");
+        label523.setFont(Font.font("Times New Roman", 12));
+        label523.setTextFill(color);
+        label523.setText("MW");
+
+
         label611.setFont(Font.font("Times New Roman", 12));
         label611.setTextFill(color);
         label611.setText("DWORD: adr: 40");
@@ -98,45 +138,25 @@ public class JavaFx2NoDaveTest extends Application {
         label612.setTextFill(color);
         label612.setText("****");
 
-        label421.setFont(Font.font("Times New Roman", 12));
-        label421.setTextFill(color);
-        label421.setText("****");
-        label422.setFont(Font.font("Times New Roman", 12));
-        label422.setTextFill(color);
-        label422.setText("****");
-        label423.setFont(Font.font("Times New Roman", 12));
-        label423.setTextFill(color);
-        label423.setText("****");
-
-        label521.setFont(Font.font("Times New Roman", 12));
-        label521.setTextFill(color);
-        label521.setText("****");
-        label522.setFont(Font.font("Times New Roman", 12));
-        label522.setTextFill(color);
-        label522.setText("****");
-        label523.setFont(Font.font("Times New Roman", 12));
-        label523.setTextFill(color);
-        label523.setText("****");
-
         label621.setFont(Font.font("Times New Roman", 12));
         label621.setTextFill(color);
-        label621.setText("****");
+        label621.setText("ID");
         label622.setFont(Font.font("Times New Roman", 12));
         label622.setTextFill(color);
-        label622.setText("****");
+        label622.setText("QD");
         label623.setFont(Font.font("Times New Roman", 12));
         label623.setTextFill(color);
-        label623.setText("****");
+        label623.setText("MD");
 
         label711.setFont(Font.font("Times New Roman", 12));
         label711.setTextFill(color);
         label711.setText("TIMER-COUNTER: adr:1-2");
         label721.setFont(Font.font("Times New Roman", 12));
         label721.setTextFill(color);
-        label721.setText("****");
+        label721.setText("T");
         label722.setFont(Font.font("Times New Roman", 12));
         label722.setTextFill(color);
-        label722.setText("****");
+        label722.setText("C");
 
         Image imageConnect = new Image(getClass().getResourceAsStream("pic/ok.png"));
         Image imageDisconnect = new Image(getClass().getResourceAsStream("pic/not.png"));
@@ -145,7 +165,9 @@ public class JavaFx2NoDaveTest extends Application {
         vbox.setLayoutX(20);
         vbox.setLayoutY(20);
         HBox hbox1 = new HBox();
-        HBox hbox3 = new HBox();
+        HBox hbox2 = new HBox();
+        HBox hbox31 = new HBox();
+        VBox vbox32 = new VBox();
         HBox hbox41 = new HBox();
         VBox vbox42 = new VBox();
         HBox hbox51 = new HBox();
@@ -205,6 +227,9 @@ public class JavaFx2NoDaveTest extends Application {
                     repr = 4;
                 };
                 if (DataIsoTCP.Connection == true) {
+                    label321.setText(DataIsoTCP.ReadBinareData(Nodave.INPUTS, 0, 10, 4));
+                    label322.setText(DataIsoTCP.ReadBinareData(Nodave.OUTPUTS, 0, 10, 4));
+                    label323.setText(DataIsoTCP.ReadBinareData(Nodave.FLAGS, 0, 10, 4));
 
                     label421.setText(DataIsoTCP.ReadData(Nodave.INPUTS, 0, 20, 1, repr));
                     label422.setText(DataIsoTCP.ReadData(Nodave.OUTPUTS, 0, 20, 1, repr));
@@ -245,32 +270,38 @@ public class JavaFx2NoDaveTest extends Application {
                 label612.setText(String.format("%.0f", new_val));
             }
         });
-
+        final RadioButton rb1 = new RadioButton();
+rb1.setText("Selected value");
         Button btn4 = new Button("Write");
         btn4.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                boolean sel = rb1.isSelected();
                 if (DataIsoTCP.Connection == true) {
-                    DataIsoTCP.WriteData(Nodave.FLAGS, 0, 20, 1,
-                            Long.valueOf(label412.getText()));
-                    DataIsoTCP.WriteData(Nodave.INPUTS, 0, 20, 1,
-                            Long.valueOf(label412.getText()));
-                    DataIsoTCP.WriteData(Nodave.OUTPUTS, 0, 20, 1,
-                            Long.valueOf(label412.getText()));
+                    DataIsoTCP.WriteBinareData(Nodave.INPUTS, 0, 10, 4, sel);
+                    DataIsoTCP.WriteBinareData(Nodave.OUTPUTS, 0, 10, 4, sel);
+                    DataIsoTCP.WriteBinareData(Nodave.FLAGS, 0, 10, 4, sel);
 
-                    DataIsoTCP.WriteData(Nodave.FLAGS, 0, 30, 2,
-                            Long.valueOf(label512.getText()));
-                    DataIsoTCP.WriteData(Nodave.INPUTS, 0, 30, 2,
-                            Long.valueOf(label512.getText()));
-                    DataIsoTCP.WriteData(Nodave.OUTPUTS, 0, 30, 2,
-                            Long.valueOf(label512.getText()));
+                    DataIsoTCP.WriteData8(Nodave.INPUTS, 0, 20,1,
+                            Integer.valueOf(label412.getText()));
+                    DataIsoTCP.WriteData8(Nodave.OUTPUTS, 0, 20,1,
+                            Integer.valueOf(label412.getText()));
+                    DataIsoTCP.WriteData8(Nodave.FLAGS, 0, 20,1,
+                            Integer.valueOf(label412.getText()));
 
-                    DataIsoTCP.WriteData(Nodave.FLAGS, 0, 40, 4,
-                            Long.valueOf(label612.getText()));
+                    DataIsoTCP.WriteData16(Nodave.INPUTS, 0, 30,2,
+                            Integer.valueOf(label512.getText()));
+                    DataIsoTCP.WriteData16(Nodave.OUTPUTS, 0, 30,2,
+                            Integer.valueOf(label512.getText()));
+                    DataIsoTCP.WriteData16(Nodave.FLAGS, 0, 30,2,
+                            Integer.valueOf(label512.getText()));
+
                     DataIsoTCP.WriteData(Nodave.INPUTS, 0, 40, 4,
-                            Long.valueOf(label612.getText()));
+                            Integer.valueOf(label612.getText()));
                     DataIsoTCP.WriteData(Nodave.OUTPUTS, 0, 40, 4,
-                            Long.valueOf(label612.getText()));
+                            Integer.valueOf(label612.getText()));
+                    DataIsoTCP.WriteData(Nodave.FLAGS, 0, 40, 4,
+                            Integer.valueOf(label612.getText()));
                 }
             }
         });
@@ -280,12 +311,20 @@ public class JavaFx2NoDaveTest extends Application {
         hbox1.setSpacing(10);
         hbox1.setAlignment(Pos.BOTTOM_CENTER);
 
-        hbox3.getChildren().add(btn3);
-        hbox3.getChildren().add(btn4);
-        hbox3.getChildren().add(represComboBox);
-        hbox3.setSpacing(10);
+        hbox2.getChildren().add(btn3);
+        hbox2.getChildren().add(btn4);
+        hbox2.setSpacing(10);
+
+        hbox31.getChildren().add(label311);
+        hbox31.getChildren().add(rb1);
+        hbox31.setSpacing(10);
+        vbox32.getChildren().add(label321);
+        vbox32.getChildren().add(label322);
+        vbox32.getChildren().add(label323);
+        vbox32.setSpacing(10);
 
         hbox41.getChildren().add(label411);
+        hbox41.getChildren().add(represComboBox);
         hbox41.getChildren().add(byteSlider);
         hbox41.getChildren().add(label412);
         hbox41.setSpacing(10);
@@ -322,7 +361,9 @@ public class JavaFx2NoDaveTest extends Application {
         vbox72.setSpacing(10);
 
         vbox.getChildren().add(hbox1);
-        vbox.getChildren().add(hbox3);
+        vbox.getChildren().add(hbox2);
+        vbox.getChildren().add(hbox31);
+        vbox.getChildren().add(vbox32);
         vbox.getChildren().add(hbox41);
         vbox.getChildren().add(vbox42);
         vbox.getChildren().add(hbox51);
