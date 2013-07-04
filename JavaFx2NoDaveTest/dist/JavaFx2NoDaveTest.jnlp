@@ -11,7 +11,7 @@
   </resources>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="JavaFx2NoDaveTest.jar" size="48800" download="eager" />
+    <jar href="JavaFx2NoDaveTest.jar" size="48798" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="JavaFx2NoDaveTest" />
   <jfx:javafx-desc  width="800" height="600" main-class="javafx2nodavetest.JavaFx2NoDaveTest"  name="JavaFx2NoDaveTest" />

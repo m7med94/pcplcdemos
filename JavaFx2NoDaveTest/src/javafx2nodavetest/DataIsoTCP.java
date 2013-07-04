@@ -85,19 +85,18 @@ public class DataIsoTCP {
             dc.writeBytes(Nodave.OUTPUTS, 0, address, 1, by);
         }
     }
-    //write 2 bytes to MW 
-
     //write bytes 
-    public static void WriteData8(int area, int db, int number,int bytes, int m) {
+
+    public static void WriteData8(int area, int db, int number, int bytes, int m) {
         by = Nodave.bswap_8(m);
         dc.writeBytes(area, 0, number, 1, by);
     }
-    
-    public static void WriteData16(int area, int db, int number,int bytes, int m) {
+
+    public static void WriteData16(int area, int db, int number, int bytes, int m) {
         by = Nodave.bswap_16(m);
         dc.writeBytes(area, 0, number, 2, by);
     }
-    
+
     public static void WriteData(int area, int DBNum, int number, int bytes, int a) {
         switch (bytes) {
             case 1: {
