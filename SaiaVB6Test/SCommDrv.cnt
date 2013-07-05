@@ -1,0 +1,7 @@
+:Base SCommDrv.hlp
+:Title SAIA Communications Driver
+1 Status Dialog=HIDD_PARAM_STATUS
+1 Setup Dialog=HIDD_PARAM_SETUP
+1 About Dialog=HIDD_ABOUTBOX
+1 System Menu=HIDR_SCOMMDRV
+1 System Tray=HIDR_POPUPMENU

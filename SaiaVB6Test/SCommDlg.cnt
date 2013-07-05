@@ -1,0 +1,39 @@
+:Base SCommDlg.hlp
+:Title SAIA Communications Driver
+1 Dialog Boxes
+2 Channels settings
+3 Channels=HIDD_SCOMMDLG_DIALOG
+3 Add Channel Dialog=HIDD_CHANLIST
+3 PGU Connection=HIDD_CHANNEL_PGU
+3 S-Bus Connection=HIDD_CHANNEL_SBUS
+3 S-Bus Modem Connection=HIDD_CHANNEL_SBUS_MODEM
+3 PC104 Connection=HIDD_CHANNEL_PC104
+3 TPC/IP Connection=HIDD_CHANNEL_SOCKET
+3 S-Bus USB Connection=HIDD_CHANNEL_SBUS_USB
+3 Profi-S-Bus Connection=HIDD_CHANNEL_PROFI_SBUS
+2 Online settings
+3 PGU Online Settings=HIDD_CONNECT_PGU_DLG
+3 S-Bus Online Settings=HIDD_CONNECT_SBUS_DLG
+3 S-Bus Modem Online Settings=HIDD_CONNECT_SBUS_MODEM_DLG
+3 PC104 Online Settings=HIDD_CONNECT_PC104_DLG
+3 TCP/IP Online Settings=HIDD_CONNECT_SOCKET_DLG
+3 S-Bus USB Online Settings=HIDD_CONNECT_SBUS_USB_DLG
+3 Profi-S-Bus Online Settings=HIDD_CONNECT_PROFI_SBUS_DLG
+2 Modems
+3 Advanced Modem Settings=Advanced_Modem_Settings
+3 Dial Properties=HIDD_DIAL_DLG
+3 Phonebook=HIDD_PHONEBOOK_DLG
+3 Add/Edit Phonebook Entry=HIDD_PHONEBOOK_DETAIL
+2 Others
+3 Set Clock=HIDD_SETCLOCK_DLG
+3 Password=HIDD_PASSWORD_DLG
+3 PCD Status=HIDD_PCDSTATUS_DLG
+1 Miscellaneous
+2 Requirements for modems=Requirements_for_modems
+2 Cable Specification=Cable_specification
+2 RS-485 Cable Specification=RS_485_Cable_specification
+2 S-Bus Timing=SBUS_Timing
+2 RS-485 Constraints=RS_485_constraints
+2 How to manage channel settings=How_to_maintain_channel_information
+2 Messages=Error_Messages
+2 Version=_HelpVersion_
