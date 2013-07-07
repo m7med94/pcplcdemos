@@ -111,13 +111,13 @@ public class JavaFx2NoDaveTest extends Application {
         label323.setText("M 10.4");
         label331.setFont(Font.font("Times New Roman", 12));
         label331.setTextFill(color);
-        label331.setText("***");
+        label331.setText("0");
         label332.setFont(Font.font("Times New Roman", 12));
         label332.setTextFill(color);
-        label332.setText("***");
+        label332.setText("0");
         label333.setFont(Font.font("Times New Roman", 12));
         label333.setTextFill(color);
-        label333.setText("***");
+        label333.setText("0");
 
         label411.setFont(Font.font("Times New Roman", 12));
         label411.setTextFill(color);

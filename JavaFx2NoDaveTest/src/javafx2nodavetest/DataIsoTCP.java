@@ -75,18 +75,7 @@ public class DataIsoTCP {
         }
     }
 
-    public static void WriteDataByteInput(int area, int db, int address, int value) {
-        by = Nodave.bswap_8(value);
-        if (area == 1) {
-            dc.writeBytes(Nodave.INPUTS, 0, address, 1, by);
-        } else if (area == 2) {
-            dc.writeBytes(Nodave.FLAGS, db, address, 1, by);
-        } else if (area == 3) {
-            dc.writeBytes(Nodave.OUTPUTS, 0, address, 1, by);
-        }
-    }
     //write bytes 
-
     public static void WriteData8(int area, int DBNum, int number, int bytes, int a) {
         by = Nodave.bswap_8(a);
         dc.writeBytes(area, DBNum, number, 1, by);
@@ -167,7 +156,7 @@ public class DataIsoTCP {
     }
 
     public static String ReadTimer(int number, int repr) {
-        String tmp1, tmp2, tmp3;
+        String tmp1, tmp2;
         if (Connection) {
             dc.readBytes(Nodave.TIMER, 0, number, 2, null);
             if (repr == 1) {
