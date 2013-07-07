@@ -87,14 +87,14 @@ public class DataIsoTCP {
     }
     //write bytes 
 
-    public static void WriteData8(int area, int db, int number, int bytes, int m) {
-        by = Nodave.bswap_8(m);
-        dc.writeBytes(area, 0, number, 1, by);
+    public static void WriteData8(int area, int DBNum, int number, int bytes, int a) {
+        by = Nodave.bswap_8(a);
+        dc.writeBytes(area, DBNum, number, 1, by);
     }
 
-    public static void WriteData16(int area, int db, int number, int bytes, int m) {
-        by = Nodave.bswap_16(m);
-        dc.writeBytes(area, 0, number, 2, by);
+    public static void WriteData16(int area, int DBNum, int number, int bytes, int a) {
+        by = Nodave.bswap_16(a);
+        dc.writeBytes(area, DBNum, number, 2, by);
     }
 
     public static void WriteData(int area, int DBNum, int number, int bytes, int a) {
@@ -136,9 +136,10 @@ public class DataIsoTCP {
                 case 1: {
                     if (repr == 1) {
                         tmp = Integer.toBinaryString(dc.getBYTE());
-                        for (int i = tmp.length(); i < 9; i++) {
+                        for (int i = tmp.length(); i < 8; i++) {
                             tmp = "0" + tmp;
                         }
+                        tmp = new StringBuffer(tmp).insert(4, "_").toString();
                         return "2#" + tmp;
                     } else if (repr == 2) {
                         return "B#16#" + Integer.toHexString(dc.getBYTE());
@@ -159,6 +160,60 @@ public class DataIsoTCP {
                 default: {
                     return "unknown";
                 }
+            }
+        } else {
+            return "off-line";
+        }
+    }
+
+    public static String ReadTimer(int number, int repr) {
+        String tmp1, tmp2, tmp3;
+        if (Connection) {
+            dc.readBytes(Nodave.TIMER, 0, number, 2, null);
+            if (repr == 1) {
+                tmp1 = Integer.toBinaryString(dc.getBYTE(0));
+                for (int i = tmp1.length(); i < 8; i++) {
+                    tmp1 = "0" + tmp1;
+                }
+                tmp1 = new StringBuffer(tmp1).insert(4, "_").toString();
+                tmp2 = Integer.toBinaryString(dc.getBYTE(1));
+                for (int i = tmp2.length(); i < 8; i++) {
+                    tmp2 = "0" + tmp2;
+                }
+                tmp2 = new StringBuffer(tmp2).insert(4, "_").toString();
+                return "2#" + tmp1 + "_" + tmp2;
+            } else if (repr == 2) {
+                return "W#16#" + Integer.toHexString(dc.getWORD());
+            } else {
+                return Integer.toString(dc.getWORD());
+            }
+        } else {
+            return "off-line";
+        }
+    }
+
+    public static String ReadCounter(int number, int repr) {
+        String tmp;
+        if (Connection) {
+            dc.readBytes(Nodave.COUNTER, 0, number, 2, null);
+            if (repr == 1) {
+                String hex = Integer.toHexString(dc.getWORD());
+                tmp = Integer.toBinaryString(Integer.parseInt(hex, 16));
+                for (int i = tmp.length(); i < 16; i++) {
+                    tmp = "0" + tmp;
+                }
+                tmp = new StringBuffer(tmp).insert(4, "_").toString();
+                tmp = new StringBuffer(tmp).insert(9, "_").toString();
+                tmp = new StringBuffer(tmp).insert(14, "_").toString();
+                return "2#" + tmp;
+            } else if (repr == 2) {
+                tmp = Integer.toHexString(dc.getWORD());
+                for (int i = tmp.length(); i < 4; i++) {
+                    tmp = "0" + tmp;
+                }
+                return "W#16#" + tmp;
+            } else {
+                return Integer.toString(dc.getWORD());
             }
         } else {
             return "off-line";
