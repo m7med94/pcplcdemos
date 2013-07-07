@@ -15,6 +15,7 @@ public class MainActivity extends Activity {
 	private EditText value;
 	//DataIsoTCP tp;
 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
