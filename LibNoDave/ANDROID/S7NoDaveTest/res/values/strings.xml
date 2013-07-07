@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">S7 NoDaveTest</string>
+    <string name="action_settings">Settings</string>
+    <string name="connectplc">Connect</string>
+    <string name="reading">Read</string>
+    <string name="writing">Write</string>
+    <string name="plcaddress">192.168.1.100</string>
+    <string name="test">message</string>
+    <string name="write">Write</string>
+    <string name="read">Read</string>
+    <string name="value">55</string>
+    
+</resources>

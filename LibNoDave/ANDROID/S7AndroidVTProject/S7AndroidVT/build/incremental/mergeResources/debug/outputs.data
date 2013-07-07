@@ -1,0 +1,15 @@
+# incremental data. DO NOT EDIT.
+# format is <lastModified> <length> <SHA-1> <path>
+# Encoding is UTF-8
+1371821821855 244 045ff451db7cd8e61285502b8c9bbf7405f2078d C:\Users\Alex\AndroidStudioProjects\S7AndroidVTProject\S7AndroidVT\build\res\all\debug\menu\plc.xml
+1371809725449 244 045ff451db7cd8e61285502b8c9bbf7405f2078d C:\Users\Alex\AndroidStudioProjects\S7AndroidVTProject\S7AndroidVT\build\res\all\debug\menu\main.xml
+1371809725404 224 3bee0d9a6f0efbaf11495ad45fdeb8f71aee62e8 C:\Users\Alex\AndroidStudioProjects\S7AndroidVTProject\S7AndroidVT\build\res\all\debug\values-v14\values.xml
+1371809725406 210 c41731f5631a90fa989588ef97e9476fc244b438 C:\Users\Alex\AndroidStudioProjects\S7AndroidVTProject\S7AndroidVT\build\res\all\debug\values-v11\values.xml
+1371809725411 130 90e37035f35f83953c491e73e930b7aea297a472 C:\Users\Alex\AndroidStudioProjects\S7AndroidVTProject\S7AndroidVT\build\res\all\debug\values-sw720dp-land\values.xml
+1371809725556 8069 30fc990bc916ba1a385cdb5aa7a93c94e7965db2 C:\Users\Alex\AndroidStudioProjects\S7AndroidVTProject\S7AndroidVT\build\res\all\debug\drawable-hdpi\ic_launcher.png
+1372679793083 8051 10241f7a317a9e50c322bb47295ce8c4886ee92f C:\Users\Alex\AndroidStudioProjects\S7AndroidVTProject\S7AndroidVT\build\res\all\debug\layout\activity_main.xml
+1371809725554 25935 a9bf3edfcb0c337ee3b939e59fb4bd5b3535cc70 C:\Users\Alex\AndroidStudioProjects\S7AndroidVTProject\S7AndroidVT\build\res\all\debug\drawable-xxhdpi\ic_launcher.png
+1371821821880 869 851e5bab443a625a4dd98e24f88a40b689fff33b C:\Users\Alex\AndroidStudioProjects\S7AndroidVTProject\S7AndroidVT\build\res\all\debug\values\values.xml
+1372347743872 3158 9917b496e5724d68bfb6c1459a29e98926fec0f4 C:\Users\Alex\AndroidStudioProjects\S7AndroidVTProject\S7AndroidVT\build\res\all\debug\layout\activity_plc.xml
+1371809725501 3973 38205144875b94947b93b31da83cb944e4ff6a94 C:\Users\Alex\AndroidStudioProjects\S7AndroidVTProject\S7AndroidVT\build\res\all\debug\drawable-mdpi\ic_launcher.png
+1371809725547 13025 3023090aca7bf042d3171c9ab2c1619c2a3ef176 C:\Users\Alex\AndroidStudioProjects\S7AndroidVTProject\S7AndroidVT\build\res\all\debug\drawable-xhdpi\ic_launcher.png
