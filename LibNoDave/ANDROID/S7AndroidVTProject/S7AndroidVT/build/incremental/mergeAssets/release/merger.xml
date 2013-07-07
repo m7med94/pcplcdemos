@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="main" >
+        <source path="C:\Users\Alex\AndroidStudioProjects\S7AndroidVTProject\S7AndroidVT\src\main\assets" />
+    </dataSet>
+    <dataSet config="release" >
+        <source path="C:\Users\Alex\AndroidStudioProjects\S7AndroidVTProject\S7AndroidVT\src\release\assets" />
+    </dataSet>
+
+</merger>
