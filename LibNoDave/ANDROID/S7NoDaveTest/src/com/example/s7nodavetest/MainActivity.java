@@ -1,20 +1,19 @@
 package com.example.s7nodavetest;
 
 
+import nodave.DataIsoTCP;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-import nodave.*;
 
 public class MainActivity extends Activity {
 	private EditText address;
 	private EditText test;
 	private EditText value;
 	//DataIsoTCP tp;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
