@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="NoDaveVBNet">
+</Property><Property Name="Solution File" Value="C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\NoDaveVBNet.sln">
+</Property><Property Name="User Options File" Value="C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\NoDaveVBNet.suo">
+</Property><Property Name="Date" Value="vrijdag 8 maart 2013">
+</Property><Property Name="Time" Value="12:44">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="NoDaveVBNet.sln" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\Backup\NoDaveVBNet.sln">
+</Event><Event ErrorLevel="0" Project="" Source="NoDaveVBNet.suo" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\Backup\NoDaveVBNet.suo">
+</Event><Event ErrorLevel="0" Project="NoDaveVBNet" Source="NoDaveVBNet\NoDaveVBNet.vbproj" Description="Project file successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\Backup\NoDaveVBNet\NoDaveVBNet.vbproj">
+</Event><Event ErrorLevel="0" Project="NoDaveVBNet" Source="NoDaveVBNet\NoDaveVBNet.vbproj.user" Description="Project user file successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\Backup\NoDaveVBNet\NoDaveVBNet.vbproj.user">
+</Event><Event ErrorLevel="0" Project="NoDaveVBNet" Source="NoDaveVBNet\Form1.vb" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\Backup\NoDaveVBNet\Form1.vb">
+</Event><Event ErrorLevel="0" Project="NoDaveVBNet" Source="NoDaveVBNet\Form1.Designer.vb" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\Backup\NoDaveVBNet\Form1.Designer.vb">
+</Event><Event ErrorLevel="0" Project="NoDaveVBNet" Source="NoDaveVBNet\Module1.vb" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\Backup\NoDaveVBNet\Module1.vb">
+</Event><Event ErrorLevel="0" Project="NoDaveVBNet" Source="NoDaveVBNet\My Project\AssemblyInfo.vb" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\Backup\NoDaveVBNet\My Project\AssemblyInfo.vb">
+</Event><Event ErrorLevel="0" Project="NoDaveVBNet" Source="NoDaveVBNet\My Project\Application.Designer.vb" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\Backup\NoDaveVBNet\My Project\Application.Designer.vb">
+</Event><Event ErrorLevel="0" Project="NoDaveVBNet" Source="NoDaveVBNet\My Project\Resources.Designer.vb" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\Backup\NoDaveVBNet\My Project\Resources.Designer.vb">
+</Event><Event ErrorLevel="0" Project="NoDaveVBNet" Source="NoDaveVBNet\My Project\Settings.Designer.vb" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\Backup\NoDaveVBNet\My Project\Settings.Designer.vb">
+</Event><Event ErrorLevel="0" Project="NoDaveVBNet" Source="NoDaveVBNet\Variables.vb" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\Backup\NoDaveVBNet\Variables.vb">
+</Event><Event ErrorLevel="0" Project="NoDaveVBNet" Source="NoDaveVBNet\My Project\Application.myapp" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\Backup\NoDaveVBNet\My Project\Application.myapp">
+</Event><Event ErrorLevel="0" Project="NoDaveVBNet" Source="NoDaveVBNet\My Project\Settings.settings" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\Backup\NoDaveVBNet\My Project\Settings.settings">
+</Event><Event ErrorLevel="0" Project="NoDaveVBNet" Source="NoDaveVBNet\Form1.resx" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\Backup\NoDaveVBNet\Form1.resx">
+</Event><Event ErrorLevel="0" Project="NoDaveVBNet" Source="NoDaveVBNet\My Project\licenses.licx" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\Backup\NoDaveVBNet\My Project\licenses.licx">
+</Event><Event ErrorLevel="0" Project="NoDaveVBNet" Source="NoDaveVBNet\My Project\Resources.resx" Description="File successfully backed up as C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\Backup\NoDaveVBNet\My Project\Resources.resx">
+</Event><Event ErrorLevel="0" Project="NoDaveVBNet" Source="NoDaveVBNet\NoDaveVBNet.vbproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="NoDaveVBNet" Source="NoDaveVBNet\NoDaveVBNet.vbproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="NoDaveVBNet.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="NoDaveVBNet.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="NoDaveVBNet" Source="NoDaveVBNet\NoDaveVBNet.vbproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

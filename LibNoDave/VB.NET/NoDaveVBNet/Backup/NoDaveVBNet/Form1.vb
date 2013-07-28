@@ -165,57 +165,6 @@
         If ComboBox1.SelectedItem = "Flags" Then
             res = dc.writeBytes(libnodave.daveFlags, 0, a, 1, buf)
         End If
-
-     End Sub
-
-    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-        Dim x1 As Double = 12345.9
-        Dim x2 As Integer = 123456
-        Dim x3 As Short = 1234
-        Dim x4 As Byte = 34
-        Dim a As Integer
-        Dim aDB As Integer = 0
-        Dim pA(20) As Byte
-        a = Int(TextBox1.Text)
-
-        If Connection Then
-            pA = BitConverter.GetBytes(libnodave.daveToPLCfloat(x1))
-            res = dc.writeBytes(libnodave.daveFlags, aDB, a, 4, pA)
-
-            pA = BitConverter.GetBytes(libnodave.daveSwapIed_32(x2))
-            res = dc.writeBytes(libnodave.daveFlags, aDB, a, 4, pA)
-
-            pA = BitConverter.GetBytes(libnodave.daveSwapIed_16(x3))
-            res = dc.writeBytes(libnodave.daveFlags, aDB, a, 2, pA)
-
-            pA(0) = x4
-            res = dc.writeBytes(libnodave.daveFlags, aDB, a, 1, pA)
-        Else
-            MsgBox("No connection with PLC!")
-        End If
-
     End Sub
- 
-    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
-        Dim Adr As Integer
-        Dim pD(1) As Byte
-        Dim Par As Boolean = True
-        Dim InputNum As Integer = 20 'input I20.3
-        Dim BitNum As Integer = 3
 
-        If Par Then
-            pD(0) = 255 'write 1
-        Else
-            pD(0) = 0 'write 0
-        End If
-        If Connection Then
-            Adr = InputNum * 8 + BitNum
-            res = dc.writeBits(libnodave.daveInputs, 0, Adr, 1, pD)
-            'res = dc.writeBits(libnodave.daveFlags, 0, Adr, 1, pD)
-            'res = dc.writeBits(libnodave.daveOutputs, 0, Adr, 1, pD)
-        Else
-            MsgBox("No connection with PLC!")
-        End If
-
-    End Sub
 End Class

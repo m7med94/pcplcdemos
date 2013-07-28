@@ -34,3 +34,16 @@ C:\Users\Public\Documents\Visual Studio 2008\NoDaveDotNET\NoDaveVBNetTest\NoDave
 C:\Users\Public\Documents\Visual Studio 2008\NoDaveDotNET\NoDaveVBNetTest\NoDaveVBNet\NoDaveVBNet\obj\Debug\NoDaveVBNet.Resources.resources
 C:\Users\Public\Documents\Visual Studio 2008\NoDaveDotNET\NoDaveVBNetTest\NoDaveVBNet\NoDaveVBNet\obj\Debug\NoDaveVBNet.vbproj.GenerateResource.Cache
 C:\Users\Public\Documents\Visual Studio 2008\NoDaveDotNET\NoDaveVBNetTest\NoDaveVBNet\NoDaveVBNet\obj\Debug\NoDaveVBNet.exe.licenses
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\NoDaveVBNet\obj\Debug\NoDaveVBNet.exe
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\NoDaveVBNet\obj\Debug\NoDaveVBNet.xml
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\NoDaveVBNet\obj\Debug\NoDaveVBNet.pdb
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\NoDaveVBNet\bin\Debug\NoDaveVBNet.exe
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\NoDaveVBNet\bin\Debug\NoDaveVBNet.pdb
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\NoDaveVBNet\bin\Debug\NoDaveVBNet.xml
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\NoDaveVBNet\bin\Debug\libnodave.net.dll
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\NoDaveVBNet\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\NoDaveVBNet\obj\Debug\NoDaveVBNet.Form1.resources
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\NoDaveVBNet\obj\Debug\NoDaveVBNet.Resources.resources
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\NoDaveVBNet\obj\Debug\GenerateResource-ResGen.read.1.tlog
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\NoDaveVBNet\obj\Debug\GenerateResource-ResGen.write.1.tlog
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\NoDaveVBNet\NoDaveVBNet\obj\Debug\NoDaveVBNet.exe.licenses
