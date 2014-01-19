@@ -1,0 +1,589 @@
+FUNCTION_BLOCK BST_CYLHYD_400
+NAME:BSTCVAL
+FAMILY:BST
+AUTHOR:SAM
+//VERSION:'1.0'
+//FB1006
+// Typical-Attribute
+
+{
+  S7_tasklist:='OB100,OB101';
+  S7_m_c:='true';
+  S7_blockview:='big'
+}
+// Parameter-Attribute
+// S7_visible       visible/unvisible   (default='true')
+// S7_m_c           WinCC - Tag         (default='false')
+// S7_dynamic       Testmodus           (default='false')
+
+VAR_INPUT
+
+    LOCK            {S7_dynamic:='true'}                        : BOOL := false;        // Interlock, 1=interlock active
+    ERR_EXTERN      {S7_dynamic:='true'}                        : BOOL := false;        // External Error, 1=error active
+    LIOP_SEL        {S7_dynamic:='true'}                        : BOOL := false;        // 0=Operator (SCADA) 1=Linking (PROGRAM)
+    L_SIM           {S7_dynamic:='true'}                        : BOOL := false;        // 0=Normal 1=Simulation
+    L_RESET         {S7_dynamic:='true'}                        : BOOL := false;        // 1=Reset Error Peripherie  
+    
+    wVal            {S7_dynamic:='true'}                        : WORD := 16#3600;      // Position feedback input (WORD)
+    iVal AT wVal : INT;  //Interpretation INT
+    fVal_SIM        {S7_dynamic:='true'; S7_m_c:='true'}        : REAL  :=0.0;          // Simulation value   
+                                                                                        // Calculated value! Must not be connected
+    fHR             {S7_dynamic:='true'; S7_m_c:='true'}        : REAL := 100.0;        // High range for scaling position feedback input (%)
+    fLR             {S7_dynamic:='true'; S7_m_c:='true'}        : REAL := -100.0;       // Low range for scaling position feedback input (%)    
+    NegQ            {S7_dynamic:='true'; S7_string_0:='Off';
+                                         S7_string_1:='On'}     : BOOL := false;        // Negate position feedback, 0=0% to -100% must equal portside or down
+    HomePos         {S7_dynamic:='true'}                        : REAL := 0.0;          // Home (center) position (%)
+    HomeSpd         {S7_dynamic:='true'}                        : REAL := 20.0;         // Fixed speed setpoint (%) for homing     
+    HomeOffset      {S7_dynamic:='true'; S7_m_c:='true'}        : REAL := 1.0;          // Position offset (%)allowed when homing (centering)    
+    TrvOffset       {S7_dynamic:='true'; S7_m_c:='true'}        : REAL := 10.0;          // Offset from home position (%) for detection traversed PS/SB or up/down position
+    PosFB_DB        {S7_dynamic:='true'}                        : REAL := 2.0;          // Alarm deadband (%) for detecting position change without command
+ 
+    En_SCALE      {S7_dynamic:='true'}                          :   BOOL := TRUE;  // RL Enable scaling Output value 
+    SCALE_FACTOR  {S7_dynamic:='true'; S7_unit:='%'}            :   REAL := 25.0;  // RL Scale value output [0-100%]
+
+    fSP_HR          {S7_dynamic:='true'}                        : REAL := 100.0;        // High range for scaling field output (%)
+    fSP_LR          {S7_dynamic:='true'}                        : REAL := -100.0;       // Low range for scaling field output (%)
+    MAN_fSP         {S7_dynamic:='true'; 
+                     S7_m_c:='true'}                            : REAL := 50.0;         // Manual value setpoint from SCADA (%)  
+    NegSP           {S7_dynamic:='true'; 
+                     S7_string_0:='Off';
+                     S7_string_1:='On'}                         : BOOL := false;        // Negate traverse setpoint, 0=0% to -100% equals portside or down
+    
+    MSGLOCK         {S7_dynamic:='true'}                        : BOOL := 0;            // 1=Suppress messages
+    SAMPLE_T        {S7_sampletime:='true'}                     : REAL;                 // Sample Time
+        
+    
+// Message blocks
+    MSG1_EVID       {S7_visible  :='false';
+                     S7_link     :='false';
+                     S7_param    :='false';
+                     S7_server   :='alarm_archiv';
+                     S7_a_type   :='alarm_8p'}                  : DWORD :=0;
+    MSG2_EVID       {S7_visible  :='false';
+                     S7_link     :='false';
+                     S7_param    :='false';
+                     S7_server   :='alarm_archiv';
+                     S7_a_type   :='notify_8p'}                 : DWORD :=0;
+        
+END_VAR
+
+VAR_IN_OUT
+    OP_dwCmd    {S7_dynamic := 'true'; S7_m_c := 'true'} : DWORD :=0;   // control word wincc
+END_VAR
+
+VAR_OUTPUT
+    
+    QdwState        {S7_dynamic:='true'; 
+                     S7_m_c:='true'}                            : DWORD := 0;           // Status WORD WinCC
+    QbState AT QdwState                                         : ARRAY [0..31] OF BOOL;
+    
+    QwState         {S7_dynamic:='true'}                        : WORD := 0;            // 0=Undefined, 1=Idle, 2=Jogging PS/down, 3=Jogging SB/up, 4=Homing, 5=At home
+    QIdle           {S7_dynamic:='true'}                        : BOOL := true;         // Idle (no error)    
+    QJogP           {S7_dynamic:='true'}                        : BOOL := false;        // Traverse jogging in POSITIVE direction
+    QJogN           {S7_dynamic:='true'}                        : BOOL := false;        // Traverse jogging in NEGATIVE direction
+    QAtP            {S7_dynamic:='true'}                        : BOOL := false;        // 1=Traversed in positive (SB)or UP position
+    QAtN            {S7_dynamic:='true'}                        : BOOL := false;        // 1=Traversed in negative (PS or Down) position
+    QHoming         {S7_dynamic:='true'}                        : BOOL := false;        // 1=Homing (centering) active
+    QAtHome         {S7_dynamic:='true'}                        : BOOL := false;        // 1=In home (center) position       
+    
+    QfSPOut         {S7_dynamic:='true'; 
+                     S7_m_c:='true'}                            : REAL := 0.0;          // Traverse movement setpoint field (%)
+    QwSPOut         {S7_dynamic:='true'}                        : WORD := 16#0;         // Traverse movement setpoint (WORD)
+    
+    QfVal           {S7_dynamic:='true'; 
+                     S7_m_c:='true'}                            : REAL := 0.0;          // Position feedback value (-100 to 100%)
+  
+    QMAN_AUT        {S7_dynamic:='true'}                        : BOOL := false;        // 0=Hand 1=Automatic
+    QSIM            {S7_dynamic:='true'}                        : BOOL := false;        // 1=Simulation is active
+    QLOCK           {S7_dynamic:='true'}                        : BOOL := false;        // 1=Lock is active   
+    QERR            {S7_dynamic:='true'}                        : BOOL := false;        // 1=Error (summarized)
+    QERR_EXT        {S7_dynamic:='true'}                        : BOOL := false;        // 1=External Error
+    QERR_WIRE       {S7_dynamic:='true'}                        : BOOL := false;        // 1=Wire break
+    QERR_OVERRUN    {S7_dynamic:='true'}                        : BOOL := false;        // 1=Overrun
+    QERR_LOWRANGE   {S7_dynamic:='true'}                        : BOOL := false;        // 1=value < low range
+    QERR_HIGHRANGE  {S7_dynamic:='true'}                        : BOOL := false;        // 1=value > high range
+    QERR_POSFB      {S7_dynamic:='true'}                        : BOOL := false;        // 1=Position change without active command
+    
+    Sim_P           {S7_dynamic:='true'}                       : BOOL := false;
+    Sim_N           {S7_dynamic:='true'}                       : BOOL := false;
+    
+// Alarm
+    MSG1_bDone      {S7_visible:='false'}                       : BOOL;                 // A8P
+    MSG1_bError     {S7_visible:='false'}                       : BOOL;                 // A8P
+    MSG1_wState     {S7_visible:='false'}                       : WORD;                 // A8P
+    MSG1_wAck       {S7_visible:='false'}                       : WORD;                 // A8P
+    MSG2_bDone      {S7_visible:='false'}                       : BOOL;                 // N8P
+    MSG2_bError     {S7_visible:='false'}                       : BOOL;                 // N8P
+    MSG2_wState     {S7_visible:='false'}                       : WORD;                 // N8P
+        
+END_VAR
+
+VAR
+
+    CmdJogN                                                     : BOOL := false;        // Command jog portside
+    CmdJogP                                                     : BOOL := false;        // Command jog starboard
+    CmdGotoHome                                                 : BOOL := false;        // Command home
+    CmdSP                                                       : REAL := 0.0;          // Command setpoint
+    
+    A8P                                                         : ALARM_8P;
+    N8P                                                         : NOTIFY_8P;
+    //Time stamp structure for alarm_t call
+    STRUCT_TS                                                   : STRUCT     
+        wFormat                                                 : WORD ;                //time format
+        aDT                                                     : ARRAY [1..8] OF DATE_AND_TIME;    //array date and time
+    END_STRUCT ;  
+
+END_VAR
+
+VAR
+    
+    //Variables for SCADA commands
+    OP_dwCmdStat                                                : DWORD;  // Static to use the AT statement   
+        OPabCmdStat AT OP_dwCmdStat                             : ARRAY [0..31] OF BOOL; // look at HMI command bit-wise including Byte Swapp
+
+    OP_RESET                                                    : BOOL := false;
+    L_RESET_OLD                                                 : BOOL := false;
+    vPosFB : REAL;
+    vSCALE_FACTOR  : REAL := 0.0;  // Scale value output RL [0-100%]
+END_VAR
+
+VAR_TEMP
+
+TOP_SI:
+  STRUCT
+      EV_CLASS  : BYTE;
+      EV_NUM    : BYTE;
+      PRIORITY  : BYTE;
+      NUM       : BYTE;
+      TYP2_3    : BYTE;
+      TYP1      : BYTE;
+      ZI1       : WORD;
+      ZI2_3     : DWORD;
+  END_STRUCT;
+
+START_UP_SI:
+  STRUCT
+      EV_CLASS  : BYTE;
+      EV_NUM    : BYTE;
+      PRIORITY  : BYTE;
+      NUM       : BYTE;
+      TYP2_3    : BYTE;
+      TYP1      : BYTE;
+      ZI1       : WORD;
+      ZI2_3     : DWORD;
+  END_STRUCT;
+
+    iRet                                                        : INT;
+    oTrvSPPct                                                   : REAL;                 // Traverse PS/SB setpoint (%)    
+    MaxN                                                        : BOOL;                 // Position feedback Max Negative (portside or down)
+    MaxP                                                        : BOOL;                 // Position feedback Max Positive (starboard or up)    
+    HomingN                                                     : BOOL;                 // Homing in PS or down direction active    
+    HomingP                                                     : BOOL;                 // Homing in SB or up direction active    
+    
+END_VAR
+
+BEGIN;
+
+// STARTUP ========================================================================================== 
+
+    iRet := SFC6 (TOP_SI:= TOP_SI, START_UP_SI:= START_UP_SI);
+    IF (TOP_SI.NUM = 100 OR TOP_SI.NUM = 101) THEN
+        CmdJogN     := false;
+        CmdJogp     := false;
+        CmdGotoHome := false;
+        CmdSP       := 0.0;
+        QwState     := 1;
+        iRet        := 0;
+    END_IF;    
+
+// END STARTUP ======================================================================================
+
+
+// READ SCADA COMMANDS ==============================================================================
+
+// Read SCADA commands  =========================================================
+    OP_dwCmdStat := OP_dwCmd;    //Write SCADA commands in Variable
+// END READ SCADA COMMANDS ==========================================================================
+
+
+    //Limit scaling factors
+    IF      SCALE_FACTOR < 0    THEN vSCALE_FACTOR := 0; 
+    ELSIF   SCALE_FACTOR > 100  THEN vSCALE_FACTOR := 100;
+    ELSE    vSCALE_FACTOR := SCALE_FACTOR;
+    END_IF;
+
+
+// STANDARD OPERATION FUNCTIONS =====================================================================
+
+// MANUAL / AUTOMATIC Operation =======================================
+    IF  (OPabCmdStat[16] AND NOT LIOP_SEL) THEN 
+        QMAN_AUT := FALSE;
+    ELSIF LIOP_SEL  OR (OPabCmdStat[17 ]AND NOT LIOP_SEL) THEN 
+        QMAN_AUT := TRUE;
+    END_IF;
+        
+    // SIMULATE ON/OFF operation 
+        QSIM := L_SIM;
+        
+    // RESET operation 
+        // OPabCmdStat.Bit24 = Reset command from SCADA
+        IF (L_RESET AND NOT L_RESET_OLD) OR OPabCmdStat[24]  THEN
+            OP_RESET := true;
+        ELSE
+            OP_RESET := false;
+        END_IF;
+        
+// END STANDARD OPERATION FUNCTIONS =================================================================
+
+    
+// CHECK ERRORS =====================================================================================
+
+    // External and interlock error
+        QERR_EXT := ERR_EXTERN;
+        QLOCK    := LOCK;
+     
+    // Error detection analog input (position feedback)
+        IF QSIM THEN
+            vPosFB := fVal_SIM;
+            QERR_HIGHRANGE := false;
+            QERR_LOWRANGE  := false;
+            QERR_OVERRUN   := false;
+            QERR_WIRE      := false;
+        ELSE
+                IF (iVal >= 0) AND (iVal <= 27648) THEN             // nominal range (0% to 100%)
+                QERR_HIGHRANGE := false;                            // -> 4mA - 20mA
+                QERR_LOWRANGE  := false;                            // value 0000 - 6C00
+                QERR_OVERRUN   := false;
+                QERR_WIRE      := false;               
+                vPosFB := ((DINT_TO_REAL(WORD_TO_DINT(wVal))/27648) * (fHR - fLR)) + fLR;
+            ELSIF (iVal > 27648) AND (iVal <= 32511) THEN       // highrange (100% to 117.6%)
+                QERR_HIGHRANGE := true;                             // -> 20mA - 22.81mA
+                QERR_LOWRANGE  := false;                            // value 6C01 - 7EFF
+                QERR_OVERRUN   := false;
+                QERR_WIRE      := false;
+                vPosFB := fHR;
+            ELSIF (iVal > 32511) AND (iVal <= 32767) THEN       // overrun (>117.6%)
+                QERR_OVERRUN   := true;                             // -> >22.81mA
+                QERR_HIGHRANGE := false;                            // value 7F00 - 7FFF
+                QERR_LOWRANGE  := false;
+                QERR_WIRE      := false;
+            ELSIF (iVal < 0) AND (iVal > -4864) THEN            // lowrange (-17.6% to 0%)
+                QERR_LOWRANGE  := true;                             // -> 1.185mA - 4mA
+                QERR_HIGHRANGE := false;                            // value ED01 - FFFF
+                QERR_OVERRUN   := false;
+                QERR_WIRE      := false;
+                vPosFB := fLR;
+            ELSIF (iVal <= -4864) AND (iVal >= -32768) THEN     // wire break (<-17.6%)
+                QERR_WIRE      := true;                             // -> <1.185mA
+                QERR_HIGHRANGE := false;                            // value 8000 - ED00
+                QERR_OVERRUN   := false;
+                QERR_LOWRANGE  := false;
+                
+            END_IF;
+            fVal_SIM := vPosFB;
+       END_IF;
+        
+        // On analog input error, limit real value
+        IF QERR_OVERRUN OR QERR_WIRE THEN
+            vPosFB := 0.0;
+        END_IF;
+    
+    // Summarize error status
+    // See 'Specific Module Errors for feedback error    
+        IF (QERR_EXT OR QLOCK OR QERR_OVERRUN OR QERR_WIRE) THEN// OR QERR_POSFB) THEN
+            QERR := true;
+        END_IF;
+    
+    // Reset errors
+        IF OP_RESET THEN
+            QLOCK           := false;
+            QERR_OVERRUN    := false;
+            QERR_WIRE       := false;
+            QERR_POSFB      := false;
+            QERR            := false;
+        END_IF;
+    
+// END ERROR CHECK ==================================================================================
+
+// SPECIFIC MODULE OPERATION FUNCTIONS ==============================================================
+
+    // Auto Mode: Control commands from EQ
+        // EQ commands are continuously
+        IF QMAN_AUT THEN
+                    CmdJogN     := false;
+                    CmdJogP     := false;
+                    CmdGotoHome := false;
+                    CmdSP       := 0.0;                
+        ELSE 
+            IF    OPabCmdStat[1] THEN
+                    CmdJogN     := true;
+                    CmdSP := MAN_fSP;
+            ELSIF OPabCmdStat[3] THEN
+                    CmdJogP     := true;
+                    CmdSP := MAN_fSP;
+            ELSIF OPabCmdStat[5] THEN
+                    CmdGotoHome := true;
+                    CmdSP := MAN_fSP;
+            ELSIF OPabCmdStat[0] THEN
+                    CmdJogN     := false;
+                    CmdJogP     := false;
+                    CmdGotoHome := false;
+                    CmdSP       := 0.0;
+            END_IF;
+       END_IF;        
+
+
+        // Set traverse setpoint to zero when no traverse (jog) PS/SB or down/up command active
+        IF NOT (CmdJogN OR CmdJogP) THEN
+            CmdSP := 0.0;
+        END_IF;
+   
+    // Position feedback value simulation
+
+        IF NegQ THEN
+                QfVal := (-1* vPosFB);
+        ELSE
+                QfVal := vPosFB;
+        END_IF;
+
+    // Determine traverse position 
+        IF QfVal <= (HomePos + HomeOffset) AND QfVal >= (HomePos - HomeOffset) AND NOT QHoming THEN
+            QAtHome     := true;
+            QAtN        := false;
+            QAtP        := false;
+        ELSIF QfVal > (HomePos + TrvOffset) THEN
+            QAtHome     := false;
+            QAtP        := true;
+            QAtN        := false;
+        ELSIF QfVal < (HomePos - TrvOffset) THEN
+            QAtHome     := false;
+            QAtN        := true;
+            QAtP        := false;
+        ELSIF QfVal <= (HomePos +(HomeOffset/4) ) AND QfVal >= (HomePos - (HomeOffset/4)) AND QHoming THEN
+            QAtHome     := true;
+            QAtN        := false;
+            QAtP        := false;
+        ELSE // In between confirmed home and confirmed PS/SB or up/down position
+            QAtHome     := false;
+            QAtN        := false;
+            QAtP        := false;
+        END_IF;        
+        
+        // Determine max. positions for CMD ignore
+        IF QfVal <= fLR THEN
+            MaxN        := true;
+        ELSIF QfVal >= fHR THEN
+            MaxP        := true;
+        ELSE
+            MaxN        := false;
+            MaxP        := false;
+        END_IF;
+
+    // Traverse movement PS/SB or up/down and auto homing (centering)
+    // Setpoint (speed) output for traverse movement is interprated as (NegSP = false):
+    //      -100% to 0% --> traverse portside or down
+    //      0% to +100% --> traverse starboard or up
+    // If the field signal is not accordingly, the signal can be negated by toggling NegSP to true.
+    // Setpoint from EQ is 0-100% (REAL) with JogPort/JogDwn or JogStar/JogUp (BOOL) command for direction.
+    // Setpoint is scaled from REAL to WORD for field output. 
+     
+        QJogN      := CmdJogN      AND (NOT MaxN)  AND (NOT QERR);
+        QJogP      := CmdJogP      AND (NOT MaxP)  AND (NOT QERR);
+        QHoming    := CmdGotoHome  AND (NOT MaxN)  AND (NOT MaxP) AND (NOT QERR);
+        QIdle      := NOT (QJogN OR QJogP OR QHoming OR QERR);
+         
+        // Auto cmd
+        IF    (QJogP ) AND NOT QERR THEN
+            
+            oTrvSPPct       := CmdSP;
+
+        ELSIF (QJogN ) AND NOT QERR THEN
+            
+            oTrvSPPct       := (-1 * CmdSP);
+
+        // Auto homing
+        ELSIF QHoming AND NOT QAtHome AND NOT QERR THEN
+            // Not homed and traversed in SB/up direction (compared to HomeOffset, not to QAtP) --> move PS/down to home    
+            IF (QfVal > HomePos) OR QAtP THEN
+                HomingN     := true;
+                HomingP     := false;
+                oTrvSPPct   := (-1 * HomeSpd);//(-1 * ((QfVal*1.5) + HomeSpd)); //(-1 * HomeSpd);
+            
+            // Not homed and traversed in PS/down direction (compared to HomeOffset, not to QAtN) --> move SB/up to home
+            ELSIF (QfVal < HomePos) OR QAtN THEN
+                HomingN     := false;
+                HomingP     := true;
+                oTrvSPPct   := HomeSpd;//(-1 * ((QfVal*1.5) - HomeSpd)); // HomeSpd;
+            END_IF;
+        ELSE // Idle or error
+            HomingN         := false;
+            HomingP         := false;
+            oTrvSPPct       := 0.0;
+        END_IF; 
+        
+
+        // Negate real value to switch portside/starboard if required and set output real value
+        IF NegSP THEN
+            oTrvSPPct := (-1 * oTrvSPPct);
+        END_IF;
+        QfSPOut := oTrvSPPct;
+        
+        // Limit output real value
+        IF QfSPOut > fSP_HR THEN
+            QfSPOut := fSP_HR;
+        ELSIF QfSPOut < fSP_LR THEN
+            QfSPOut := fSP_LR;
+        END_IF;
+    
+        // Scale to output (REAL to WORD)     
+        // Use QfSPOut = 0.0 in simulate operation
+        IF QSIM THEN
+            QwSPOut :=  DINT_TO_WORD(REAL_TO_DINT((0.0  ) / (fSP_HR ) * 27648.0));            
+        ELSE
+            QwSPOut :=  DINT_TO_WORD(REAL_TO_DINT((QfSPOut * (vSCALE_FACTOR/100.0)) / (fSP_HR ) * 27648.0));
+        END_IF;
+        
+        IF QSIM THEN
+            IF QHOMING AND (NOT QAtHome)THEN
+                    Sim_N := QfSPOut < 0 ;            
+                    Sim_P := QfSPOut >= 0;
+            ELSE
+                    Sim_P := CmdJogP;            
+                    Sim_N := CmdJogN;                 
+            END_IF;
+        ELSE
+            Sim_P := false;            
+            Sim_N := false;                            
+        END_IF;
+
+
+// END SPECIFIC MODULE OPERATION FUNCTIONS ==========================================================    
+
+
+// END SPECIFIC MODULE ERRORS =======================================================================
+
+
+// STATUS ===========================================================================================
+
+    // Set State for HMI
+        QbState[0] := QIdle;                     // 1=Idle (without error) 
+        QbState[1] := QJogN;                     // 1=Traverse movement (jog) in portside direction
+        QbState[2] := QJogN;                     // 1=Traverse movement (jog) in down direction
+        QbState[3] := QJogP;                     // 1=Traverse movement (jog) in starboard direction 
+        QbState[4] := QJogP;                     // 1=Traverse movement (jog) in up direction 
+        QbState[5] := QHoming;                   // 1=Auto homing (centering)
+        QbState[6] := QAtN;                      // 1=At portside position
+        QbState[7] := QAtP;                      // 1=At starboard position
+        QbState[8] := 0;
+        QbState[9] := 0;
+        QbState[10] := QAtHome;           // 1=At home (center) position
+        QbState[11] := 0;
+        QbState[12] := QERR_LOWRANGE;     // 1=Lowrange error 
+        QbState[13] := QERR_HIGHRANGE;    // 1=Highrange error                 //  
+        QbState[14] := QERR_OVERRUN;      // 1=Overrun error 
+        QbState[15] := QERR_WIRE;         // 1=Wire break 
+        QbState[16] := QMAN_AUT;          // 0=Manual 1=Automatic
+        QbState[17] := NOT LIOP_SEL;      //
+        QbState[18] := QSIM;              // 0=Process 1=Simulation 
+        QbState[19] := QERR_POSFB;        // 1=Position feedback error
+        QbState[20] := 0;                 
+        QbState[21] := 0;      
+        QbState[22] := 0;                 
+        QbState[23] := QERR_WIRE;         // 1=Wire break error (position feedback)
+        QbState[24] := QERR;              // 1=Error
+        QbState[25] := QERR_EXT;          // 1=External Error
+        QbState[26] := QLOCK;             // 1=Locked;
+        QbState[27] := LOCK;              // 1=INTERLOCK
+        QbState[28] := 0;                 //  
+        QbState[29] := 0;                 //
+        QbState[30] := 0;                 //
+        QbState[31] := 0;                 //
+       
+    //Analog values for HMI
+    // QfSPOut: Setpoint value (-100 to +100%; -100% to 0% eaquals traverse to portside, 0% to +100% equals traverse to starboard)
+    // QfVal: Position feedback (-100 to +100%; -100% to 0% equals portside, 0% to +100% equals starboard)
+    // MAN_fSP: Manual setpoint from SCADA
+    
+    // Module status
+        IF QbState[0] THEN
+            QwState := 1;                               // Idle, no error    
+        ELSIF QbState[1] OR QbState[2] THEN 
+            QwState := 2;                               // Jogging portside/down
+        ELSIF QbState[3] OR QbState[4] THEN 
+            QwState := 3;                               // Jogging starboard/up
+        ELSIF QbState[5] THEN 
+            QwState := 4;                               // Homing (centering)
+        ELSE  
+            QwState := 0;                               // Error: State unknown
+        END_IF;
+
+// END STATUS =======================================================================================
+
+// ALARM/EVENT ======================================================================================
+
+    // Alarms (Alarm_8P)
+        A8P(
+            EN_R := 1,
+            SIG_1 :=QERR_POSFB AND NOT MSGLOCK,     // Position feedback error
+            SIG_2 :=0,                              //
+            SIG_3 :=0,                              //
+            SIG_4 :=0,                              //
+            SIG_5 :=QLOCK AND NOT MSGLOCK,          // Interlock Error
+            SIG_6 :=0,                              //
+            SIG_7 :=QERR_EXT AND NOT MSGLOCK,       // External Error
+            SIG_8 :=QERR AND NOT MSGLOCK,           // General Error
+            ID := w#16#eeee,
+            EV_ID := MSG1_EVID,
+            SEVERITY := w#16#40
+            );
+        MSG1_bDone := A8P.DONE;
+        MSG1_bError := A8P.ERROR;
+        MSG1_wState := A8P.STATUS;
+        MSG1_wAck := A8P.ACK_STATE;
+
+    // Events (Notify_8P)
+        N8P(
+            SIG_1 :=(QJogN ) AND NOT MSGLOCK,     // Traversing PS/Down
+            SIG_2 :=(QJogP ) AND NOT MSGLOCK,     // Traversing SB/Up
+            SIG_3 :=QHoming AND NOT MSGLOCK,                // Homing (centering)
+            SIG_4 :=0,                                      //
+            SIG_5 :=LOCK AND NOT MSGLOCK,                   // Interlock
+            SIG_6 :=0,                                      //
+            SIG_7 :=QMAN_AUT AND NOT MSGLOCK,               // 0=MANUAL; 1= AUTO
+            SIG_8 :=QSIM AND NOT MSGLOCK,                   // Simulation
+            ID := w#16#eeee,
+            EV_ID := MSG2_EVID,
+            SEVERITY := w#16#40 
+            );
+        MSG2_bDone := N8P.DONE;
+        MSG2_bError := N8P.ERROR;
+        MSG2_wState := N8P.STATUS;
+
+// END ALARM/EVENT ==================================================================================
+
+
+// MODULE EXIT FUNCTIONS ============================================================================    
+    
+    // Set Tags for edge detect
+        L_RESET_OLD := L_RESET;
+    
+    //reset OP commands
+        OP_dwCmd := 16#0;
+
+// END MODULE EXIT FUNCTIONS ========================================================================    
+
+     
+END_FUNCTION_BLOCK
+
+
+
+
+
+
+
+
+
+
+
+
+
