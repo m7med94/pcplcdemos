@@ -1,0 +1,13 @@
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\BST_ANA\BST_ANA\obj\x86\Debug\Interop.S7PROSIMLib.dll
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\BST_ANA\BST_ANA\obj\x86\Debug\BST_ANA.vbproj.ResolveComReference.cache
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\BST_ANA\BST_ANA\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\BST_ANA\BST_ANA\obj\x86\Debug\BST_ANA.Form1.resources
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\BST_ANA\BST_ANA\obj\x86\Debug\BST_ANA.Resources.resources
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\BST_ANA\BST_ANA\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\BST_ANA\BST_ANA\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\BST_ANA\BST_ANA\bin\Debug\BST_ANA.exe
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\BST_ANA\BST_ANA\bin\Debug\BST_ANA.pdb
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\BST_ANA\BST_ANA\bin\Debug\BST_ANA.xml
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\BST_ANA\BST_ANA\obj\x86\Debug\BST_ANA.exe
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\BST_ANA\BST_ANA\obj\x86\Debug\BST_ANA.xml
+C:\Users\Alex\Documents\Visual Studio 2010\Projects\BST_ANA\BST_ANA\obj\x86\Debug\BST_ANA.pdb
