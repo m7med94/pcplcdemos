@@ -6,50 +6,51 @@
         ChangeRange()
     End Sub
     Private Sub UpdateGUI()
+
+        Dim pDataB As Byte
+        Dim pDataI As Integer
+
         'analog sugnalen Potmeters 2x16bit
         TrackBar1.Maximum = RangeMax.Value
         TrackBar1.Minimum = RangeMin.Value
-        pDataAna(0) = TrackBar1.Value
-        S7ProSim.WriteInputPoint(IOadres.Value, 0, pDataAna(0))
+        S7ProSim.WriteInputPoint(IOadres.Value, 0, CShort(TrackBar1.Value))
         LabelValue.Text = String.Format("{0,5}  {1,14:P1}", TrackBar1.Value, TrackBar1.Value / 27648)
 
         'Value ANA
-        S7ProSim.ReadDataBlockValue(DBadres1.Value, 64, 0, S7PROSIMLib.PointDataTypeConstants.S7_DoubleWord, pDataFlValue)
-        bytes = BitConverter.GetBytes(pDataFlValue)
-        ValueAna.Text = String.Format("{0,10:N2}", CDbl(BitConverter.ToSingle(bytes, 0)))
+        S7ProSim.ReadDataBlockValue(DBadres1.Value, 64, 0, S7PROSIMLib.PointDataTypeConstants.S7_DoubleWord, pDataI)
+        ValueAna.Text = String.Format("{0,10:N2}", CDbl(BitConverter.ToSingle(BitConverter.GetBytes(pDataI), 0)))
 
         'LEDs Fault
-        S7ProSim.ReadDataBlockValue(DBadres1.Value, 98, 0, S7PROSIMLib.PointDataTypeConstants.S7_Byte, pDataCons(0))
-        Led_OK_ON.Visible = Not (IsBitSet(pDataCons(0), 4))
-        Led_OK_OFF.Visible = IsBitSet(pDataCons(0), 4)
-        Led_WireFault_ON.Visible = IsBitSet(pDataCons(0), 6)
-        Led_WireFault_OFF.Visible = Not (IsBitSet(pDataCons(0), 6))
-        Led_OverRunFault_ON.Visible = IsBitSet(pDataCons(0), 7)
-        Led_OverRunFault_OFF.Visible = Not (IsBitSet(pDataCons(0), 7))
-        S7ProSim.ReadDataBlockValue(DBadres1.Value, 99, 0, S7PROSIMLib.PointDataTypeConstants.S7_Byte, pDataCons(0))
-        Led_LowRangeFault_ON.Visible = IsBitSet(pDataCons(0), 0)
-        Led_LowRangeFault_OFF.Visible = Not (IsBitSet(pDataCons(0), 0))
-        Led_HighRangeFault_ON.Visible = IsBitSet(pDataCons(0), 1)
-        Led_HighRangeFault_OFF.Visible = Not (IsBitSet(pDataCons(0), 1))
+        S7ProSim.ReadDataBlockValue(DBadres1.Value, 98, 0, S7PROSIMLib.PointDataTypeConstants.S7_Byte, pDataB)
+        Led_OK_ON.Visible = Not (IsBitSet(pDataB, 4))
+        Led_OK_OFF.Visible = IsBitSet(pDataB, 4)
+        Led_WireFault_ON.Visible = IsBitSet(pDataB, 6)
+        Led_WireFault_OFF.Visible = Not (IsBitSet(pDataB, 6))
+        Led_OverRunFault_ON.Visible = IsBitSet(pDataB, 7)
+        Led_OverRunFault_OFF.Visible = Not (IsBitSet(pDataB, 7))
+        S7ProSim.ReadDataBlockValue(DBadres1.Value, 99, 0, S7PROSIMLib.PointDataTypeConstants.S7_Byte, pDataB)
+        Led_LowRangeFault_ON.Visible = IsBitSet(pDataB, 0)
+        Led_LowRangeFault_OFF.Visible = Not (IsBitSet(pDataB, 0))
+        Led_HighRangeFault_ON.Visible = IsBitSet(pDataB, 1)
+        Led_HighRangeFault_OFF.Visible = Not (IsBitSet(pDataB, 1))
 
         'Value Cvalve
-        S7ProSim.ReadDataBlockValue(DBadres2.Value, 52, 0, S7PROSIMLib.PointDataTypeConstants.S7_DoubleWord, pDataFlValue)
-        bytes = BitConverter.GetBytes(pDataFlValue)
-        ValueCvalve.Text = String.Format("{0,10:N2}", CDbl(BitConverter.ToSingle(bytes, 0)))
+        S7ProSim.ReadDataBlockValue(DBadres2.Value, 52, 0, S7PROSIMLib.PointDataTypeConstants.S7_DoubleWord, pDataI)
+         ValueCvalve.Text = String.Format("{0,10:N2}", CDbl(BitConverter.ToSingle(BitConverter.GetBytes(pDataI), 0)))
 
         'LEDs Fault
-        S7ProSim.ReadDataBlockValue(DBadres2.Value, 50, 0, S7PROSIMLib.PointDataTypeConstants.S7_Byte, pDataCons(0))
-        Led_OK_ON2.Visible = Not (IsBitSet(pDataCons(0), 7))
-        Led_OK_OFF2.Visible = IsBitSet(pDataCons(0), 7)
-        S7ProSim.ReadDataBlockValue(DBadres2.Value, 66, 0, S7PROSIMLib.PointDataTypeConstants.S7_Byte, pDataCons(0))
-        Led_WireFault_ON2.Visible = IsBitSet(pDataCons(0), 0)
-        Led_WireFault_OFF2.Visible = Not (IsBitSet(pDataCons(0), 0))
-        Led_OverRunFault_ON2.Visible = IsBitSet(pDataCons(0), 1)
-        Led_OverRunFault_OFF2.Visible = Not (IsBitSet(pDataCons(0), 1))
-        Led_LowRangeFault_ON2.Visible = IsBitSet(pDataCons(0), 2)
-        Led_LowRangeFault_OFF2.Visible = Not (IsBitSet(pDataCons(0), 2))
-        Led_HighRangeFault_ON2.Visible = IsBitSet(pDataCons(0), 3)
-        Led_HighRangeFault_OFF2.Visible = Not (IsBitSet(pDataCons(0), 3))
+        S7ProSim.ReadDataBlockValue(DBadres2.Value, 50, 0, S7PROSIMLib.PointDataTypeConstants.S7_Byte, pDataB)
+        Led_OK_ON2.Visible = Not (IsBitSet(pDataB, 7))
+        Led_OK_OFF2.Visible = IsBitSet(pDataB, 7)
+        S7ProSim.ReadDataBlockValue(DBadres2.Value, 66, 0, S7PROSIMLib.PointDataTypeConstants.S7_Byte, pDataB)
+        Led_WireFault_ON2.Visible = IsBitSet(pDataB, 0)
+        Led_WireFault_OFF2.Visible = Not (IsBitSet(pDataB, 0))
+        Led_OverRunFault_ON2.Visible = IsBitSet(pDataB, 1)
+        Led_OverRunFault_OFF2.Visible = Not (IsBitSet(pDataB, 1))
+        Led_LowRangeFault_ON2.Visible = IsBitSet(pDataB, 2)
+        Led_LowRangeFault_OFF2.Visible = Not (IsBitSet(pDataB, 2))
+        Led_HighRangeFault_ON2.Visible = IsBitSet(pDataB, 3)
+        Led_HighRangeFault_OFF2.Visible = Not (IsBitSet(pDataB, 3))
 
 
     End Sub
