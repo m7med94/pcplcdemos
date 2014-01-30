@@ -1,0 +1,411 @@
+FUNCTION_BLOCK BST_CCJOYD_400
+NAME:BSTCCJOYD
+FAMILY:BST
+AUTHOR:SAM
+//VERSION:'1.0'
+//FB1024
+// Typical-Attribute
+{
+  S7_tasklist:='OB100,OB101';
+  S7_m_c:='true';
+  S7_blockview:='big'
+}
+
+// Parameterattribute
+// S7_visible       visible/unvisible   (default='true')
+// S7_m_c           WinCC - Tag         (default='false')
+// S7_dynamic       Test mode           (default='false')
+VAR_INPUT
+    LOCK        {S7_dynamic:='true'}                            :   BOOL := FALSE; // Interlock
+    ERR_EXTERN  {S7_dynamic:='true'}                            :   BOOL := FALSE; // External Error
+    LIOP_SEL    {S7_dynamic:='true'}                            :   BOOL := FALSE; // 0=Operator 1=Linking
+    L_SIM       {S7_dynamic:='true'}                            :   BOOL := FALSE; // 0=Normal 1=Simulation
+    L_RESET     {S7_dynamic:='true'}                            :   BOOL := FALSE; // 1=Reset Error Peripherie
+  
+    
+
+    
+    TYPE_DigJoy {S7_dynamic:='true'; S7_m_c:='true'; 
+        S7_string_2 := 'UPDOWN'      ;   // UP<>DOWN
+        S7_string_3 := 'LERI'        ;   // LEFT<>RIGHT
+        S7_string_4 := 'UDLR'            // UP<>DOWN<>LEFT<>RIGHT
+                }   :   INT:=2;          // Select Switch TYPE
+
+    IN_JOYLEFT     {S7_dynamic:='true'}                         :   BOOL := FALSE; // 1=IN1 automatic
+    negIN_JOYLEFT  {S7_dynamic:='true';
+                 S7_string_0:='NegOff';
+                 S7_string_1:='NegOn'}                          :   BOOL := FALSE; // 1=IN1 automatic
+    IN_JOYRIGHT    {S7_dynamic:='true'}                         :   BOOL := FALSE; // 1=IN automatic
+    negIN_JOYRIGHT {S7_dynamic:='true';
+                 S7_string_0:='NegOff';
+                 S7_string_1:='NegOn'}                          :   BOOL := FALSE; // 1=IN automatic
+    IN_JOYUP       {S7_dynamic:='true'}                         :   BOOL := FALSE; // 1=UP automatic
+    negIN_JOYUP    {S7_dynamic:='true';
+                 S7_string_0:='NegOff';
+                 S7_string_1:='NegOn'}                          :   BOOL := FALSE; // 1=UP automatic
+    IN_JOYDOWN     {S7_dynamic:='true'}                         :   BOOL := FALSE; // 1=Down automatic
+    negIN_JOYDOWN  {S7_dynamic:='true';
+                 S7_string_0:='NegOff';
+                 S7_string_1:='NegOn'}                          :   BOOL := FALSE; // 1=Down automatic  
+    MSGLOCK     {S7_dynamic:='true'}                            :   BOOL := FALSE;  //Suppress messages
+    
+// Message blocks
+    MSG1_EVID { S7_visible  :='false';
+                S7_link     :='false';
+                S7_param    :='false';
+                S7_server   :='alarm_archiv';
+                S7_a_type   :='alarm_8p'}                       :   DWORD :=0;
+    MSG2_EVID { S7_visible  :='false';
+                S7_link     :='false';
+                S7_param    :='false';
+                S7_server   :='alarm_archiv';
+                S7_a_type   :='notify_8p'}                      :   DWORD :=0;
+END_VAR
+
+VAR_IN_OUT
+    OP_dwCmd    {S7_dynamic := 'true'; S7_m_c := 'true'} : DWORD :=16#0;   // control word wincc
+END_VAR
+
+VAR_OUTPUT
+    QdwState    {S7_dynamic:='true'; S7_m_c:='true'}: DWORD:=0;     // status wincc
+        QbState AT QdwState : ARRAY [0..31] OF BOOL;;
+    QwState     {S7_dynamic:='true'}: WORD:= 0; //0=center, 1=right, 2=up, 3=left, 4=down
+    
+    QPosition   {S7_dynamic:='true'} : INT;              //Position number for wincc
+    QJOYLEFT    {S7_dynamic:='true'} : BOOL := FALSE;    //QJOYLEFT Out
+    QJOYRIGHT   {S7_dynamic:='true'} : BOOL := FALSE;    //QJOYRIGHT Out
+    QJOYUP      {S7_dynamic:='true'} : BOOL := FALSE;    //QJOYUP Out
+    QJOYDOWN    {S7_dynamic:='true'} : BOOL := FALSE;    //QJOYDOWN Out
+    QJOYCENT    {S7_dynamic:='true'} : BOOL := FALSE;    //QJOYCENTER Out
+
+    TYPE_OUT    {S7_visible:='true'; S7_dynamic:='true';S7_m_c:='true'} : INT  := 0;        //digital joystick TYPE OUTPUT 
+    
+    QMAN_AUT    {S7_dynamic:='true'} : BOOL := FALSE;     // 0=Hand 1=Automatic
+    QSIM        {S7_dynamic:='true'} : BOOL := FALSE;     // 1=Simulation is active
+    QLOCK       {S7_dynamic:='true'} : BOOL := FALSE;     // 1=Lock is active
+    QERR        {S7_dynamic:='true'} : BOOL := FALSE;     // 1=ERROR
+    QERR_EXT    {S7_dynamic:='true'} : BOOL := FALSE;     // 1=External Error                      
+// Constants    
+    QCMDCE      {S7_dynamic:='false'} : BOOL := FALSE; // 1=Center 
+    QCMDRI      {S7_dynamic:='false'} : BOOL := FALSE; // 1=Right 
+    QCMDUP      {S7_dynamic:='false'} : BOOL := FALSE; // 1=Up 
+    QCMDLE      {S7_dynamic:='false'} : BOOL := FALSE; // 1=Left 
+    QCMDDN      {S7_dynamic:='false'} : BOOL := FALSE; // 1=Down   
+// State outputs
+    CENT        {S7_dynamic:='true'}: BOOL := FALSE;    //State output
+    UP          {S7_dynamic:='true'}: BOOL := FALSE;    //State output 
+    DOWN        {S7_dynamic:='true'}: BOOL := FALSE;    //State output
+    LEFT        {S7_dynamic:='true'}: BOOL := FALSE;    //State output
+    RIGHT       {S7_dynamic:='true'}: BOOL := FALSE;    //State output
+
+//Alarm
+    MSG1_bDone  {S7_visible:='false'} : BOOL; // A8P
+    MSG1_bError {S7_visible:='false'} : BOOL; // A8P
+    MSG1_wState {S7_visible:='false'} : WORD; // A8P
+    MSG1_wAck   {S7_visible:='false'} : WORD; // A8P
+    MSG2_bDone  {S7_visible:='false'} : BOOL; // N8P
+    MSG2_bError {S7_visible:='false'} : BOOL; // N8P
+    MSG2_wState {S7_visible:='false'} : WORD; // N8P
+    
+END_VAR
+
+VAR   
+    OP_dwCmdSTAT : DWORD;
+    OPbCmd AT OP_dwCmdSTAT : ARRAY [0..31] OF BOOL;;
+    
+    A8P   : ALARM_8P;
+    N8P   : NOTIFY_8P;
+//Time stamp structure for alarm_t call
+    STRUCT_TS : STRUCT     
+        wFormat : WORD ; //time format
+        aDT : ARRAY [1..8] OF DATE_AND_TIME;         //array date and time
+    END_STRUCT ; 
+
+// TAGS for Operation
+    OP_RESET : BOOL := FALSE;
+    
+// TAGS for Edge detect
+    L_RESET_OLD : BOOL := FALSE;
+
+END_VAR
+
+VAR_TEMP
+    Unique      : BOOL;
+    
+    TOP_SI: STRUCT
+          EV_CLASS  : BYTE;
+          EV_NUM    : BYTE;
+          PRIORITY  : BYTE;
+          NUM       : BYTE;
+          TYP2_3    : BYTE;
+          TYP1      : BYTE;
+          ZI1       : WORD;
+          ZI2_3     : DWORD;
+
+    END_STRUCT; 
+    
+    START_UP_SI: STRUCT
+          EV_CLASS  : BYTE;
+          EV_NUM    : BYTE;
+          PRIORITY  : BYTE;
+          NUM       : BYTE;
+          TYP2_3    : BYTE;
+          TYP1      : BYTE;
+          ZI1       : WORD;
+          ZI2_3     : DWORD;
+    END_STRUCT;
+    iRet          : INT;
+//Commands
+    CMD         : WORD; //Command   
+END_VAR
+
+
+BEGIN
+   
+// START UP =====================================================================
+    iRet := SFC6 (TOP_SI:= TOP_SI, START_UP_SI:= START_UP_SI);
+    IF (TOP_SI.NUM = 100 OR TOP_SI.NUM = 101) THEN
+        QPosition := 0; 
+        QERR := FALSE;
+        iRet := 0;
+    END_IF;
+// END STARTUP ==================================================================
+
+// Change lowbyte to highbyte for HMI command word ==================
+    OP_dwCmdSTAT := OP_dwCmd;
+    
+//Reset outputs 
+    CENT    := false;        
+    UP      := false;
+    DOWN    := false;
+    LEFT    := false;
+    RIGHT   := false;
+    
+    
+
+// Begin: Operation functions ***************************************************
+// ******************************************************************************
+
+// MANUAL / AUTOMATIC Operation =======================================
+    IF (OPbCmd[16] AND NOT LIOP_SEL) THEN 
+        QMAN_AUT := FALSE;
+    ELSIF LIOP_SEL OR (OPbCmd[17] AND NOT LIOP_SEL) THEN 
+        QMAN_AUT := TRUE;
+    END_IF;
+  
+// SIMULATION ON / OFF ==============================================
+    QSIM := L_SIM;
+ 
+// RESET Operation ==================================================
+    IF (L_RESET AND NOT L_RESET_OLD) OR (OPbCmd[24] )  THEN
+        OP_RESET := TRUE;
+    ELSE
+        OP_RESET := FALSE;
+    END_IF;
+
+// (MANUAL)===========================================================    
+
+    IF NOT QMAN_AUT THEN
+        
+        
+        
+        IF OPbCmd[00] THEN // Set selection output 1
+            QJOYLEFT := NOT QJOYLEFT;
+        END_IF;
+        
+        IF OPbCmd[01] THEN // Set selection output 1
+            QJOYRIGHT := NOT QJOYRIGHT;
+        END_IF;
+        
+        IF OPbCmd[02] THEN // Set selection output 1
+            QJOYUP := NOT QJOYUP;
+        END_IF;
+        
+        IF OPbCmd[03] THEN // Set selection output 1
+            QJOYDOWN := NOT QJOYDOWN;
+        END_IF;
+        
+        IF OPbCmd[04] THEN // Set selection output 4
+            QJOYCENT := NOT QJOYCENT;
+        END_IF;
+        
+
+        
+    ELSE   
+        QJOYLEFT   := IN_JOYLEFT XOR negIN_JOYLEFT;
+        QJOYRIGHT  := IN_JOYRIGHT XOR negIN_JOYRIGHT;
+        QJOYUP     := IN_JOYUP XOR negIN_JOYUP;
+        QJOYDOWN   := IN_JOYDOWN XOR negIN_JOYDOWN; 
+        
+        
+        IF QJOYLEFT OR QJOYRIGHT OR QJOYUP OR QJOYDOWN THEN
+            QJOYCENT := False;
+        ELSE
+            QJOYCENT := True;
+        END_IF;
+    // Command to Qwstate    
+        QwState := CMD;
+        
+    END_IF;
+    
+ // Unique output selection
+    
+    Unique := (BOOL_TO_INT(QJOYLEFT) + BOOL_TO_INT(QJOYRIGHT) + BOOL_TO_INT(QJOYUP) + BOOL_TO_INT(QJOYDOWN)) <=1;
+
+ // Check Errors ========================================================
+    QERR_EXT := ERR_EXTERN;
+    QLOCK := LOCK AND NOT QJOYCENT;
+        
+    IF QERR_EXT OR QLOCK OR NOT Unique THEN
+        QERR := TRUE;
+    END_IF;   
+    
+ // Selection of Digital Joystick Type===================================    
+    
+    CASE TYPE_DigJoy OF
+
+
+    2: //TYPE:  'UPDOWN'      ;   // UP<>DOWN
+        TYPE_OUT := 3;
+        
+        IF NOT QERR THEN
+            UP      := QJOYUP;
+            DOWN    := QJOYDOWN;
+        END_IF;
+
+    3: //TYPE: 'LERI'    ;   //LEFT<>RIGHT
+        TYPE_OUT := 4;
+        
+        IF NOT QERR THEN
+            LEFT    := QJOYLEFT;
+            RIGHT   := QJOYRIGHT; 
+        END_IF;
+    4: //TYPE: 'UDLRSRFP'    ;   // UP<>DOWN<>LEFT<>RIGHT
+        TYPE_OUT := 4;
+        
+        IF NOT QERR THEN
+            LEFT    := QJOYLEFT;
+            RIGHT   := QJOYRIGHT; 
+            UP      := QJOYUP;
+            DOWN    := QJOYDOWN;
+        END_IF;
+
+    ELSE // ERROR CASE statement
+        QERR := TRUE;              
+    END_CASE;
+   
+// END: Operation functions *****************************************************
+// ******************************************************************************
+    IF QERR THEN 
+        QJOYLEFT  := FALSE;
+        QJOYRIGHT := FALSE;
+        QJOYUP    := FALSE;
+        QJOYDOWN  := FALSE;
+        CMD       := QCMDCE; 
+    END_IF;
+
+    
+    QCMDLE := QJOYLEFT;
+    QCMDRI := QJOYRIGHT;
+    QCMDUP := QJOYUP;
+    QCMDDN := QJOYDOWN;
+    QCMDCE := (NOT QJOYLEFT AND NOT QJOYRIGHT AND NOT QJOYUP AND NOT QJOYDOWN);
+    CENT := QCMDCE;
+
+// Command to Qwstate        
+   
+    
+          
+// RESET Errors ========================================================
+    IF OP_RESET THEN
+        QERR := FALSE;
+    END_IF;
+
+// Set State for HMI ===================================================
+    QbState[0] := QCMDCE;         // 1=Center
+    QbState[1] := QCMDRI;         // 1=Right
+    QbState[2] := QCMDUP;         // 1=Up
+    QbState[3] := QCMDLE;         // 1=Left
+    QbState[4] := QCMDDN;         // 1=Down
+    QbState[5] := 0;
+    QbState[6] := CENT;      //State CENTER
+    QbState[7] := UP;        //State UP
+    QbState[8] := DOWN;      //State DOWN
+    QbState[9] := 0;    
+    QbState[10] := 0;
+    QbState[11] := 0;     
+    QbState[12] := 0;        
+    QbState[13] := LEFT;      //State move LEFTside
+    QbState[14] := RIGHT;      //State move RIGHTside
+    QbState[15] := 0;
+    QbState[16] := QMAN_AUT;   
+    QbState[17] := NOT LIOP_SEL;  // 0=operator control enabled        
+    QbState[18] := QSIM;      // 0=Process 1=Simulation      
+    QbState[19] := 0; 
+    QbState[20] := 0;
+    QbState[21] := 0;
+    QbState[22] := 0;
+    QbState[23] := 0;
+    QbState[24] := QERR;      // 1=Error
+    QbState[25] := QERR_EXT;  // 1=External Error
+    QbState[26] := QLOCK;     // 1=Block Locked
+    QbState[27] := 0;
+    QbState[28] := 0;  
+    QbState[29] := 0;  
+    QbState[30] := 0;
+    QbState[31] := 0;
+    
+// Alarm_8P ==============================================
+    A8P(
+        EN_R := 1,
+        SIG_1 :=0,
+        SIG_2 :=0,
+        SIG_3 :=0,
+        SIG_4 :=0,
+        SIG_5 :=NOT MSGLOCK AND QLOCK,                    // Interlock Error
+        SIG_6 :=0,
+        SIG_7 :=MSGLOCK AND QERR_EXT,       // External Error
+        SIG_8 :=MSGLOCK AND QERR,           // General Error
+        ID := w#16#eeee,
+        EV_ID := MSG1_EVID,
+        SEVERITY := w#16#40
+    );
+    MSG1_bDone := A8P.DONE;
+    MSG1_bError := A8P.ERROR;
+    MSG1_wState := A8P.STATUS;
+    MSG1_wAck   := A8P.ACK_STATE;
+
+// Notify_8P ==============================================
+    N8P(
+        SIG_1 :=NOT MSGLOCK AND QJOYLEFT,      //Joystock left       
+        SIG_2 :=NOT MSGLOCK AND QJOYRIGHT,     //Joystock right    
+        SIG_3 :=NOT MSGLOCK AND QJOYUP,        //Joystock up
+        SIG_4 :=NOT MSGLOCK AND QJOYDOWN,      //Joystock down
+        SIG_5 :=NOT MSGLOCK AND LOCK,          // Interlock
+        SIG_6 :=0,
+        SIG_7 :=0,
+        SIG_8 :=NOT MSGLOCK AND QSIM,   // Simulation
+        ID := w#16#eeee,
+        EV_ID := MSG2_EVID,
+        SEVERITY := w#16#40 
+    );
+    MSG2_bDone := N8P.DONE;
+    MSG2_bError := N8P.ERROR;
+    MSG2_wState := N8P.STATUS;
+
+// Set Tags for edge detect =====================================
+    L_RESET_OLD := L_RESET;
+    
+
+//reset commands ================================================
+    
+    OP_dwCmd := 16#0;
+    
+
+END_FUNCTION_BLOCK
+
+
+
+
+
+

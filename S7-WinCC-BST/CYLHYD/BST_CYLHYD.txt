@@ -31,11 +31,11 @@ VAR_INPUT
     fHR             {S7_dynamic:='true'; S7_m_c:='true'}        : REAL := 100.0;        // High range for scaling position feedback input (%)
     fLR             {S7_dynamic:='true'; S7_m_c:='true'}        : REAL := -100.0;       // Low range for scaling position feedback input (%)    
     NegQ            {S7_dynamic:='true'; S7_string_0:='Off';
-                                         S7_string_1:='On'}     : BOOL := false;        // Negate position feedback, 0=0% to -100% must equal portside or down
+                                         S7_string_1:='On'}     : BOOL := false;        // Negate position feedback, 0=0% to -100% must equal left side or down
     HomePos         {S7_dynamic:='true'}                        : REAL := 0.0;          // Home (center) position (%)
     HomeSpd         {S7_dynamic:='true'}                        : REAL := 20.0;         // Fixed speed setpoint (%) for homing     
     HomeOffset      {S7_dynamic:='true'; S7_m_c:='true'}        : REAL := 1.0;          // Position offset (%)allowed when homing (centering)    
-    TrvOffset       {S7_dynamic:='true'; S7_m_c:='true'}        : REAL := 10.0;          // Offset from home position (%) for detection traversed PS/SB or up/down position
+    TrvOffset       {S7_dynamic:='true'; S7_m_c:='true'}        : REAL := 10.0;          // Offset from home position (%) for detection traversed LE/RI or up/down position
     PosFB_DB        {S7_dynamic:='true'}                        : REAL := 2.0;          // Alarm deadband (%) for detecting position change without command
  
     En_SCALE      {S7_dynamic:='true'}                          :   BOOL := TRUE;  // RL Enable scaling Output value 
@@ -47,7 +47,7 @@ VAR_INPUT
                      S7_m_c:='true'}                            : REAL := 50.0;         // Manual value setpoint from SCADA (%)  
     NegSP           {S7_dynamic:='true'; 
                      S7_string_0:='Off';
-                     S7_string_1:='On'}                         : BOOL := false;        // Negate traverse setpoint, 0=0% to -100% equals portside or down
+                     S7_string_1:='On'}                         : BOOL := false;        // Negate traverse setpoint, 0=0% to -100% equals left side or down
     
     MSGLOCK         {S7_dynamic:='true'}                        : BOOL := 0;            // 1=Suppress messages
     SAMPLE_T        {S7_sampletime:='true'}                     : REAL;                 // Sample Time
@@ -120,8 +120,8 @@ END_VAR
 
 VAR
 
-    CmdJogN                                                     : BOOL := false;        // Command jog portside
-    CmdJogP                                                     : BOOL := false;        // Command jog starboard
+    CmdJogN                                                     : BOOL := false;        // Command jog left side
+    CmdJogP                                                     : BOOL := false;        // Command jog right side
     CmdGotoHome                                                 : BOOL := false;        // Command home
     CmdSP                                                       : REAL := 0.0;          // Command setpoint
     
@@ -175,8 +175,8 @@ START_UP_SI:
 
     iRet                                                        : INT;
     oTrvSPPct                                                   : REAL;                 // Traverse PS/SB setpoint (%)    
-    MaxN                                                        : BOOL;                 // Position feedback Max Negative (portside or down)
-    MaxP                                                        : BOOL;                 // Position feedback Max Positive (starboard or up)    
+    MaxN                                                        : BOOL;                 // Position feedback Max Negative (left side or down)
+    MaxP                                                        : BOOL;                 // Position feedback Max Positive (right side or up)    
     HomingN                                                     : BOOL;                 // Homing in PS or down direction active    
     HomingP                                                     : BOOL;                 // Homing in SB or up direction active    
     
@@ -381,10 +381,10 @@ BEGIN;
 
     // Traverse movement PS/SB or up/down and auto homing (centering)
     // Setpoint (speed) output for traverse movement is interprated as (NegSP = false):
-    //      -100% to 0% --> traverse portside or down
-    //      0% to +100% --> traverse starboard or up
+    //      -100% to 0% --> traverse left side or down
+    //      0% to +100% --> traverse right side or up
     // If the field signal is not accordingly, the signal can be negated by toggling NegSP to true.
-    // Setpoint from EQ is 0-100% (REAL) with JogPort/JogDwn or JogStar/JogUp (BOOL) command for direction.
+    // Setpoint from EQ is 0-100% (REAL) with JogLeft/JogDwn or JogRight/JogUp (BOOL) command for direction.
     // Setpoint is scaled from REAL to WORD for field output. 
      
         QJogN      := CmdJogN      AND (NOT MaxN)  AND (NOT QERR);
@@ -422,7 +422,7 @@ BEGIN;
         END_IF; 
         
 
-        // Negate real value to switch portside/starboard if required and set output real value
+        // Negate real value to switch left/right side if required and set output real value
         IF NegSP THEN
             oTrvSPPct := (-1 * oTrvSPPct);
         END_IF;
@@ -467,13 +467,13 @@ BEGIN;
 
     // Set State for HMI
         QbState[0] := QIdle;                     // 1=Idle (without error) 
-        QbState[1] := QJogN;                     // 1=Traverse movement (jog) in portside direction
+        QbState[1] := QJogN;                     // 1=Traverse movement (jog) in left side direction
         QbState[2] := QJogN;                     // 1=Traverse movement (jog) in down direction
-        QbState[3] := QJogP;                     // 1=Traverse movement (jog) in starboard direction 
+        QbState[3] := QJogP;                     // 1=Traverse movement (jog) in right side direction 
         QbState[4] := QJogP;                     // 1=Traverse movement (jog) in up direction 
         QbState[5] := QHoming;                   // 1=Auto homing (centering)
-        QbState[6] := QAtN;                      // 1=At portside position
-        QbState[7] := QAtP;                      // 1=At starboard position
+        QbState[6] := QAtN;                      // 1=At left side position
+        QbState[7] := QAtP;                      // 1=At right side position
         QbState[8] := 0;
         QbState[9] := 0;
         QbState[10] := QAtHome;           // 1=At home (center) position
@@ -500,17 +500,17 @@ BEGIN;
         QbState[31] := 0;                 //
        
     //Analog values for HMI
-    // QfSPOut: Setpoint value (-100 to +100%; -100% to 0% eaquals traverse to portside, 0% to +100% equals traverse to starboard)
-    // QfVal: Position feedback (-100 to +100%; -100% to 0% equals portside, 0% to +100% equals starboard)
+    // QfSPOut: Setpoint value (-100 to +100%; -100% to 0% eaquals traverse to left side, 0% to +100% equals traverse to right side)
+    // QfVal: Position feedback (-100 to +100%; -100% to 0% equals left side, 0% to +100% equals right)
     // MAN_fSP: Manual setpoint from SCADA
     
     // Module status
         IF QbState[0] THEN
             QwState := 1;                               // Idle, no error    
         ELSIF QbState[1] OR QbState[2] THEN 
-            QwState := 2;                               // Jogging portside/down
+            QwState := 2;                               // Jogging left side/down
         ELSIF QbState[3] OR QbState[4] THEN 
-            QwState := 3;                               // Jogging starboard/up
+            QwState := 3;                               // Jogging right side/up
         ELSIF QbState[5] THEN 
             QwState := 4;                               // Homing (centering)
         ELSE  

@@ -1,0 +1,702 @@
+FUNCTION_BLOCK BST_CCSSW_400
+NAME:BSTCCSSW
+FAMILY:BST
+AUTHOR:SAM
+//VERSION:'1.0'
+//FB1012
+// Typical-Attribute
+// Typical-Attribute
+{
+  S7_tasklist:='OB100,OB101';
+  S7_m_c:='true';
+  S7_blockview:='big'
+}
+VAR_INPUT
+    LOCK        {S7_dynamic:='true'}                            :   BOOL := FALSE; // Interlock
+    ERR_EXT     {S7_dynamic:='true'}                            :   BOOL := FALSE; // External Error
+    LIOP_SEL    {S7_dynamic:='true'}                            :   BOOL := FALSE; // 0=Operator 1=Linking
+    L_SIM       {S7_dynamic:='true'}                            :   BOOL := FALSE; // 0=Normal 1=Simulation
+    L_RESET     {S7_dynamic:='true'}                            :   BOOL := FALSE; // 1=Reset Error Peripherie
+    
+    TYPE_SSW    {S7_dynamic :='true'; S7_m_c:='true';                                
+                S7_string_2 := 'WaAuMaJ4';  //1
+                S7_string_3 := 'FwdRev';    //2
+                S7_string_4 := 'LocRem' ;   //3
+                S7_string_5 := 'Speed3';    //4 
+                S7_string_6 := 'RunStop';   //5
+                S7_string_7 := 'AutoMan2';  //6
+                S7_string_8 := 'AuMaJo3';   //7
+                S7_string_9 := 'Reset';     //8
+                S7_string_10 := 'Weld';     //9
+                S7_string_11 := 'SinDou1';  //10
+                S7_string_12 := 'MaAbAu';   //11
+                S7_string_13 := 'AutMan1';  //12    
+                S7_string_14 := 'OnOff1';   //13
+                S7_string_15 := 'MaSl1';    //14
+                S7_string_16 := 'EnDis1';   //15
+                S7_string_17 := 'AuMaJo2';  //16
+                S7_string_18 := 'StopRun1'; //17
+                S7_string_19 := 'PsAuSb'}   //18
+                
+                                                                :   INT; // Select Switch TYPE and Tag to WinCC
+
+                
+                                                               
+    IN1         {S7_dynamic:='true'}                            :   BOOL := FALSE;  //digital switch input signal 1
+    negIN1      {S7_dynamic:='true'}                            :   BOOL := FALSE;  //digital switch input signal 1
+    IN2         {S7_dynamic:='true'}                            :   BOOL := FALSE;  //digital switch input signal 2
+    negIN2      {S7_dynamic:='true'}                            :   BOOL := FALSE;  //digital switch input signal 2
+    IN3         {S7_dynamic:='true'}                            :   BOOL := FALSE;  //digital switch input signal 3
+    negIN3      {S7_dynamic:='true'}                            :   BOOL := FALSE;  //digital switch input signal 3
+    IN4         {S7_dynamic:='true'}                            :   BOOL := FALSE;  //digital switch input signal 4
+    negIN4      {S7_dynamic:='true'}                            :   BOOL := FALSE;  //digital switch input signal 4
+    
+    MSGLOCK     {S7_dynamic:='true'}                            :   BOOL := FALSE;  //Suppress messages
+    AllowJOG    {S7_dynamic:='true'}                            :   BOOL := FALSE;  //set true from wincc to allow jog if EnaAllowJOG true
+    EnaAllowJOG {S7_dynamic:='true'}                            :   BOOL := FALSE;  //enable allow jog from wincc
+        
+// Message blocks
+    MSG1_EVID { S7_visible  :='false';
+                S7_link     :='false';
+                S7_param    :='false';
+                S7_server   :='alarm_archiv';
+                S7_a_type   :='alarm_8p'}                       :   DWORD :=0;
+    MSG2_EVID { S7_visible  :='false';
+                S7_link     :='false';
+                S7_param    :='false';
+                S7_server   :='alarm_archiv';
+                S7_a_type   :='notify_8p'}                      :  DWORD :=0;
+END_VAR
+
+VAR_IN_OUT
+    OP_dwCmd    {S7_dynamic := 'true'; S7_m_c := 'true'}        :   DWORD :=16#0;   // control word wincc
+    
+END_VAR
+
+VAR_OUTPUT
+    QdwState    {S7_dynamic:='true'; S7_m_c:='true'}            :   DWORD:=0;     // status wincc
+        QbState AT QdwState : ARRAY [0..31] OF BOOL;
+    
+    QPosition   {S7_visible:='false'}                           :   INT;              //Position number for wuncc
+    TYPE_OUT    {S7_visible:='true'; 
+                S7_dynamic:='true';
+                S7_m_c:='true'}                                 :   INT  := 2;        //digital switch TYPE OUTPUT 
+    QLOCK       {S7_dynamic:='true'}                            :   BOOL := FALSE;     // Interlock is active
+    QSIM        {S7_dynamic:='true'}                            :   BOOL := FALSE;    // 1=Simulation is active
+    QERR        {S7_dynamic:='true'}                            :   BOOL := FALSE;    // 1=ERROR
+    QERR_EXT    {S7_dynamic:='true'}                            :   BOOL := FALSE;    // 1=External Error                       
+    
+// Switch Outputs
+    WARM        {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output 
+    AUTO        {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output
+    MAN         {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output
+    JOG         {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output
+   
+    FWD         {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output  
+    REV         {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output
+   
+    LOCAL       {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output
+    REMOTE      {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output
+    
+    SPEED1      {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output
+    SPEED2      {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output
+    SPEED3      {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output
+    
+    RUN         {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output
+    STOP        {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output
+                    
+    RESET       {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output
+    
+    WLDSEL      {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output    
+    
+    SINGLE      {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output      
+                    
+    DOUBLE      {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output
+                    
+    ABUTM       {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output
+                    
+    ENAB        {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output                
+    
+    DISAB       {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output             
+    
+    ON          {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output
+    
+    OFF         {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output
+                    
+    MAST        {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output        
+   
+    SLAVE        {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output
+                    
+    NONE        {S7_visible:='true';
+                    S7_dynamic:='true'}                         :   BOOL := FALSE;    //State output                                                                  
+
+                                        
+    OUT1        {S7_visible:='false';S7_m_c:='true'}            :   BOOL := FALSE;    //digital switch output signal 1
+    OUT2        {S7_visible:='false';S7_m_c:='true'}            :   BOOL := FALSE;    //digital switch output signal 2
+    OUT3        {S7_visible:='false';S7_m_c:='true'}            :   BOOL := FALSE;    //digital switch output signal 3
+    OUT4        {S7_visible:='false';S7_m_c:='true'}            :   BOOL := FALSE;    //digital switch output signal 4
+    
+    JOGReq      {S7_dynamic:='true'}                            :   BOOL := FALSE;    //JOG Request from control console
+    
+//Alarm
+    MSG1_bDone  {S7_visible:='false'}                           :   BOOL; // A8P
+    MSG1_bError {S7_visible:='false'}                           :   BOOL; // A8P
+    MSG1_wState {S7_visible:='false'}                           :   WORD; // A8P
+    MSG1_wAck   {S7_visible:='false'}                           :   WORD; // A8P
+    MSG2_bDone  {S7_visible:='false'}                           :   BOOL; // N8P
+    MSG2_bError {S7_visible:='false'}                           :   BOOL; // N8P
+    MSG2_wState {S7_visible:='false'}                           :   WORD; // N8P
+    
+END_VAR
+
+VAR   
+    OP_dwCmdSTAT : DWORD;
+        OPbCmd AT OP_dwCmdSTAT : ARRAY [0..31] OF BOOL;
+    
+    A8P   : ALARM_8P;
+    N8P   : NOTIFY_8P;
+//Time stamp structure for alarm_t call
+    STRUCT_TS : STRUCT     
+        wFormat : WORD ; //time format
+        aDT : ARRAY [1..8] OF DATE_AND_TIME;         //array date and time
+    END_STRUCT ; 
+
+// TAGS for Operation
+    OP_RESET : BOOL := FALSE;
+    
+// TAGS for Edge detect
+    L_RESET_OLD : BOOL := FALSE;
+
+END_VAR
+
+VAR_TEMP
+    Unique      : BOOL;
+    TOP_SI: STRUCT
+          EV_CLASS  : BYTE;
+          EV_NUM    : BYTE;
+          PRIORITY  : BYTE;
+          NUM       : BYTE;
+          TYP2_3    : BYTE;
+          TYP1      : BYTE;
+          ZI1       : WORD;
+          ZI2_3     : DWORD;
+
+    END_STRUCT; 
+    
+    START_UP_SI: STRUCT
+          EV_CLASS  : BYTE;
+          EV_NUM    : BYTE;
+          PRIORITY  : BYTE;
+          NUM       : BYTE;
+          TYP2_3    : BYTE;
+          TYP1      : BYTE;
+          ZI1       : WORD;
+          ZI2_3     : DWORD;
+    END_STRUCT;
+    iRet          : INT;
+END_VAR
+
+BEGIN
+   
+// SELECTION SWITCH TYPE 
+
+// START UP =====================================================================
+    iRet := SFC6 (TOP_SI:= TOP_SI, START_UP_SI:= START_UP_SI);
+    IF (TOP_SI.NUM = 100 OR TOP_SI.NUM = 101) THEN
+        iRet := 0;
+    END_IF;
+// END STARTUP ==================================================================
+
+// Change lowbyte to highbyte for HMI command word ==================
+    OP_dwCmdSTAT := OP_dwCmd;
+
+// Begin: Operation functions ***************************************************
+// ******************************************************************************
+    //Reset outputs
+
+    WARM        := false;  
+    AUTO        := false;    
+    MAN         := false;
+    JOG         := false;
+    
+    FWD         := false;    
+    REV         := false;
+    
+    LOCAL       := false;
+    REMOTE      := false;
+    
+    SPEED1      := false;
+    SPEED2      := false;
+    SPEED3      := false;
+    
+    RUN         := false;
+    STOP        := false;
+    
+    RESET       := false;
+    
+    WLDSEL      := false;   
+    
+    SINGLE      := false;     
+    DOUBLE      := false;
+    
+    ABUTM       := false;
+    
+    ENAB        := false;
+    DISAB       := false;
+    
+    ON          := false;
+    OFF         := false;
+  
+    MAST        := false;       
+    SLAVE        := false;
+
+    NONE        := false;    
+
+// SIMULATION ON / OFF ==============================================
+    QSIM := L_SIM;
+
+    IF QSIM THEN 
+        
+        IF OPbCmd[0] THEN // Set selection output 1
+            OUT1 := NOT OUT1;
+        END_IF;
+             
+        IF OPbCmd[1] THEN // Set selection output 2
+            OUT2 := NOT OUT2;
+        END_IF;
+
+        IF OPbCmd[2] THEN // Set selection output 3
+            OUT3 := NOT OUT3;
+        END_IF;
+
+        IF OPbCmd[3] THEN // Set selection output 4
+            OUT4 := NOT OUT4;
+        END_IF;
+
+    ELSE
+        OUT1 := IN1 XOR negIN1;
+        OUT2 := IN2 XOR negIN2;
+        OUT3 := IN3 XOR negIN3;
+        OUT4 := IN4 XOR negIN4;
+    END_IF;
+    
+
+    
+// RESET Operation ==================================================
+    IF (L_RESET AND NOT L_RESET_OLD) OR (OPbCmd[24]) THEN
+        OP_RESET := TRUE;
+    ELSE
+        OP_RESET := FALSE;
+    END_IF;
+    
+
+    // Unique output selection
+    
+    Unique := (BOOL_TO_INT(OUT1) + BOOL_TO_INT(OUT2) + BOOL_TO_INT(OUT3) + BOOL_TO_INT(OUT4)) <=1;
+    QERR := NOT Unique AND NOT QSIM;
+ 
+ // Check Errors ========================================================
+    QERR_EXT := ERR_EXT;
+
+    IF LOCK AND QPosition <> 0 THEN 
+        QLOCK := TRUE;
+    END_IF;
+        
+    IF QERR_EXT OR QLOCK THEN
+        QERR := TRUE;
+    END_IF;   
+    
+ // Type functionaly ========================================================    
+    
+    CASE TYPE_SSW OF
+
+    2:
+        TYPE_OUT := 2;  // cControlMode4Switch; WARM<>AUTO<>MAN<>JOG - 4 INPUTS
+        
+        WARM  := OUT1 AND NOT QERR;
+        AUTO  := OUT2 AND NOT QERR; 
+        MAN   := OUT3 AND NOT QERR;
+        // old JOG   := OUT4 AND NOT QERR;
+        // new to allow jog from wincc
+        IF EnaAllowJOG THEN
+            JOG   := AllowJOG AND OUT4 AND NOT QERR;
+            JOGreq := OUT4 AND NOT QERR;
+        ELSE
+            JOG   := OUT4 AND NOT QERR;   
+        END_IF;      
+        
+        IF OUT1 THEN
+            QPosition := 1;
+        ELSIF OUT2 THEN
+            QPosition := 2;
+        ELSIF OUT3 THEN
+            QPosition := 3;
+        ELSIF OUT4 THEN
+            QPosition := 4;
+        ELSE
+            QPosition := 0;
+        END_IF; 
+        
+    3:
+        TYPE_OUT := 3; // cControlFwdRevSwitch; FWD<>REV<> 2 Inputs
+        
+        FWD := OUT1 AND NOT QERR;
+        REV := OUT2 AND NOT QERR; 
+        
+        IF OUT1 THEN
+            QPosition := 1;
+        ELSIF OUT2 THEN
+            QPosition := 2;
+        ELSE
+            QPosition := 0;
+        END_IF; 
+    
+    4: 
+        TYPE_OUT := 4; // cControlRLocalRemoteSwitch; LOCAL<>REMOTE - 2 Inputs
+        
+        LOCAL  := OUT1 AND NOT QERR ;
+        REMOTE := OUT2 AND NOT QERR;
+        
+        IF OUT1 THEN
+            QPosition := 1;
+        ELSIF OUT2 THEN
+            QPosition := 2;
+        ELSE
+            QPosition := 0;
+        END_IF;
+   
+    5: 
+        TYPE_OUT := 5;  //cControlSpeedSwitch; SPEED1<>SPEED2<>SPEED3 - 3 Inputs
+        
+        SPEED1 := OUT1 AND NOT QERR ;
+        SPEED2 := OUT2 AND NOT QERR;
+        SPEED3 := OUT3 AND NOT QERR;
+        
+        IF OUT1 THEN
+            QPosition := 1;
+        ELSIF OUT2 THEN
+            QPosition := 2;
+        ELSIF OUT3 THEN
+            QPosition := 3;
+        ELSE
+            QPosition := 0;
+        END_IF;
+ 
+    6: 
+        TYPE_OUT := 6;  //cControlRunStopSwitch; RUN<>STOP - 2 Inputs
+        
+        RUN  := OUT1 AND NOT QERR ;
+        STOP := OUT2 AND NOT QERR;
+                
+        IF OUT1 THEN
+            QPosition := 1;
+        ELSIF OUT2 THEN
+            QPosition := 2;
+        ELSE
+            QPosition := 0;
+        END_IF;
+        
+    7: 
+
+        TYPE_OUT := 7;   // cControlMode2Switch; AUTO<>MAN - 2 Inputs
+        
+        AUTO  := OUT1 AND NOT QERR ;
+        MAN   := OUT2 AND NOT QERR;
+        
+        IF OUT1 THEN
+            QPosition := 1;
+        ELSIF OUT2 THEN
+            QPosition := 2;
+        ELSE
+            QPosition := 0;
+        END_IF; 
+    
+    8:
+        TYPE_OUT := 8;  // cControlMode3Switch AUTO<>MAN<>JOG - 3 Inputs
+        
+        AUTO  := OUT1 AND NOT QERR; 
+        MAN   := OUT2 AND NOT QERR;
+        //old JOG   := OUT3 AND NOT QERR;         
+        // new to allow jog from wincc
+        IF EnaAllowJOG THEN
+            JOG   := AllowJOG AND OUT3 AND NOT QERR;
+            JOGreq := OUT3 AND NOT QERR;
+        ELSE
+            JOG   := OUT3 AND NOT QERR;   
+        END_IF; 
+                
+        IF OUT1 THEN
+            QPosition := 1;
+        ELSIF OUT2 THEN
+            QPosition := 2;
+        ELSIF OUT3 THEN
+            QPosition := 3;
+        ELSE
+            QPosition := 0;
+        END_IF; 
+        
+    9:  TYPE_OUT := 9; // cControlResetSwitch; RESET<>NONE - 1 Input
+        
+        RESET  := OUT1 AND NOT QERR;
+        NONE   := NOT OUT1 AND NOT QERR;
+        
+        IF OUT1 THEN
+            QPosition := 1;
+        ELSE
+            QPosition := 0;
+        END_IF;  
+         
+   10:  TYPE_OUT := 10; //cControlWeldSwitch; WLDSEL<>NONE - 1 Input
+    
+        WLDSEL  := OUT1 AND NOT QERR;
+        NONE    := NOT OUT1 AND NOT QERR;
+        IF OUT1 THEN
+            QPosition := 1;
+        ELSE
+            QPosition := 0;
+        END_IF; 
+        
+   11:  TYPE_OUT := 11; // cControlSinDouSwitch; SINGLE<>DOUBLE - 1 Input
+    
+        SINGLE  := OUT1 AND NOT QERR;
+        DOUBLE  := NOT OUT1 AND NOT QERR;
+        IF OUT1 THEN
+            QPosition := 1;
+        ELSE
+            
+            QPosition := 0;
+        END_IF; 
+        
+   12:  TYPE_OUT := 12; // cControlManAbutAutoSwitch; MAN<>ABUTM<>AUTO - 2 Inputs
+    
+        ABUTM := NOT OUT1 AND     OUT2 AND NOT QERR ;
+        MAN   := NOT OUT1 AND NOT OUT2 AND NOT QERR ;
+        AUTO  :=     OUT1 AND NOT OUT2 AND NOT QERR;
+        
+        IF OUT1 THEN
+            QPosition := 1;
+        ELSIF OUT2 THEN
+            QPosition := 2;    
+        ELSE
+            QPosition := 0;
+        END_IF;     
+    
+   13:  TYPE_OUT := 13; // cControlAutMan1Switch; AUTO<>MAN - 1 Input
+    
+        AUTO  := OUT1 AND NOT QERR ;
+        MAN   := NOT OUT1 AND NOT QERR;
+        IF OUT1 THEN
+            QPosition := 1;
+        ELSE
+            QPosition := 0;
+        END_IF;          
+        
+   14: TYPE_OUT := 14;  // cControlOnOff1Switch; ON<>OFF - 1 Input
+    
+        ON  := OUT1 AND NOT QERR ;
+        OFF := NOT OUT1 AND NOT QERR;
+        
+        IF OUT1 THEN
+            QPosition := 1;
+        ELSE
+            QPosition := 0;
+        END_IF; 
+        
+   15:  TYPE_OUT := 15; // cControlMasSlavSwitch; MASTER<>SLAVE - 2 Inputs
+    
+        MAST    := OUT1 AND NOT QERR ;
+        SLAVE    := OUT2 AND NOT QERR ;
+        
+        IF OUT1 THEN
+            QPosition := 1;
+        ELSIF OUT2 THEN
+            QPosition := 2;
+        ELSE
+            QPosition := 0;
+        END_IF; 
+        
+   16:  TYPE_OUT := 16; // cControlEnDisSwitch; ENABLE <> DISABLE - 2 Inputs
+    
+        ENAB  := OUT1 AND NOT QERR ;
+        DISAB := OUT2 AND NOT QERR ;
+        IF OUT1 THEN
+            QPosition := 1;
+        ELSIF OUT2 THEN
+            QPosition := 2;        
+        ELSE
+            QPosition := 0;
+        END_IF;
+        
+    17:
+        TYPE_OUT := 17;  // cControlMode3Switch AUTO<>MAN<>JOG - 2 Inputs
+        
+        AUTO  := OUT1 AND NOT QERR; 
+        MAN   := NOT OUT1 AND NOT OUT2;
+        //old JOG   := OUT2 AND NOT QERR;         
+        // new to allow jog from wincc
+        IF EnaAllowJOG THEN
+            JOG   := AllowJOG AND OUT2 AND NOT QERR;
+            JOGreq := OUT2 AND NOT QERR;
+        ELSE
+            JOG   := OUT2 AND NOT QERR;   
+        END_IF; 
+                
+        IF OUT1 THEN
+            QPosition := 1;
+        ELSIF NOT OUT1 AND NOT OUT2 THEN
+            QPosition := 2;
+        ELSIF OUT2 THEN
+            QPosition := 3;
+        ELSE
+            QPosition := 0;         
+        END_IF;
+        
+    18: 
+        TYPE_OUT := 18;  //cControlRunStop1Switch; RUN<>STOP - 1 Inputs
+        
+        RUN  := OUT1 AND NOT QERR ;
+        STOP := NOT OUT1 AND NOT QERR;
+                
+        IF OUT1 THEN
+            QPosition := 1;
+        ELSIF NOT OUT1 THEN
+            QPosition := 2;
+        ELSE
+            QPosition := 0;
+        END_IF;   
+        
+        
+ 0..1:  QERR := TRUE;       
+        
+         
+    END_CASE;
+
+// new to allow jog from wincc
+IF NOT JOGreq THEN
+    AllowJOG := false;
+END_IF;
+ 
+       
+// END: Operation functions *****************************************************
+// ******************************************************************************
+
+    IF QERR THEN 
+        OUT1 := FALSE;
+        OUT2 := FALSE;
+        OUT3 := FALSE;
+        OUT4 := FALSE; 
+        AllowJOG := FALSE;
+    END_IF;
+    
+// RESET Errors ========================================================
+    IF OP_RESET THEN
+        QERR := FALSE;
+        QLOCK := FALSE;
+    END_IF;
+
+// Set State for HMI ===================================================
+    QbState[0] := WARM;      //State Warm Mode Selected
+    QbState[1] := AUTO;      //State Automatic Mode Selected
+    QbState[2] := MAN;       //State Manual Mode Selected
+    QbState[3] := JOG;       //State JOG Mode Selected
+    QbState[4] := FWD;       //State FWD Mode Selected
+    QbState[5] := REV;       //State REV Mode Selected
+    QbState[6] := LOCAL;     //State Local Mode Selected
+    QbState[7] := REMOTE;    //State Remote Mode Selected
+    QbState[8] := SPEED1;    //State Speed1 Mode Selected
+    QbState[9] := SPEED2;    //State Speed2 Mode Selected
+    QbState[10] := SPEED3;    //State Speed3 Mode Selected
+    QbState[11] := RUN;       //State Run Mode Selected
+    QbState[12] := STOP;      // State Stop Mode Selected
+    QbState[13] := RESET;     // State RESET Mode Selected   
+    QbState[14] := WLDSEL;    // State WELD Mode Selected 
+    QbState[15] := SINGLE;    // State SINGLE Mode Selected    
+    QbState[16] := SLAVE;      // State SLAVE Mode Selected
+    QbState[17] := NOT LIOP_SEL;  // 0=operator control enabled
+    QbState[18] := QSIM;          // 0=Process 1=Simulation 
+    QbState[19] := DOUBLE;    // State DOUBLE Mode Selected   
+    QbState[20] := ABUTM;     // State ABUTMENT Mode Selected   
+    QbState[21] := ENAB;      // State ENABLE Mode Selected  
+    QbState[22] := DISAB;     // State DISABLE Mode Selected
+    QbState[23] := ON;        // State ON Mode Selected
+    QbState[24] := QERR;      // 1=Error
+    QbState[25] := QERR_EXT;  // 1=External Error
+    QbState[26] := QLOCK;     // 1=Motor Locked;
+    QbState[27] := LOCK;      // 1=INTERLOCK
+    QbState[28] := NONE;      // State NONE Selected
+    QbState[29] := OFF;       // State OFF Mode Selected
+    QbState[30] := MAST;      // State MASTER Mode Selected
+    QbState[31] := 0;
+    
+// Alarm_8P ==============================================
+    A8P(
+        EN_R := 1,
+        SIG_1 :=0,
+        SIG_2 :=0,
+        SIG_3 :=0,
+        SIG_4 :=0,
+        SIG_5 :=NOT MSGLOCK AND QLOCK,                    // Interlock Error
+        SIG_6 :=0,
+        SIG_7 :=NOT MSGLOCK AND QERR_EXT,       // External Error
+        SIG_8 :=NOT MSGLOCK AND QERR,           // General Error
+        ID := w#16#eeee,
+        EV_ID := MSG1_EVID,
+        SEVERITY := w#16#40
+    );
+    MSG1_bDone := A8P.DONE;
+    MSG1_bError := A8P.ERROR;
+    MSG1_wState := A8P.STATUS;
+    MSG1_wAck   := A8P.ACK_STATE;
+
+// Notify_8P ==============================================
+    N8P(
+        SIG_1 :=NOT MSGLOCK AND OUT1,           // OUT1 
+        SIG_2 :=NOT MSGLOCK AND OUT2,           // OUT2 
+        SIG_3 :=NOT MSGLOCK AND OUT3,           // OUT3 
+        SIG_4 :=NOT MSGLOCK AND OUT4,           // OUT4 
+        SIG_5 :=NOT MSGLOCK AND LOCK,           // Interlock
+        SIG_6 :=0,
+        SIG_7 :=0,
+        SIG_8 :=NOT MSGLOCK AND QSIM,           // Simulation
+        ID := w#16#eeee,
+        EV_ID := MSG2_EVID,
+        SEVERITY := w#16#40 
+    );
+    MSG2_bDone := N8P.DONE;
+    MSG2_bError := N8P.ERROR;
+    MSG2_wState := N8P.STATUS;
+
+// Set Tags for edge detect =====================================
+    L_RESET_OLD := L_RESET;
+    
+//reset commands ================================================
+     OP_dwCmd := 16#0;
+    
+END_FUNCTION_BLOCK
+
+
+
